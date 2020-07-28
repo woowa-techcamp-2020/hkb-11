@@ -4,3 +4,4 @@ node_modules
 .env.test
 .vscode
 .DS_Store
+.map

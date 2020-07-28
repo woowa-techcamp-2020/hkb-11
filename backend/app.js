@@ -1,20 +1,15 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-var app = express();
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
+"use strict";
+exports.__esModule = true;
+var express_1 = require("express");
+var path_1 = require("path");
+var cookie_parser_1 = require("cookie-parser");
+var morgan_1 = require("morgan");
+var index_1 = require("./routes/index");
+var app = express_1["default"]();
+app.use(morgan_1["default"]('dev'));
+app.use(express_1["default"].json());
+app.use(express_1["default"].urlencoded({ extended: false }));
+app.use(cookie_parser_1["default"]());
+app.use(express_1["default"].static(path_1["default"].resolve(__dirname, '../frontend/dist')));
+app.use('/', index_1["default"]);
 module.exports = app;

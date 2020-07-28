@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = {
-  entry: './frontend/index.js',
+  entry: './frontend/index.ts',
   resolve: {
     alias: {
       api: './frontend/api',
@@ -13,11 +13,16 @@ module.exports = {
     },
   },
   output: {
-    path: path.resolve(__dirname, 'backend/public/dist'),
+    path: path.resolve(__dirname, 'frontend/dist'),
     filename: 'bundle.js',
   },
   module: {
     rules: [
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: 'ts-loader',
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -25,15 +30,18 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: [
-                ["@babel/preset-env", {
-                    corejs: 3,
-                    targets: '> 1%',
-                    useBuiltIns: "usage"
-                }]
+              [
+                '@babel/preset-env',
+                {
+                  corejs: 3,
+                  targets: '> 1%',
+                  useBuiltIns: 'usage',
+                },
+              ],
             ],
-            plugins: ["@babel/plugin-proposal-class-properties"]
-          }
-        }
+            plugins: ['@babel/plugin-proposal-class-properties'],
+          },
+        },
       },
       {
         test: /\.(png|jpe?g|gif|svg|ico)$/i,
