@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = {
   entry: './frontend/index.ts',
   resolve: {
+    extensions: ['.ts', '.js', '.json'],
     alias: {
       api: './frontend/api',
       components: path.resolve(__dirname, 'frontend/components'),
