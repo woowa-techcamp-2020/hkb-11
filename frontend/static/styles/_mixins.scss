@@ -1,0 +1,8 @@
+@use 'definitions' as *;
+
+@mixin center($direction: column) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: center;
+  justify-content: center;
+}
