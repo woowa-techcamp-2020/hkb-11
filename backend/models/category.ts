@@ -1,9 +1,9 @@
 import pool from '../pool'
 import query from '../query'
 
-const selectCategories = async () => {
+const selectCategoryList = async () => {
   try {
-    const [rows] = await pool.query(query.SELECT_CATEGORIES)
+    const [rows] = await pool.query(query.SELECT_CATEGORY_LIST)
     return rows
   } catch (e) {
     throw e
@@ -11,5 +11,5 @@ const selectCategories = async () => {
 }
 
 export default {
-  selectCategories,
+  selectCategoryList,
 }

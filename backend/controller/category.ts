@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import model from '../models'
 
-const getCategories = async (req: Request, res: Response) => {
+const getCategoryList = async (req: Request, res: Response) => {
   try {
-    const data = await model.selectCategories()
+    const data = await model.selectCategoryList()
     res.json({
       categoryList: data,
     })
@@ -15,5 +15,5 @@ const getCategories = async (req: Request, res: Response) => {
 }
 
 export default {
-  getCategories,
+  getCategoryList,
 }
