@@ -1,11 +1,12 @@
 import { Request, Response } from 'express'
-import model from '../models'
+import pool from '../pool'
+import query from '../query'
 
 const getPaymentMethodList = async (req: Request, res: Response) => {
   try {
-    const data = await model.selectPaymentMethodList()
+    const [rows] = await pool.query(query.SELECT_PAYMENT_METHOD_LIST)
     res.json({
-      paymentMethodList: data,
+      paymentMethodList: rows,
     })
   } catch (e) {
     res.status(500).json({
