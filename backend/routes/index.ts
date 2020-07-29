@@ -16,6 +16,6 @@ router
   .route('/payment_method')
   .get(controller.getPaymentMethodList)
   .post(controller.postPaymentMethod)
-  .delete(controller.getPaymentMethodList)
+  .delete(controller.deletePaymentMethod)
 
 export default router
