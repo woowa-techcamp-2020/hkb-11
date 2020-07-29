@@ -1,4 +1,5 @@
-const div: HTMLDivElement | null = document.querySelector('div')
-if (div) {
-  div.innerText = 'hi'
-}
+import { MainComponent } from './components'
+import { MainState } from './store'
+import { MainView } from './view'
+
+new MainComponent(new MainState(), new MainView())
