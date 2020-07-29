@@ -1,12 +1,10 @@
 import express from 'express'
 import controller from '../controller'
-import invoiceRouter from './invoice'
 const router = express.Router()
 
 /* GET home page. */
 router.use('/login', controller.login)
 router.post('/signup', controller.signup)
-router.use('/invoice', invoiceRouter)
 
 /* Category API */
 router.get('/category', controller.getCategoryList)
@@ -22,7 +20,7 @@ router
 router
   .route('/invoice')
   .get(controller.getInvoiceList)
-  .post(controller.getInvoiceList)
+  .post(controller.postInvoice)
   .put(controller.getInvoiceList)
   .delete(controller.getInvoiceList)
 
