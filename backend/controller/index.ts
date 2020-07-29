@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { OkPacket } from 'mysql2'
 import passport from 'passport'
 import categoryController from '../controller/category'
+import paymentMethodController from '../controller/payment-method'
 import pool from '../pool'
 import Strategy from '../strategy'
 
@@ -38,5 +39,6 @@ const Controller = {
   login,
   signup,
   ...categoryController,
+  ...paymentMethodController,
 }
 export default Controller
