@@ -1,7 +1,6 @@
 import express from 'express'
 import controller from '../controller'
 import invoiceRouter from './invoice'
-import paymentMethodRouter from './payment-method'
 const router = express.Router()
 
 /* GET home page. */
@@ -11,6 +10,10 @@ router.use('/invoice', invoiceRouter)
 
 /* Category API */
 router.get('/category', controller.getCategoryList)
-router.use('/payment_method', paymentMethodRouter)
+
+/* PaymentMethod API */
+router.get('/payment_method', controller.getPaymentMethodList)
+router.post('/payment_method', controller.getPaymentMethodList)
+router.delete('/payment_method', controller.getPaymentMethodList)
 
 export default router
