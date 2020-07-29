@@ -6,5 +6,6 @@ const queries = {
   SELECT_PAYMENT_METHOD: `SELECT * FROM PaymentMethod WHERE id=?`,
   INSERT_PAYMENT_METHOD: `INSERT INTO PaymentMethod (title, userId) VALUES (?, ?)`,
   DELETE_PAYMENT_METHOD: `DELETE FROM PaymentMethod WHERE id=?`,
+  SELECT_INVOICE_LIST: `SELECT * FROM Invoice WHERE YEAR(date)=? AND MONTH(date)=?`,
 }
 export default queries

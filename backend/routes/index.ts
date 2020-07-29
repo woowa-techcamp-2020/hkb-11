@@ -18,4 +18,12 @@ router
   .post(controller.postPaymentMethod)
   .delete(controller.deletePaymentMethod)
 
+/* Invoice API */
+router
+  .route('/invoice')
+  .get(controller.getInvoiceList)
+  .post(controller.getInvoiceList)
+  .put(controller.getInvoiceList)
+  .delete(controller.getInvoiceList)
+
 export default router
