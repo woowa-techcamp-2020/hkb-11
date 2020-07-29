@@ -7,4 +7,8 @@ const router = express.Router()
 router.use('/login', controller.login)
 router.post('/signup', controller.signup)
 router.use('/invoice', invoiceRouter)
+
+/* Category API */
+router.get('/category', controller.getCategoryList)
+
 export default router
