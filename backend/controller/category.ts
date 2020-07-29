@@ -1,12 +1,11 @@
 import { Request, Response } from 'express'
-import pool from '../pool'
-import query from '../query'
+import model from '../models'
 
 const getCategories = async (req: Request, res: Response) => {
   try {
-    const [rows] = await pool.query(query.SELECT_CATEGORIES)
+    const data = await model.selectCategories()
     res.json({
-      categoryList: rows,
+      categoryList: data,
     })
   } catch (e) {
     res.status(500).json({
