@@ -1,6 +1,8 @@
 import passport from 'passport'
+import pool from '../pool'
 import { Request, Response, NextFunction } from 'express'
 import Strategy from '../strategy'
+import { OkPacket } from 'mysql2'
 
 Strategy()
 function login(req: Request, res: Response, next: NextFunction) {
@@ -18,8 +20,21 @@ function login(req: Request, res: Response, next: NextFunction) {
     res.status(200)
   })(req, res, next)
 }
-
+async function signup(req: Request, res: Response, next: NextFunction) {
+  console.log(req.body)
+  const { id, password } = req.body
+  const [row] = await pool.query<OkPacket>(
+    'INSERT INTO Users (id, password) VALUES (?, ?)',
+    [id, password]
+  )
+  // TODO: 토큰 만들기
+  const token = ''
+  res.status(200).json({
+    token,
+  })
+}
 const Controller = {
   login,
+  signup,
 }
 export default Controller
