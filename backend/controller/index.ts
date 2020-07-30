@@ -1,8 +1,11 @@
-import passport from 'passport'
-import pool from '../pool'
-import { Request, Response, NextFunction } from 'express'
-import Strategy from '../strategy'
+import { NextFunction, Request, Response } from 'express'
 import { OkPacket } from 'mysql2'
+import passport from 'passport'
+import categoryController from '../controller/category'
+import invoiceController from '../controller/invoice'
+import paymentMethodController from '../controller/payment-method'
+import pool from '../pool'
+import Strategy from '../strategy'
 
 Strategy()
 function login(req: Request, res: Response, next: NextFunction) {
@@ -36,5 +39,8 @@ async function signup(req: Request, res: Response, next: NextFunction) {
 const Controller = {
   login,
   signup,
+  ...categoryController,
+  ...paymentMethodController,
+  ...invoiceController,
 }
 export default Controller

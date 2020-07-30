@@ -4,7 +4,16 @@ const { merge } = require('webpack-merge')
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+    ],
+  },
   devServer: {
+    index: 'index.html',
     contentBase: path.join(__dirname, './frontend/static'),
     port: 9000,
     hot: true,
