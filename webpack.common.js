@@ -1,11 +1,11 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
 module.exports = {
   entry: './frontend/index.ts',
   resolve: {
-    extensions: ['.ts', '.js', '.json'],
+    extensions: ['.ts', '.js', '.json', '.scss'],
     alias: {
       api: './frontend/api',
       components: path.resolve(__dirname, 'frontend/components'),
@@ -19,6 +19,10 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.html$/,
+        use: 'raw-loader',
+      },
       {
         test: /\.ts$/,
         exclude: /node_modules/,
@@ -56,10 +60,6 @@ module.exports = {
           },
         ],
       },
-      {
-        test: /\.scss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
-      },
     ],
   },
   plugins: [
@@ -68,7 +68,6 @@ module.exports = {
       template: 'frontend/static/index.html',
     }),
     new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin(),
   ],
   optimization: {
     splitChunks: {

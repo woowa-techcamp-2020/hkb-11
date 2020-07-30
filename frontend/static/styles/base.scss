@@ -147,3 +147,37 @@ textarea:focus {
 }
 
 /* custom base style */
+.rows {
+  display: flex;
+  flex-direction: column;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  width: 800px;
+
+  .item {
+    flex: none;
+
+    &.left {
+      display: flex;
+      margin-left: 0;
+      margin-right: auto;
+    }
+
+    &.right {
+      display: flex;
+      margin-left: auto;
+      margin-right: 0;
+    }
+  }
+}
+
+.float {
+  position: absolute;
+  right: 0;
+}
+
+.hidden {
+  display: none !important;
+}

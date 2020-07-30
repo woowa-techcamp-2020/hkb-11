@@ -4,11 +4,11 @@ const { merge } = require('webpack-merge')
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
-  modules: {
+  module: {
     rules: [
       {
-        test: /\.html$/,
-        use: 'raw-loader',
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
     ],
   },
