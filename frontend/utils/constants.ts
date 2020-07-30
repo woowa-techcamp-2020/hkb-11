@@ -1,0 +1,4 @@
+export const EVENTS = {
+  ADD_INVOICE: 'ADD_INVOICE',
+  CLEAR_INVOICES: 'CLEAR_INVOICES',
+}
