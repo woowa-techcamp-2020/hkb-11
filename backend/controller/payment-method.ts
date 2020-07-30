@@ -67,7 +67,7 @@ const deletePaymentMethod = async (req: Request, res: Response) => {
 
     // 변경된 사항이 없다면(삭제된 것이 없다면) Error를 발생시켜 500 리턴
     if (result.affectedRows === 0) {
-      throw Error
+      throw Error('no change')
     }
 
     res.status(200).json()
