@@ -6,7 +6,7 @@ type Category = {
 
 type PaymentMethod = {
   id?: number
-  userId?: number
+  userId: string
   title: string
 }
 
@@ -14,10 +14,10 @@ type Invoice = {
   id?: number
   date: Date
   category: Category
-  paymentMethod: string
+  paymentMethod: PaymentMethod
   amount: number
   item: string
-  userId?: number
+  userId?: string
 }
 
 export { Category, PaymentMethod, Invoice }
