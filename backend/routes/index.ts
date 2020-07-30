@@ -11,4 +11,11 @@ router.use('/invoice', invoiceRouter)
 /* Category API */
 router.get('/category', controller.getCategoryList)
 
+/* PaymentMethod API */
+router
+  .route('/payment_method')
+  .get(controller.getPaymentMethodList)
+  .post(controller.postPaymentMethod)
+  .delete(controller.deletePaymentMethod)
+
 export default router
