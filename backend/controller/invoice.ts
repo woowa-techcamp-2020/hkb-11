@@ -41,6 +41,40 @@ const postInvoice = async (req: Request, res: Response) => {
   }
 }
 
+const putInvoice = async (req: Request, res: Response) => {
+  try {
+    const { invoice } = req.body
+    const { id, date, categoryId, paymentMethodId, item, amount } = invoice
+
+    // 수정할 Invoice가 있는지 검사, false: 404
+    const [row] = await pool.query<RowDataPacket[]>(query.SELECT_INVOICE, [id])
+    if (row.length === 0) {
+      res.status(404).json()
+      return
+    }
+
+    const [result] = await pool.query<ResultSetHeader>(query.UPDATE_INVOICE, [
+      date,
+      categoryId,
+      paymentMethodId,
+      item,
+      amount,
+      id,
+    ])
+
+    // 변경된 사항이 없다면(수정된 것이 없다면) Error를 발생시켜 500 리턴
+    if (result.affectedRows === 0) {
+      throw Error
+    }
+
+    res.status(200).json()
+  } catch (e) {
+    res.status(500).json({
+      message: e,
+    })
+  }
+}
+
 const deleteInvoice = async (req: Request, res: Response) => {
   try {
     // jwt token 검사, false: 401
@@ -77,5 +111,6 @@ const deleteInvoice = async (req: Request, res: Response) => {
 export default {
   getInvoiceList,
   postInvoice,
+  putInvoice,
   deleteInvoice,
 }

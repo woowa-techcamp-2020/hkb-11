@@ -8,6 +8,8 @@ const queries = {
   SELECT_INVOICE: `SELECT * FROM Invoice WHERE id=?`,
   INSERT_INVOICE:
     'INSERT INTO Invoice (date, categoryId, paymentMethodId, item, amount) VALUES (?, ?, ?, ?, ?)',
+  UPDATE_INVOICE:
+    'UPDATE Invoice SET date=?, categoryId=?, paymentMethodId=?, item=?, amount=? WHERE id=?',
   DELETE_INVOICE_METHOD: `DELETE FROM Invoice WHERE id=?`,
 }
 export default queries

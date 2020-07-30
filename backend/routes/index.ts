@@ -21,7 +21,7 @@ router
   .route('/invoice')
   .get(controller.getInvoiceList)
   .post(controller.postInvoice)
-  .put(controller.getInvoiceList)
+  .put(controller.putInvoice)
   .delete(controller.deleteInvoice)
 
 export default router
