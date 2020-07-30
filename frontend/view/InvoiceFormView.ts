@@ -2,6 +2,8 @@ import { View } from './index'
 
 export default class InvoiceFormView extends View {
   $clearForm: HTMLButtonElement
+  $submit: HTMLButtonElement
+
   constructor() {
     super('invoice-form', 'section')
   }

@@ -3,6 +3,15 @@ function createElement(tag: string, className?: string): HTMLDivElement {
   if (className) element.classList.add(className)
   return element
 }
+function setText(element: HTMLElement, query: string, text: string | number) {
+  const target = element.querySelector(query) as HTMLDivElement
+  target.innerText = String(text)
+}
+
+function getText(element: HTMLElement, query: string) {
+  const target = element.querySelector(query) as HTMLDivElement
+  return target.innerText
+}
 abstract class View {
   $element: HTMLElement
   constructor(id: string, tag: string = 'div') {
@@ -35,4 +44,4 @@ abstract class View {
   }
 }
 
-export { createElement, View }
+export { createElement, setText, getText, View }

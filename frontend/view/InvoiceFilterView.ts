@@ -1,8 +1,16 @@
-import { View } from './index'
+import { setText, View } from './index'
 
 export default class InvoiceFilterView extends View {
   constructor() {
     super('invoice-filter', 'section')
+    this.setEarningTotal(0)
+    this.setSpendingTotal(0)
+  }
+  setEarningTotal(amount) {
+    setText(this.$element, '.earning-total', `${amount}원`)
+  }
+  setSpendingTotal(amount) {
+    setText(this.$element, '.spending-total', `${amount}원`)
   }
   mount(): void {}
   init() {

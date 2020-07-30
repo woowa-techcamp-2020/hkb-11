@@ -9,6 +9,14 @@ export class InvoiceModel extends Observable {
 
   addInvoice(invoice: Invoice) {
     this.invoices = [...this.invoices, invoice]
+    const { category, amount } = invoice
+    if (category.type === '수입') {
+      this.sumEarning += amount
+      this.emit(EVENTS.SET_SUM_EARNING, this.sumEarning)
+    } else {
+      this.sumSpending += amount
+      this.emit(EVENTS.SET_SUM_SPENDING, this.sumSpending)
+    }
     this.emit(EVENTS.ADD_INVOICE, invoice)
   }
   setInvoices(invoices: Array<Invoice>) {

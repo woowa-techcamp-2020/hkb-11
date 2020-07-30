@@ -1,68 +1,120 @@
-import { View } from './index'
+import { Invoice } from '../../types'
+import { createElement, getText, setText, View } from './index'
 
+const days = ['월', '화', '수', '목', '금', '토', '일']
+function getPrettyDate(date: Date) {
+  return `${date.getFullYear()} ${date.getMonth()} ${date.getDate()}`
+}
+function getPrettyDay(date: Date) {
+  return days[date.getDay()]
+}
+
+function addAmountInDateRowSum(invoice: Invoice, dateRow: HTMLDivElement) {
+  const { category, amount } = invoice
+  if (category.type === '수입') {
+    const earningSum = dateRow.querySelector('.earning-sum') as HTMLDivElement
+    const sum = parseInt(earningSum.innerText)
+    earningSum.innerText = String(sum + amount)
+  } else {
+    const spendingSum = dateRow.querySelector('.spending-sum') as HTMLDivElement
+    const sum = parseInt(spendingSum.innerText)
+    spendingSum.innerText = String(sum + amount)
+  }
+}
+function appendRowInDateRow(invoice, $dateRow) {
+  const { date } = invoice
+  const $rows = $dateRow.querySelector('.rows') as HTMLDivElement
+  if ($rows === null) return
+  const $invoiceRow = createInvoiceRow(invoice)
+  const targetRow = Array.from($rows.children).find(($row) => {
+    if (parseInt(getText($row as HTMLDivElement, '.hidden-date')) > +date) {
+      return true
+    }
+  })
+  $rows.insertBefore($invoiceRow, targetRow)
+}
+
+function createDateRow(date: Date) {
+  const $element = createElement('div', 'invoice-wrapper')
+  $element.innerHTML = `
+  <div class="date-row row">
+    <div class="item left">
+      <span class="date"></span><span class="day"></span>
+    </div>
+    <div class="item right">
+      <div class="earning-sum">
+        0
+      </div>
+      <div class="spending-sum">
+        0
+      </div>
+    </div>
+  </div>
+  <div class="rows">
+  </div>`
+  setText($element, '.date', getPrettyDate(date))
+  setText($element, '.day', getPrettyDay(date))
+
+  return $element
+}
+function createInvoiceRow(invoice: Invoice) {
+  const { id, date, category, item, paymentMethod, amount } = invoice
+  const $invoiceRow = createElement('div', 'row')
+  const type = category.type === '수입' ? 'earning' : 'spending'
+  $invoiceRow.classList.add('invoice', type)
+  $invoiceRow.innerHTML = `
+    <div class="float">
+      <button class="button-edit">Edit</button>
+    </div>
+    <div class="hidden">
+      <div class="hidden-id"></div>
+      <div class="hidden-date"></div>
+    </div>
+    <div class="item left">
+      <div class="category"></div>
+      <div class="content"></div>
+    </div>
+    <div class="item right">
+      <div class="payment"></div>
+      <div class="amount"></div>
+    </div>
+  `
+  setText($invoiceRow, '.hidden-id', id)
+  setText($invoiceRow, '.hidden-date', +date)
+  setText($invoiceRow, '.category', category.title)
+  setText($invoiceRow, '.content', item)
+  setText($invoiceRow, '.payment', paymentMethod.title)
+  setText($invoiceRow, '.amount', amount)
+  return $invoiceRow
+}
 export default class InvoiceListView extends View {
   constructor() {
     super('invoice-list', 'section')
   }
+  findDateRow(date: Date): HTMLDivElement {
+    const dateRows = this.$element.querySelectorAll('.invoice-wrapper')
+    if (dateRows === null) return null
+    return Array.from(dateRows).find(($dateRow) => {
+      if (
+        getText($dateRow as HTMLDivElement, '.date') === getPrettyDate(date)
+      ) {
+        return true
+      }
+    }) as HTMLDivElement
+  }
+  addDateRow(date: Date) {
+    const $dateRow = createDateRow(date)
+    this.$element.appendChild($dateRow)
+    return $dateRow
+  }
+  addInvoice(invoice: Invoice) {
+    const { date } = invoice
+    const $dateRow = this.findDateRow(date) || this.addDateRow(date)
+    addAmountInDateRowSum(invoice, $dateRow)
+    appendRowInDateRow(invoice, $dateRow)
+  }
   mount(): void {}
   init() {
-    return `
-      <div class="invoice-wrapper">
-        <div class="date-row row">
-          <div class="item left">
-            <span class="date">6월 16일</span><span class="day">화</span>
-          </div>
-          <div class="item right">
-            <div class="earning-sum">
-              +12원
-            </div>
-            <div class="spending-sum">
-              -12,123원
-            </div>
-          </div>
-        </div>
-        <div class="rows">
-          <div class="row invoice earning">
-            <div class="float">
-              <button class="button-edit">Edit</button>
-            </div>
-            <div class="item left">
-              <div class="category">
-                쇼핑/뷰티
-              </div>
-              <div class="content">
-                미용실
-              </div>
-            </div>
-            <div class="item right payment">
-              <div class="payment">
-                현대카드
-              </div>
-              <div class="amount">
-                122,211원
-              </div>
-            </div>
-          </div>
-          <div class="row invoice spending">
-            <div class="item left">
-              <div class="category">
-                음식
-              </div>
-              <div class="content">
-                서울김밥
-              </div>
-            </div>
-            <div class="item right payment">
-              <div class="payment">
-                카카오페이
-              </div>
-              <div class="amount">
-                12,211원
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `
+    return ''
   }
 }
