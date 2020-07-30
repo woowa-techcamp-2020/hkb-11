@@ -8,9 +8,6 @@ module.exports = {
     extensions: ['.ts', '.js', '.json', '.scss'],
     alias: {
       api: './frontend/api',
-      components: path.resolve(__dirname, 'frontend/components'),
-      styles: path.resolve(__dirname, 'frontend/styles'),
-      utils: path.resolve(__dirname, 'frontend/utils'),
     },
   },
   output: {
