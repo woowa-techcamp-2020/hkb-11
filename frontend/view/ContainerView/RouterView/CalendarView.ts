@@ -1,4 +1,4 @@
-import { View } from '../index'
+import { View } from '../../index'
 
 export default class CalendarView extends View {
   constructor() {

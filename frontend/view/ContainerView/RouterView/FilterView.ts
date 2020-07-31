@@ -1,4 +1,4 @@
-import { setText, View } from '../index'
+import { setText, View } from '../../index'
 
 export default class FilterView extends View {
   constructor() {

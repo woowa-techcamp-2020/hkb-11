@@ -1,11 +1,10 @@
-import { Observable } from '../model'
 import { View } from '../view'
 
-export class Component<T extends View, S extends Observable> {
+export class Component<T extends View> {
   view: T
-  model: S
-  constructor(view: T, model?: S) {
-    if (model) this.model = model
+  parent
+  constructor(parent, view: T) {
+    this.parent = parent as Component<View>
     this.view = view
   }
   mount(element: HTMLElement) {

@@ -1,6 +1,6 @@
+import ModalView from '../ContainerView/ModalView'
 import { View } from '../index'
 import HeaderView from './HeaderView'
-import ModalView from './ModalView'
 import NavigatorView from './NavigatorView'
 export default class MainView extends View {
   headerView: HeaderView

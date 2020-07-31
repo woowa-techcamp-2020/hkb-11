@@ -1,4 +1,4 @@
-import { View } from '../index'
+import { View } from '../../index'
 import FilterView from './FilterView'
 import FormVIew from './FormView'
 import ListView from './ListView'

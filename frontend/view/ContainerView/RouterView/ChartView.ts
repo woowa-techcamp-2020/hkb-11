@@ -1,4 +1,4 @@
-import { View } from '../index'
+import { View } from '../../index'
 
 export default class ChartView extends View {
   constructor() {
