@@ -1,5 +1,5 @@
 import { Observable } from '.'
-export class GlobalModel extends Observable {}
+class GlobalModel extends Observable {}
 
 const store = new GlobalModel()
 
