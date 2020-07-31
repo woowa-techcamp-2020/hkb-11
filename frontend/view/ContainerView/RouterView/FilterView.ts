@@ -1,6 +1,6 @@
-import { setText, View } from './index'
+import { setText, View } from '../../index'
 
-export default class InvoiceFilterView extends View {
+export default class FilterView extends View {
   constructor() {
     super('invoice-filter', 'section')
     this.setEarningTotal(0)

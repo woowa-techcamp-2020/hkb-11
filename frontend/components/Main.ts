@@ -1,8 +1,7 @@
 import { Component } from '.'
-import { Observable } from '../model'
 import MainView from '../view/MainView'
-export class Main extends Component<MainView, Observable> {
+export class Main extends Component<MainView> {
   constructor(view) {
-    super(view)
+    super(null, view)
   }
 }

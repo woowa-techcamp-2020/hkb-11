@@ -1,5 +1,5 @@
-import { Invoice } from '../../types'
-import { createElement, getText, setText, View } from './index'
+import { Invoice } from '../../../../types'
+import { createElement, getText, setText, View } from '../../index'
 
 const days = ['월', '화', '수', '목', '금', '토', '일']
 function getPrettyDate(date: Date) {
@@ -87,7 +87,7 @@ function createInvoiceRow(invoice: Invoice) {
   setText($invoiceRow, '.amount', amount)
   return $invoiceRow
 }
-export default class InvoiceListView extends View {
+export default class ListView extends View {
   constructor() {
     super('invoice-list', 'section')
   }

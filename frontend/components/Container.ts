@@ -1,29 +1,34 @@
 import { Component } from '.'
 import { InvoiceModel } from '../model/InvoiceModel'
 import { EVENTS } from '../utils/constants'
-import InvoiceFilterView from '../view/InvoiceFilterView'
-import InvoiceFormView from '../view/InvoiceFormView'
-import InvoiceListView from '../view/InvoiceListView'
-import RouterView from '../view/RouterView'
+import RouterView from '../view/ContainerView/RouterView'
+import FilterView from '../view/ContainerView/RouterView/FilterView'
+import FormVIew from '../view/ContainerView/RouterView/FormView'
+import ListView from '../view/ContainerView/RouterView/ListView'
 import mockup from './mockup'
-export class Container extends Component<RouterView, InvoiceModel> {
-  formView: InvoiceFormView
-  filterView: InvoiceFilterView
-  listView: InvoiceListView
-  constructor(view: RouterView, model: InvoiceModel) {
-    super(view, model)
+export class Container extends Component<RouterView> {
+  formView: FormVIew
+  filterView: FilterView
+  listView: ListView
+  invoiceModel: InvoiceModel
+  constructor(view: RouterView) {
+    super(null, view)
     this.formView = view.formView
     this.filterView = view.filterView
     this.listView = view.listView
-    model.on(EVENTS.ADD_INVOICE, (invoice) => {
+    this.invoiceModel = new InvoiceModel()
+    this.invoiceModel.on(EVENTS.ADD_INVOICE, (invoice) => {
       this.listView.addInvoice(invoice)
     })
-    model.on(EVENTS.SET_SUM_EARNING, (amount) => {
+    this.invoiceModel.on(EVENTS.SET_SUM_EARNING, (amount) => {
       this.filterView.setEarningTotal(amount)
     })
-    model.on(EVENTS.SET_SUM_SPENDING, (amount) => {
+    this.invoiceModel.on(EVENTS.SET_SUM_SPENDING, (amount) => {
       this.filterView.setSpendingTotal(amount)
     })
-    model.setInvoices(mockup)
+    this.formView.bindInvoiceAddHandler(() => {
+      this.invoiceModel.addInvoice(mockup[0])
+    })
+    this.invoiceModel.setInvoices(mockup)
   }
 }
