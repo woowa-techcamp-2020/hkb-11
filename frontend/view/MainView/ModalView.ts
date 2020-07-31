@@ -1,4 +1,4 @@
-import { createElement, View } from './index'
+import { createElement, View } from '../index'
 
 export default class ModalView extends View {
   $buttonPaymentModal: HTMLButtonElement

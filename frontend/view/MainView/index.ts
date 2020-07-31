@@ -1,5 +1,5 @@
+import { View } from '../index'
 import HeaderView from './HeaderView'
-import { View } from './index'
 import ModalView from './ModalView'
 import NavigatorView from './NavigatorView'
 export default class MainView extends View {

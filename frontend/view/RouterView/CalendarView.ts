@@ -1,6 +1,6 @@
-import { View } from './index'
+import { View } from '../index'
 
-export default class InvoiceCalendarView extends View {
+export default class CalendarView extends View {
   constructor() {
     super('invoice-calendar', 'section')
   }

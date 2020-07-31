@@ -1,13 +1,18 @@
-import { View } from './index'
+import { View } from '../index'
 
-export default class InvoiceFormView extends View {
+export default class FormView extends View {
   $clearForm: HTMLButtonElement
   $submit: HTMLButtonElement
 
   constructor() {
     super('invoice-form', 'section')
   }
-  mount(): void {}
+  mount(): void {
+    this.$submit = this.query('.button-submit') as HTMLButtonElement
+  }
+  bindInvoiceAddHandler(handler) {
+    this.$submit.addEventListener('click', handler)
+  }
   init() {
     return `
       <form>
@@ -49,7 +54,7 @@ export default class InvoiceFormView extends View {
           </div>
         </div>
         <div class="row">
-          <button class="button button-submit">확인</button>
+          <button type="button" class="button button-submit">확인</button>
         </div>
       </form>
     `

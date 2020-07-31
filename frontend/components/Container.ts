@@ -1,15 +1,15 @@
 import { Component } from '.'
 import { InvoiceModel } from '../model/InvoiceModel'
 import { EVENTS } from '../utils/constants'
-import InvoiceFilterView from '../view/InvoiceFilterView'
-import InvoiceFormView from '../view/InvoiceFormView'
-import InvoiceListView from '../view/InvoiceListView'
 import RouterView from '../view/RouterView'
+import FilterView from '../view/RouterView/FilterView'
+import FormVIew from '../view/RouterView/FormView'
+import ListView from '../view/RouterView/ListView'
 import mockup from './mockup'
 export class Container extends Component<RouterView, InvoiceModel> {
-  formView: InvoiceFormView
-  filterView: InvoiceFilterView
-  listView: InvoiceListView
+  formView: FormVIew
+  filterView: FilterView
+  listView: ListView
   constructor(view: RouterView, model: InvoiceModel) {
     super(view, model)
     this.formView = view.formView
@@ -23,6 +23,9 @@ export class Container extends Component<RouterView, InvoiceModel> {
     })
     model.on(EVENTS.SET_SUM_SPENDING, (amount) => {
       this.filterView.setSpendingTotal(amount)
+    })
+    this.formView.bindInvoiceAddHandler(() => {
+      model.addInvoice(mockup[0])
     })
     model.setInvoices(mockup)
   }
