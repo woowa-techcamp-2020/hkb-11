@@ -81,6 +81,24 @@ Then, you can access to your server http://localhost:3000
 
 ------
 
+## Frontend Architecture
+
+### MVC 패턴
+- Model
+- View
+- Component (=Controller)
+
+### Observer 패턴
+- Model : Observable Class
+- Component : Model 구독
+- Model의 변화가 생기면 구독한 Component에 연락
+- Component는 자신이 가지고 있는 View의 핸들러를 호출
+- View의 핸들러는 자신의 화면을 조작하는 역할을 담당
+
+**Model과 View의 연결을 느슨하게 함**
+
+------
+
 ## Database
 
 ### ERD
