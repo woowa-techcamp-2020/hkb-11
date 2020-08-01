@@ -18,5 +18,11 @@ export class Filter extends Component<FilterView, Container> {
     this.invoiceModel.on(EVENTS.SET_SUM_SPENDING, (amount) => {
       this.view.setSpendingTotal(amount)
     })
+    this.view.bindEarningToggleHandler((value) => {
+      this.invoiceModel.setEarningToggle(value)
+    })
+    this.view.bindSpendingToggleHandler((value) => {
+      this.invoiceModel.setSpendingToggle(value)
+    })
   }
 }

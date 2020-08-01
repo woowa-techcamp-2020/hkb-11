@@ -78,6 +78,7 @@ function createInvoiceRow(invoice: Invoice) {
       <div class="hidden-date"></div>
     </div>
     <div class="item left">
+      <div class="type"></div>
       <div class="category"></div>
       <div class="content"></div>
     </div>
@@ -89,6 +90,7 @@ function createInvoiceRow(invoice: Invoice) {
   setText($invoiceRow, '.hidden-id', id)
   setText($invoiceRow, '.hidden-date', +date)
   setText($invoiceRow, '.category', category.title)
+  setText($invoiceRow, '.type', category.type)
   setText($invoiceRow, '.content', item)
   setText($invoiceRow, '.payment', paymentMethod.title)
   setText($invoiceRow, '.amount', amount)
@@ -118,8 +120,16 @@ export default class ListView extends View {
     addAmountInDateRowSum(invoice, $dateRow)
     appendRowInDateRow(invoice, $dateRow)
   }
+  getInvoiceRows() {
+    return Array.from(this.queryAll('.invoice'))
+  }
+  getInvoiceRowsByType(type) {
+    return this.getInvoiceRows().filter(
+      (x) => getText(x as HTMLDivElement, '.type') === type
+    )
+  }
   findInvoiceRow(id: Number): HTMLDivElement {
-    return Array.from(this.queryAll('.invoice')).find(
+    return this.getInvoiceRows().find(
       ($row) => getText($row as HTMLDivElement, '.hidden-id') === String(id)
     ) as HTMLDivElement
   }
@@ -154,6 +164,18 @@ export default class ListView extends View {
     const $invoiceRow = this.findInvoiceRow(id)
     if (flag) $invoiceRow.classList.add('highlight')
     else $invoiceRow.classList.remove('highlight')
+  }
+  setEarningToggle(flag: boolean) {
+    this.getInvoiceRowsByType('수입').forEach(($row) => {
+      if (flag) $row.classList.remove('hidden')
+      else $row.classList.add('hidden')
+    })
+  }
+  setSpendingToggle(flag: boolean) {
+    this.getInvoiceRowsByType('지출').forEach(($row) => {
+      if (flag) $row.classList.remove('hidden')
+      else $row.classList.add('hidden')
+    })
   }
   mount(): void {}
   init() {

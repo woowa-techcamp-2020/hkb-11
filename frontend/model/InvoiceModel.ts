@@ -7,6 +7,8 @@ export class InvoiceModel extends Observable {
   highlightId: number
   sumEarning: number = 0
   sumSpending: number = 0
+  earningToggle: boolean = true
+  spendingToggle: boolean = true
 
   addSumEarning(offset: number) {
     this.sumEarning += offset
@@ -25,6 +27,14 @@ export class InvoiceModel extends Observable {
       return
     }
     this.addSumSpending(amount)
+  }
+  setEarningToggle(value) {
+    this.earningToggle = value
+    this.emit(EVENTS.EARNING_TOGGLE, value)
+  }
+  setSpendingToggle(value) {
+    this.spendingToggle = value
+    this.emit(EVENTS.SPENDING_TOGGLE, value)
   }
   removeInvoice(id) {
     const invoice = this.invoices.find((x) => x.id === id)

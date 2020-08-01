@@ -1,18 +1,54 @@
 import { setText, View } from '../../index'
 
 export default class FilterView extends View {
+  $earningCheckBox: HTMLInputElement
+  $spendingCheckBox: HTMLInputElement
+  onEarningToggleHandler: Function
+  onSpendingToggleHandler: Function
   constructor() {
     super('invoice-filter', 'section')
-    this.setEarningTotal(0)
-    this.setSpendingTotal(0)
+    this.setEarningToggle(true)
+      .setSpendingToggle(true)
+      .setEarningTotal(0)
+      .setSpendingTotal(0)
+    this.$element.addEventListener('input', this.onInputChanged.bind(this))
+  }
+  onInputChanged({ target }) {
+    if (target instanceof HTMLInputElement) {
+      const { checked } = target
+      if (target === this.$earningCheckBox) this.onEarningToggleHandler(checked)
+      if (target === this.$spendingCheckBox)
+        this.onSpendingToggleHandler(checked)
+    }
   }
   setEarningTotal(amount) {
     setText(this.$element, '.earning-total', `${amount}원`)
+    return this
   }
   setSpendingTotal(amount) {
     setText(this.$element, '.spending-total', `${amount}원`)
+    return this
   }
-  mount(): void {}
+  setEarningToggle(value: boolean) {
+    this.$earningCheckBox.checked = value
+    return this
+  }
+  setSpendingToggle(value: boolean) {
+    this.$spendingCheckBox.checked = value
+    return this
+  }
+  bindEarningToggleHandler(handler) {
+    this.onEarningToggleHandler = handler
+  }
+  bindSpendingToggleHandler(handler) {
+    this.onSpendingToggleHandler = handler
+  }
+  mount(): void {
+    this.$earningCheckBox = this.query('.earning-checkbox') as HTMLInputElement
+    this.$spendingCheckBox = this.query(
+      '.spending-checkbox'
+    ) as HTMLInputElement
+  }
   init() {
     return `
     <div>
