@@ -1,10 +1,5 @@
 import { templateToElement } from '../utils/ElementGenerator'
 
-function createElement(tag: string, className?: string): HTMLDivElement {
-  const element = <HTMLDivElement>document.createElement(tag)
-  if (className) element.classList.add(className)
-  return element
-}
 function setText(element: HTMLElement, query: string, text: string | number) {
   const target = <HTMLDivElement>element.querySelector(query)
   target.innerText = String(text)
@@ -51,4 +46,8 @@ abstract class View {
   abstract mount(): void
 }
 
+<<<<<<< HEAD
 export { createElement, setText, getText, removeElement, getSibling, View }
+=======
+export { setText, getText, View }
+>>>>>>> [#29] fix(view) - createElement 함수 제거
