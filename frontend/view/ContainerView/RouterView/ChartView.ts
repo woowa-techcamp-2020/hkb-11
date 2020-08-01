@@ -1,15 +1,16 @@
 import { View } from '../../index'
 
+const template = `
+  <section id='invoice-chart'>
+    <div>
+      차트입니당!
+    </div>
+  </section>
+`
+
 export default class ChartView extends View {
   constructor() {
-    super('invoice-chart', 'section')
+    super(template)
   }
   mount(): void {}
-  init() {
-    return `
-      <div>
-        차트입니당!
-      </div>
-    `
-  }
 }

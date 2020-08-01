@@ -99,7 +99,7 @@ function createInvoiceRow(invoice: Invoice) {
 
 export default class ListView extends View {
   constructor() {
-    super('invoice-list', 'section')
+    super(template)
   }
   findDateRow(date: Date): HTMLDivElement {
     const dateRows = this.$element.querySelectorAll('.invoice-wrapper')
@@ -182,7 +182,4 @@ export default class ListView extends View {
     })
   }
   mount(): void {}
-  init() {
-    return ''
-  }
 }

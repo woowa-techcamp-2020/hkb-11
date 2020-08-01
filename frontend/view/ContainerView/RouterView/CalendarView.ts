@@ -1,14 +1,15 @@
 import { View } from '../../index'
 
+const tempalte = `
+  <section id='invoice-calendar'>
+    <div class="rows">
+    </div>
+  </section>
+`
+
 export default class CalendarView extends View {
   constructor() {
-    super('invoice-calendar', 'section')
+    super(tempalte)
   }
   mount(): void {}
-  init() {
-    return `
-      <div class="rows">
-      </div>
-    `
-  }
 }
