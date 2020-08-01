@@ -7,6 +7,7 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js', '.json', '.scss'],
     alias: {
+      '@': path.resolve(__dirname, 'frontend/'),
       api: './frontend/api',
     },
   },

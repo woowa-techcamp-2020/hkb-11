@@ -1,3 +1,4 @@
 {
-  "editor.codeActionsOnSave": ["source.organizeImports"]
+  "editor.codeActionsOnSave": ["source.organizeImports"],
+  "editor.tabSize": 2
 }
