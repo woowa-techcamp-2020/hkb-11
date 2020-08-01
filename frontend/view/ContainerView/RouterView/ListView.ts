@@ -1,5 +1,12 @@
 import { Invoice } from '../../../../types'
-import { createElement, getText, setText, View } from '../../index'
+import {
+  createElement,
+  getSibling,
+  getText,
+  removeElement,
+  setText,
+  View,
+} from '../../index'
 
 const days = ['월', '화', '수', '목', '금', '토', '일']
 function getPrettyDate(date: Date) {
@@ -87,6 +94,7 @@ function createInvoiceRow(invoice: Invoice) {
   setText($invoiceRow, '.amount', amount)
   return $invoiceRow
 }
+
 export default class ListView extends View {
   constructor() {
     super('invoice-list', 'section')
@@ -94,13 +102,10 @@ export default class ListView extends View {
   findDateRow(date: Date): HTMLDivElement {
     const dateRows = this.$element.querySelectorAll('.invoice-wrapper')
     if (dateRows === null) return null
-    return Array.from(dateRows).find(($dateRow) => {
-      if (
+    return Array.from(dateRows).find(
+      ($dateRow) =>
         getText($dateRow as HTMLDivElement, '.date') === getPrettyDate(date)
-      ) {
-        return true
-      }
-    }) as HTMLDivElement
+    ) as HTMLDivElement
   }
   addDateRow(date: Date) {
     const $dateRow = createDateRow(date)
@@ -112,6 +117,26 @@ export default class ListView extends View {
     const $dateRow = this.findDateRow(date) || this.addDateRow(date)
     addAmountInDateRowSum(invoice, $dateRow)
     appendRowInDateRow(invoice, $dateRow)
+  }
+  removeInvoice(id: number): void {
+    const $invoiceRow = Array.from(this.queryAll('.invoice')).find(
+      ($row) => getText($row as HTMLDivElement, '.hidden-id') === String(id)
+    )
+    if (getSibling($invoiceRow).length === 1) {
+      const $dateRow = $invoiceRow.closest('.invoice-wrapper')
+      removeElement($dateRow)
+      return
+    }
+    removeElement($invoiceRow)
+  }
+  bindInvoiceClickedHandler(handler: Function) {
+    this.$element.addEventListener('click', ({ target }) => {
+      if (target instanceof HTMLElement) {
+        const $invoiceRow = target.closest('.invoice') as HTMLDivElement
+        if (!$invoiceRow) return
+        handler(parseInt(getText($invoiceRow, '.hidden-id')))
+      }
+    })
   }
   mount(): void {}
   init() {

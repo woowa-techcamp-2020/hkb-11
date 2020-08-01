@@ -15,5 +15,12 @@ export class List extends Component<ListView, Container> {
     this.invoiceModel.on(EVENTS.ADD_INVOICE, (invoice) => {
       this.view.addInvoice(invoice)
     })
+    this.invoiceModel.on(EVENTS.REMOVE_INVOICE, (id) => {
+      this.view.removeInvoice(id)
+    })
+    view.bindInvoiceClickedHandler((id) => {
+      // TODO: Communcate with API
+      this.invoiceModel.removeInvoice(id)
+    })
   }
 }

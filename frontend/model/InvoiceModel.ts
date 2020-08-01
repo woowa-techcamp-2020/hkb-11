@@ -7,17 +7,32 @@ export class InvoiceModel extends Observable {
   sumEarning: number = 0
   sumSpending: number = 0
 
+  addSumEarning(offset: number) {
+    this.sumEarning += offset
+    this.emit(EVENTS.SET_SUM_EARNING, this.sumEarning)
+  }
+  addSumSpending(offset: number) {
+    this.sumSpending += offset
+    this.emit(EVENTS.SET_SUM_SPENDING, this.sumSpending)
+  }
   addInvoice(invoice: Invoice) {
     this.invoices = [...this.invoices, invoice]
     const { category, amount } = invoice
-    if (category.type === '수입') {
-      this.sumEarning += amount
-      this.emit(EVENTS.SET_SUM_EARNING, this.sumEarning)
-    } else {
-      this.sumSpending += amount
-      this.emit(EVENTS.SET_SUM_SPENDING, this.sumSpending)
-    }
     this.emit(EVENTS.ADD_INVOICE, invoice)
+    if (category.type === '수입') {
+      this.addSumEarning(amount)
+      return
+    }
+    this.addSumSpending(amount)
+  }
+  removeInvoice(id) {
+    const invoice = this.invoices.find((x) => x.id === id)
+    if (!invoice) return
+    const { category, amount } = invoice
+    if (category.type === '수입') this.addSumEarning(-amount)
+    else this.addSumSpending(-amount)
+    this.invoices = this.invoices.filter((x) => x !== invoice)
+    this.emit(EVENTS.REMOVE_INVOICE, id)
   }
   setInvoices(invoices: Array<Invoice>) {
     this.clear()

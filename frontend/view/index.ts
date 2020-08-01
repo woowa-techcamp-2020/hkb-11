@@ -12,6 +12,13 @@ function getText(element: HTMLElement, query: string) {
   const target = element.querySelector(query) as HTMLDivElement
   return target.innerText
 }
+function removeElement(element: Element) {
+  element.parentElement.removeChild(element)
+}
+
+function getSibling(element: Element) {
+  return element.parentElement.children
+}
 abstract class View {
   $element: HTMLElement
   constructor(id: string, tag: string = 'div') {
@@ -29,6 +36,9 @@ abstract class View {
   query(query: string) {
     return this.$element.querySelector(query)
   }
+  queryAll(query: string) {
+    return this.$element.querySelectorAll(query)
+  }
   clear() {
     this.$element.innerHTML = ''
   }
@@ -44,4 +54,4 @@ abstract class View {
   }
 }
 
-export { createElement, setText, getText, View }
+export { createElement, setText, getText, removeElement, getSibling, View }
