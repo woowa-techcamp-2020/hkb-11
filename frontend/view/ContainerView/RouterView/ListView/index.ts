@@ -1,12 +1,8 @@
 import { Invoice } from '../../../../types'
-import {
-  createElement,
-  getSibling,
-  getText,
-  removeElement,
-  setText,
-  View,
-} from '../../index'
+import { templateToElement } from '../../../../utils/ElementGenerator'
+import { getSibling, getText, removeElement, setText, View } from '../../index'
+import './style.scss'
+import { dateRowtemplate, invoiceRowTemplate, template } from './template'
 
 const days = ['월', '화', '수', '목', '금', '토', '일']
 function getPrettyDate(date: Date) {
@@ -42,51 +38,18 @@ function appendRowInDateRow(invoice, $dateRow) {
 }
 
 function createDateRow(date: Date) {
-  const $element = createElement('div', 'invoice-wrapper')
-  $element.innerHTML = `
-  <div class="date-row row">
-    <div class="item left">
-      <span class="date"></span><span class="day"></span>
-    </div>
-    <div class="item right">
-      <div class="earning-sum">
-        0
-      </div>
-      <div class="spending-sum">
-        0
-      </div>
-    </div>
-  </div>
-  <div class="rows">
-  </div>`
-  setText($element, '.date', getPrettyDate(date))
-  setText($element, '.day', getPrettyDay(date))
+  const $dateRow = templateToElement(dateRowtemplate) as HTMLDivElement
+  setText($dateRow, '.date', getPrettyDate(date))
+  setText($dateRow, '.day', getPrettyDay(date))
 
-  return $element
+  return $dateRow
 }
 function createInvoiceRow(invoice: Invoice) {
   const { id, date, category, item, paymentMethod, amount } = invoice
-  const $invoiceRow = createElement('div', 'row')
+
+  const $invoiceRow = templateToElement(invoiceRowTemplate) as HTMLDivElement
   const type = category.type === '수입' ? 'earning' : 'spending'
   $invoiceRow.classList.add('invoice', type)
-  $invoiceRow.innerHTML = `
-    <div class="float">
-      <button class="button-edit">Edit</button>
-    </div>
-    <div class="hidden">
-      <div class="hidden-id"></div>
-      <div class="hidden-date"></div>
-    </div>
-    <div class="item left">
-      <div class="type"></div>
-      <div class="category"></div>
-      <div class="content"></div>
-    </div>
-    <div class="item right">
-      <div class="payment"></div>
-      <div class="amount"></div>
-    </div>
-  `
   setText($invoiceRow, '.hidden-id', id)
   setText($invoiceRow, '.hidden-date', +date)
   setText($invoiceRow, '.category', category.title)

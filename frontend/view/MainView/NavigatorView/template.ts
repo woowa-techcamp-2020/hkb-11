@@ -1,6 +1,4 @@
-import { View } from '../index'
-
-const template = `
+export const template: string = `
   <section id='navigator'>
     <div class="rows">
       <nav class="row month-picker">
@@ -16,10 +14,3 @@ const template = `
     </div>
   </section>
 `
-
-export default class NavigatorView extends View {
-  constructor() {
-    super(template)
-  }
-  mount(): void {}
-}

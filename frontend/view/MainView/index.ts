@@ -2,11 +2,8 @@ import ModalView from '../ContainerView/ModalView'
 import { View } from '../index'
 import HeaderView from './HeaderView'
 import NavigatorView from './NavigatorView'
-
-const template = `
-  <main id='main'>
-  </main>
-`
+import './style.scss'
+import { template } from './template'
 
 export default class MainView extends View {
   headerView: HeaderView

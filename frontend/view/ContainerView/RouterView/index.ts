@@ -4,11 +4,8 @@ import ChartView from './ChartView'
 import FilterView from './FilterView'
 import FormView from './FormView'
 import ListView from './ListView'
-
-const template = `
-  <div id='router-content'>
-  </div>
-`
+import './style.scss'
+import { template } from './template'
 
 export default class RouterView extends View {
   formView: FormView

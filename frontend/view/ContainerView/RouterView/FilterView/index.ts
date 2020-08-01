@@ -1,19 +1,6 @@
-import { setText, View } from '../../index'
-
-const template = `
-  <section id='invoice-filter'>
-    <div>
-      <input type="checkbox" class="earning-checkbox" />
-      <label>수입</label>
-      <label class="earning-total">3,234,123원</label>
-    </div>
-    <div>
-      <input type="checkbox" class="spending-checkbox" />
-      <label>지출</label>
-      <label class="spending-total">134,123원</label>
-    </div>
-  </section>
-`
+import { setText, View } from '../../../index'
+import './style.scss'
+import { template } from './template'
 
 export default class FilterView extends View {
   $earningCheckBox: HTMLInputElement
@@ -21,7 +8,7 @@ export default class FilterView extends View {
   onEarningToggleHandler: Function
   onSpendingToggleHandler: Function
   constructor() {
-    super('invoice-filter', 'section')
+    super(template)
     this.setEarningToggle(true)
       .setSpendingToggle(true)
       .setEarningTotal(0)

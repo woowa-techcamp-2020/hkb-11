@@ -1,6 +1,4 @@
-import { View } from '../../index'
-
-const template = `
+export const template: string = `
   <section id='invoice-form'>
     <form>
       <div class="float">
@@ -46,18 +44,3 @@ const template = `
     </form>
   </section>
 `
-
-export default class FormView extends View {
-  $clearForm: HTMLButtonElement
-  $submit: HTMLButtonElement
-
-  constructor() {
-    super(template)
-  }
-  mount(): void {
-    this.$submit = <HTMLInputElement>this.query('.button-submit')
-  }
-  bindInvoiceAddHandler(handler) {
-    this.$submit.addEventListener('click', handler)
-  }
-}
