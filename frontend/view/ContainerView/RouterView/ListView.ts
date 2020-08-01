@@ -118,10 +118,13 @@ export default class ListView extends View {
     addAmountInDateRowSum(invoice, $dateRow)
     appendRowInDateRow(invoice, $dateRow)
   }
-  removeInvoice(id: number): void {
-    const $invoiceRow = Array.from(this.queryAll('.invoice')).find(
+  findInvoiceRow(id: Number): HTMLDivElement {
+    return Array.from(this.queryAll('.invoice')).find(
       ($row) => getText($row as HTMLDivElement, '.hidden-id') === String(id)
-    )
+    ) as HTMLDivElement
+  }
+  removeInvoice(id: number): void {
+    const $invoiceRow = this.findInvoiceRow(id)
     if (getSibling($invoiceRow).length === 1) {
       const $dateRow = $invoiceRow.closest('.invoice-wrapper')
       removeElement($dateRow)
@@ -129,14 +132,28 @@ export default class ListView extends View {
     }
     removeElement($invoiceRow)
   }
-  bindInvoiceClickedHandler(handler: Function) {
+  bindInvoiceEditHandler(handler: Function) {
     this.$element.addEventListener('click', ({ target }) => {
       if (target instanceof HTMLElement) {
-        const $invoiceRow = target.closest('.invoice') as HTMLDivElement
-        if (!$invoiceRow) return
+        const $edit = target.closest('.button-edit')
+        if (!$edit) return
+        const $invoiceRow = $edit.closest('.invoice') as HTMLDivElement
         handler(parseInt(getText($invoiceRow, '.hidden-id')))
       }
     })
+  }
+  bindInvoiceClickledHandler(handler: Function) {
+    this.$element.addEventListener('click', ({ target }) => {
+      if (target instanceof HTMLElement) {
+        const $invoiceRow = target.closest('.invoice') as HTMLDivElement
+        handler(parseInt(getText($invoiceRow, '.hidden-id')))
+      }
+    })
+  }
+  highlightInvoice(id: number, flag: boolean): void {
+    const $invoiceRow = this.findInvoiceRow(id)
+    if (flag) $invoiceRow.classList.add('highlight')
+    else $invoiceRow.classList.remove('highlight')
   }
   mount(): void {}
   init() {

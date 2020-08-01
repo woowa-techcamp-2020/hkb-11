@@ -4,6 +4,7 @@ import { EVENTS } from '../utils/constants'
 
 export class InvoiceModel extends Observable {
   invoices: Array<Invoice> = []
+  highlightId: number
   sumEarning: number = 0
   sumSpending: number = 0
 
@@ -40,6 +41,24 @@ export class InvoiceModel extends Observable {
     this.invoices.forEach((invoice) => {
       this.addInvoice(invoice)
     })
+  }
+  updateInvoice(invoice: Invoice) {
+    const { id } = invoice
+    this.removeInvoice(id)
+    this.emit(EVENTS.REMOVE_INVOICE, id)
+    this.addInvoice(invoice)
+    this.emit(EVENTS.ADD_INVOICE, invoice)
+  }
+  highlight(id: number) {
+    if (id === this.highlightId) {
+      this.emit(EVENTS.HIGHLIGHT_INVOICE, { id, flag: false })
+      return
+    }
+    if (this.highlightId !== undefined) {
+      this.emit(EVENTS.HIGHLIGHT_INVOICE, { id: this.highlightId, flag: false })
+    }
+    this.emit(EVENTS.HIGHLIGHT_INVOICE, { id, flag: true })
+    this.highlightId = id
   }
   clear() {
     this.invoices = new Array<Invoice>()
