@@ -21,8 +21,8 @@ export class List extends Component<ListView, Container> {
     })
   }
   bind() {
-    this.invoiceModel.on(EVENTS.ADD_INVOICE, (invoice) => {
-      this.view.addInvoice(invoice)
+    this.invoiceModel.on(EVENTS.ADD_INVOICE, ({ invoice, hidden }) => {
+      this.view.addInvoice(invoice, hidden)
     })
     this.invoiceModel.on(EVENTS.REMOVE_INVOICE, (id) => {
       this.view.removeInvoice(id)

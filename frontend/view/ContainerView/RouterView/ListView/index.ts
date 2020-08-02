@@ -41,6 +41,7 @@ function appendRowInDateRow(invoice, $dateRow) {
     }
   })
   $rows.insertBefore($invoiceRow, targetRow)
+  return $invoiceRow
 }
 
 function createDateRow(date: Date) {
@@ -91,11 +92,14 @@ export default class ListView extends View {
     this.$element.appendChild($dateRow)
     return $dateRow
   }
-  addInvoice(invoice: Invoice) {
+  addInvoice(invoice: Invoice, hidden = false) {
     const { date } = invoice
     const $dateRow = this.findDateRow(date) || this.addDateRow(date)
     addAmountInDateRowSum(invoice, $dateRow)
-    appendRowInDateRow(invoice, $dateRow)
+    const $row = appendRowInDateRow(invoice, $dateRow)
+    if (hidden) {
+      $row.classList.add('hidden')
+    }
   }
   getInvoiceRows() {
     return Array.from(this.queryAll('.invoice'))
