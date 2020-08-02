@@ -11,6 +11,10 @@ function formatAmount($target: HTMLInputElement) {
     .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
+function getNumberByAmount(amount: string): number {
+  return parseInt(amount.replace(',', ''))
+}
+
 function formatDate(date: Date) {
   let month = '' + (date.getMonth() + 1)
   let day = '' + date.getDate()
@@ -30,8 +34,12 @@ export default class FormView extends View {
   $item: HTMLInputElement
   $category: HTMLSelectElement
   $payment: HTMLSelectElement
+  $remove: HTMLButtonElement
+  $clear: HTMLButtonElement
+  invoiceId: number
   categoryType: string = CONSTANT.SPENDING
   invoiceAddHandler: Function
+  invoiceRemoveHandler: Function
 
   constructor() {
     super(template)
@@ -58,6 +66,8 @@ export default class FormView extends View {
     this.$payment = <HTMLSelectElement>(
       this.query(`.${FORM_CLASS.SELECT_PAYMENT}`)
     )
+    this.$remove = <HTMLButtonElement>this.query(`.${FORM_CLASS.REMOVE_BTN}`)
+    this.$clear = <HTMLButtonElement>this.query(`.${FORM_CLASS.CLEAR_BTN}`)
     this.setCategoryType(CONSTANT.SPENDING)
   }
 
@@ -78,12 +88,25 @@ export default class FormView extends View {
     this.invoiceAddHandler = handler
   }
 
+  bindInvoiceRemoveHandler(handler) {
+    this.invoiceRemoveHandler = handler
+  }
+
   onClickHandler(e) {
     if (!(e.target instanceof HTMLElement)) return
 
     const $clearBtn = e.target.closest(`.${FORM_CLASS.CLEAR_BTN}`)
     if ($clearBtn) {
       this.clearForm()
+      return
+    }
+
+    const $removeBtn = e.target.closest(`.${FORM_CLASS.REMOVE_BTN}`)
+    if ($removeBtn) {
+      const isRemoveConfirm = confirm('정말 삭제하시겠습니까?')
+      if (!isRemoveConfirm) return
+
+      this.invoiceRemoveHandler(this.invoiceId)
       return
     }
 
@@ -118,7 +141,7 @@ export default class FormView extends View {
         userId: 'agrajak2',
         title: this.$payment.value,
       },
-      amount: +this.$amount.value,
+      amount: getNumberByAmount(this.$amount.value),
       item: this.$item.value,
     }
 
@@ -126,13 +149,26 @@ export default class FormView extends View {
   }
 
   setInvoiceData(invoice: Invoice) {
+    this.invoiceId = invoice.id
     this.$date.value = formatDate(invoice.date)
     this.$item.value = invoice.item
     this.$category.value = invoice.category.title
+    this.setCategoryType(invoice.category.type)
     this.$payment.value = invoice.paymentMethod.title
     this.$amount.value = invoice.amount.toString()
     formatAmount(this.$amount)
-    this.setCategoryType(invoice.category.type)
+
+    this.changeFloatBtn(FORM_CLASS.REMOVE_BTN)
+  }
+
+  changeFloatBtn(showClass: string): void {
+    if (showClass === FORM_CLASS.REMOVE_BTN) {
+      this.$remove.classList.remove(CLASS.HIDDEN)
+      this.$clear.classList.add(CLASS.HIDDEN)
+    } else if (showClass === FORM_CLASS.CLEAR_BTN) {
+      this.$remove.classList.add(CLASS.HIDDEN)
+      this.$clear.classList.remove(CLASS.HIDDEN)
+    }
   }
 
   onKeydownHandler(e) {

@@ -2,7 +2,7 @@ import { Container } from '.'
 import { Component } from '..'
 import { Invoice } from '../../../types'
 import { InvoiceModel } from '../../model/InvoiceModel'
-import { EVENT } from '../../utils/constants'
+import { EVENT, FORM_CLASS } from '../../utils/constants'
 import FormView from '../../view/ContainerView/RouterView/FormView'
 
 export class Form extends Component<FormView, Container> {
@@ -17,6 +17,14 @@ export class Form extends Component<FormView, Container> {
       const invoice: Invoice = this.view.getInvoiceData()
       this.invoiceModel.addInvoice(invoice)
 
+      this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
+      this.view.clearForm()
+    })
+
+    this.view.bindInvoiceRemoveHandler((id: number) => {
+      this.invoiceModel.removeInvoice(id)
+
+      this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
       this.view.clearForm()
     })
 
