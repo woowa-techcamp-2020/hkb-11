@@ -146,13 +146,13 @@ export default class ListView extends View {
     if (flag) $invoiceRow.classList.add('highlight')
     else $invoiceRow.classList.remove('highlight')
   }
-  setEarningToggle(flag: boolean) {
+  setEarningVisible(flag: boolean) {
     this.getInvoiceRowsByType('수입').forEach(($row) => {
       if (flag) $row.classList.remove('hidden')
       else $row.classList.add('hidden')
     })
   }
-  setSpendingToggle(flag: boolean) {
+  setSpendingVisible(flag: boolean) {
     this.getInvoiceRowsByType('지출').forEach(($row) => {
       if (flag) $row.classList.remove('hidden')
       else $row.classList.add('hidden')

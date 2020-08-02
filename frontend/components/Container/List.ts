@@ -19,8 +19,6 @@ export class List extends Component<ListView, Container> {
     this.view.bindInvoiceClickledHandler((id) => {
       this.invoiceModel.highlight(id)
     })
-
-    this.bind()
   }
   bind() {
     this.invoiceModel.on(EVENTS.ADD_INVOICE, (invoice) => {
@@ -37,10 +35,10 @@ export class List extends Component<ListView, Container> {
     })
 
     this.invoiceModel.on(EVENTS.EARNING_TOGGLE, (value) => {
-      this.view.setEarningToggle(value)
+      this.view.setEarningVisible(value)
     })
     this.invoiceModel.on(EVENTS.SPENDING_TOGGLE, (value) => {
-      this.view.setSpendingToggle(value)
+      this.view.setSpendingVisible(value)
     })
   }
   unbind() {

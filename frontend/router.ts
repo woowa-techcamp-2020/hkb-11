@@ -1,3 +1,4 @@
+import { Component } from './components'
 import { Observable } from './model'
 import { ROUTER_EVENT } from './utils/constants'
 import { View } from './view'
@@ -5,13 +6,13 @@ import { View } from './view'
 class Router extends Observable {
   url: URL
   currentPath: string
-  views: Map<string, View[]>
+  components: Map<string, Component<View>[]>
   constructor() {
     super()
-    this.views = new Map<string, View[]>()
+    this.components = new Map<string, Component<View>[]>()
   }
-  add(path: string, views: View[]) {
-    this.views[path] = views
+  add(path: string, components: Component<View>[]) {
+    this.components[path] = components
   }
   getURL() {
     this.url = new URL(window.location.href)
@@ -26,7 +27,7 @@ class Router extends Observable {
   go(path) {
     console.log(`${this.currentPath} >> ${path}`)
     if (this.currentPath === path) return
-    if (!Object.keys(this.views).includes(path)) return
+    if (!Object.keys(this.components).includes(path)) return
 
     history.pushState({}, '', path)
     this.emit(ROUTER_EVENT.GO, path)
@@ -34,15 +35,15 @@ class Router extends Observable {
       this.emit(ROUTER_EVENT.MUTATE_VIEW, {
         path: this.currentPath,
         flag: false,
-        views: this.views[this.currentPath],
+        components: this.components[this.currentPath],
       })
     this.emit(ROUTER_EVENT.MUTATE_VIEW, {
       path,
       flag: true,
-      views: this.views[path],
+      components: this.components[path],
     })
     this.currentPath = path
-    return this.views[path]
+    return this.components[path]
   }
 }
 
