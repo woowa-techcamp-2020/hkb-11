@@ -34,7 +34,7 @@ export const template: string = `
       <div class="row">
         <div class="item">
           <label class="form-label">금액</label>
-          <input class="input-amount" placeholder='금액을 입력해주세요' />
+          <input class="input-amount" inputmode="numeric" pattern="[0-9]*" placeholder='금액을 입력해주세요' />
         </div>
         <div class="item">
           <label class="form-label">내용</label>

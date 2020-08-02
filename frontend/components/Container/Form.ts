@@ -1,8 +1,8 @@
 import { Container } from '.'
 import { Component } from '..'
+import { Invoice } from '../../../types'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import FormView from '../../view/ContainerView/RouterView/FormView'
-import mockup from '../mockup'
 
 export class Form extends Component<FormView, Container> {
   invoiceModel: InvoiceModel
@@ -13,7 +13,10 @@ export class Form extends Component<FormView, Container> {
     this.invoiceModel = this.parent.invoiceModel
 
     this.view.bindInvoiceAddHandler(() => {
-      this.invoiceModel.addInvoice(mockup[0])
+      const invoice: Invoice = this.view.getInvoiceData()
+      this.invoiceModel.addInvoice(invoice)
+
+      this.view.clearForm()
     })
   }
 }
