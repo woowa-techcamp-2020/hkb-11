@@ -22,11 +22,11 @@ export class List extends Component<ListView, Container> {
       this.view.highlightInvoice(id, flag)
     })
 
-    view.bindInvoiceEditHandler((id) => {
+    this.view.bindInvoiceEditHandler((id) => {
       // TODO: Communcate with API
       this.invoiceModel.removeInvoice(id)
     })
-    view.bindInvoiceClickledHandler((id) => {
+    this.view.bindInvoiceClickledHandler((id) => {
       this.invoiceModel.highlight(id)
     })
   }
