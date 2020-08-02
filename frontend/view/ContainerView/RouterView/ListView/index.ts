@@ -136,6 +136,7 @@ export default class ListView extends View {
   }
   highlightInvoice(id: number, flag: boolean): void {
     const $invoiceRow = this.findInvoiceRow(id)
+    if (!$invoiceRow) return
     if (flag) $invoiceRow.classList.add('highlight')
     else $invoiceRow.classList.remove('highlight')
   }
