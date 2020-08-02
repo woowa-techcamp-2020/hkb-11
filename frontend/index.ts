@@ -1,4 +1,4 @@
-import { Container } from './components/Container'
+import { Container } from './components/Container/index'
 import { Main } from './components/Main'
 import './static/index.html'
 import './static/styles/base.scss'

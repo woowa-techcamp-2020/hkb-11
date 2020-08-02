@@ -6,9 +6,9 @@ export default class HeaderView extends View {
     super('header', 'header')
   }
   mount(): void {
-    this.$buttonPaymentModal = this.query(
-      '.button-payment-modal'
-    ) as HTMLButtonElement
+    this.$buttonPaymentModal = <HTMLButtonElement>(
+      this.query('.button-payment-modal')
+    )
   }
   bindPaymentModalHandler(handler) {
     this.$buttonPaymentModal.addEventListener('click', handler)

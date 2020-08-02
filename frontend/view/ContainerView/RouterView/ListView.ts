@@ -1,5 +1,12 @@
 import { Invoice } from '../../../../types'
-import { createElement, getText, setText, View } from '../../index'
+import {
+  createElement,
+  getSibling,
+  getText,
+  removeElement,
+  setText,
+  View,
+} from '../../index'
 
 const days = ['월', '화', '수', '목', '금', '토', '일']
 function getPrettyDate(date: Date) {
@@ -12,22 +19,22 @@ function getPrettyDay(date: Date) {
 function addAmountInDateRowSum(invoice: Invoice, dateRow: HTMLDivElement) {
   const { category, amount } = invoice
   if (category.type === '수입') {
-    const earningSum = dateRow.querySelector('.earning-sum') as HTMLDivElement
+    const earningSum = <HTMLInputElement>dateRow.querySelector('.earning-sum')
     const sum = parseInt(earningSum.innerText)
     earningSum.innerText = String(sum + amount)
   } else {
-    const spendingSum = dateRow.querySelector('.spending-sum') as HTMLDivElement
+    const spendingSum = <HTMLInputElement>dateRow.querySelector('.spending-sum')
     const sum = parseInt(spendingSum.innerText)
     spendingSum.innerText = String(sum + amount)
   }
 }
 function appendRowInDateRow(invoice, $dateRow) {
   const { date } = invoice
-  const $rows = $dateRow.querySelector('.rows') as HTMLDivElement
+  const $rows = <HTMLInputElement>$dateRow.querySelector('.rows')
   if ($rows === null) return
   const $invoiceRow = createInvoiceRow(invoice)
-  const targetRow = Array.from($rows.children).find(($row) => {
-    if (parseInt(getText($row as HTMLDivElement, '.hidden-date')) > +date) {
+  const targetRow = Array.from($rows.children).find(($row: HTMLDivElement) => {
+    if (parseInt(getText($row, '.hidden-date')) > +date) {
       return true
     }
   })
@@ -71,6 +78,7 @@ function createInvoiceRow(invoice: Invoice) {
       <div class="hidden-date"></div>
     </div>
     <div class="item left">
+      <div class="type"></div>
       <div class="category"></div>
       <div class="content"></div>
     </div>
@@ -82,11 +90,13 @@ function createInvoiceRow(invoice: Invoice) {
   setText($invoiceRow, '.hidden-id', id)
   setText($invoiceRow, '.hidden-date', +date)
   setText($invoiceRow, '.category', category.title)
+  setText($invoiceRow, '.type', category.type)
   setText($invoiceRow, '.content', item)
   setText($invoiceRow, '.payment', paymentMethod.title)
   setText($invoiceRow, '.amount', amount)
   return $invoiceRow
 }
+
 export default class ListView extends View {
   constructor() {
     super('invoice-list', 'section')
@@ -94,13 +104,12 @@ export default class ListView extends View {
   findDateRow(date: Date): HTMLDivElement {
     const dateRows = this.$element.querySelectorAll('.invoice-wrapper')
     if (dateRows === null) return null
-    return Array.from(dateRows).find(($dateRow) => {
-      if (
-        getText($dateRow as HTMLDivElement, '.date') === getPrettyDate(date)
-      ) {
-        return true
-      }
-    }) as HTMLDivElement
+    return <HTMLDivElement>(
+      Array.from(dateRows).find(
+        ($dateRow: HTMLDivElement) =>
+          getText($dateRow, '.date') === getPrettyDate(date)
+      )
+    )
   }
   addDateRow(date: Date) {
     const $dateRow = createDateRow(date)
@@ -112,6 +121,65 @@ export default class ListView extends View {
     const $dateRow = this.findDateRow(date) || this.addDateRow(date)
     addAmountInDateRowSum(invoice, $dateRow)
     appendRowInDateRow(invoice, $dateRow)
+  }
+  getInvoiceRows() {
+    return Array.from(this.queryAll('.invoice'))
+  }
+  getInvoiceRowsByType(type) {
+    return this.getInvoiceRows().filter(
+      (x) => getText(<HTMLDivElement>x, '.type') === type
+    )
+  }
+  findInvoiceRow(id: Number): HTMLDivElement {
+    return <HTMLDivElement>(
+      this.getInvoiceRows().find(
+        ($row) => getText(<HTMLDivElement>$row, '.hidden-id') === String(id)
+      )
+    )
+  }
+  removeInvoice(id: number): void {
+    const $invoiceRow = this.findInvoiceRow(id)
+    if (getSibling($invoiceRow).length === 1) {
+      const $dateRow = $invoiceRow.closest('.invoice-wrapper')
+      removeElement($dateRow)
+      return
+    }
+    removeElement($invoiceRow)
+  }
+  bindInvoiceEditHandler(handler: Function) {
+    this.$element.addEventListener('click', ({ target }) => {
+      if (target instanceof HTMLElement) {
+        const $edit = target.closest('.button-edit')
+        if (!$edit) return
+        const $invoiceRow = <HTMLDivElement>$edit.closest('.invoice')
+        handler(parseInt(getText($invoiceRow, '.hidden-id')))
+      }
+    })
+  }
+  bindInvoiceClickledHandler(handler: Function) {
+    this.$element.addEventListener('click', ({ target }) => {
+      if (target instanceof HTMLElement) {
+        const $invoiceRow = <HTMLDivElement>target.closest('.invoice')
+        handler(parseInt(getText($invoiceRow, '.hidden-id')))
+      }
+    })
+  }
+  highlightInvoice(id: number, flag: boolean): void {
+    const $invoiceRow = this.findInvoiceRow(id)
+    if (flag) $invoiceRow.classList.add('highlight')
+    else $invoiceRow.classList.remove('highlight')
+  }
+  setEarningToggle(flag: boolean) {
+    this.getInvoiceRowsByType('수입').forEach(($row) => {
+      if (flag) $row.classList.remove('hidden')
+      else $row.classList.add('hidden')
+    })
+  }
+  setSpendingToggle(flag: boolean) {
+    this.getInvoiceRowsByType('지출').forEach(($row) => {
+      if (flag) $row.classList.remove('hidden')
+      else $row.classList.add('hidden')
+    })
   }
   mount(): void {}
   init() {

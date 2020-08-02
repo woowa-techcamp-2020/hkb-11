@@ -15,5 +15,19 @@ export class List extends Component<ListView, Container> {
     this.invoiceModel.on(EVENTS.ADD_INVOICE, (invoice) => {
       this.view.addInvoice(invoice)
     })
+    this.invoiceModel.on(EVENTS.REMOVE_INVOICE, (id) => {
+      this.view.removeInvoice(id)
+    })
+    this.invoiceModel.on(EVENTS.HIGHLIGHT_INVOICE, ({ id, flag }) => {
+      this.view.highlightInvoice(id, flag)
+    })
+
+    this.view.bindInvoiceEditHandler((id) => {
+      // TODO: Communcate with API
+      this.invoiceModel.removeInvoice(id)
+    })
+    this.view.bindInvoiceClickledHandler((id) => {
+      this.invoiceModel.highlight(id)
+    })
   }
 }

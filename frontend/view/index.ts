@@ -1,16 +1,23 @@
 function createElement(tag: string, className?: string): HTMLDivElement {
-  const element = document.createElement(tag) as HTMLDivElement
+  const element = <HTMLDivElement>document.createElement(tag)
   if (className) element.classList.add(className)
   return element
 }
 function setText(element: HTMLElement, query: string, text: string | number) {
-  const target = element.querySelector(query) as HTMLDivElement
+  const target = <HTMLDivElement>element.querySelector(query)
   target.innerText = String(text)
 }
 
 function getText(element: HTMLElement, query: string) {
-  const target = element.querySelector(query) as HTMLDivElement
+  const target = <HTMLDivElement>element.querySelector(query)
   return target.innerText
+}
+function removeElement(element: Element) {
+  element.parentElement.removeChild(element)
+}
+
+function getSibling(element: Element) {
+  return element.parentElement.children
 }
 abstract class View {
   $element: HTMLElement
@@ -29,6 +36,9 @@ abstract class View {
   query(query: string) {
     return this.$element.querySelector(query)
   }
+  queryAll(query: string) {
+    return this.$element.querySelectorAll(query)
+  }
   clear() {
     this.$element.innerHTML = ''
   }
@@ -44,4 +54,4 @@ abstract class View {
   }
 }
 
-export { createElement, setText, getText, View }
+export { createElement, setText, getText, removeElement, getSibling, View }

@@ -8,7 +8,7 @@ export default class FormView extends View {
     super('invoice-form', 'section')
   }
   mount(): void {
-    this.$submit = this.query('.button-submit') as HTMLButtonElement
+    this.$submit = <HTMLInputElement>this.query('.button-submit')
   }
   bindInvoiceAddHandler(handler) {
     this.$submit.addEventListener('click', handler)
