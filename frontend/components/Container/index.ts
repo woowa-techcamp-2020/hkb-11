@@ -1,6 +1,6 @@
 import { Component } from '..'
 import { InvoiceModel } from '../../model/InvoiceModel'
-import { EVENTS } from '../../utils/constants'
+import { EVENT } from '../../utils/constants'
 import RouterView from '../../view/ContainerView/RouterView'
 import CalendarView from '../../view/ContainerView/RouterView/CalendarView'
 import ChartView from '../../view/ContainerView/RouterView/ChartView'
@@ -44,10 +44,10 @@ export class Container extends Component<RouterView> {
 
     this.invoiceModel.setInvoices(mockup)
 
-    this.invoiceModel.on(EVENTS.EARNING_TOGGLE, (value) => {
+    this.invoiceModel.on(EVENT.EARNING_TOGGLE, (value) => {
       this.listView.setEarningToggle(value)
     })
-    this.invoiceModel.on(EVENTS.SPENDING_TOGGLE, (value) => {
+    this.invoiceModel.on(EVENT.SPENDING_TOGGLE, (value) => {
       this.listView.setSpendingToggle(value)
     })
   }
