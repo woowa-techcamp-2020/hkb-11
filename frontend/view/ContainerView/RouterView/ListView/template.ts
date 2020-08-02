@@ -1,6 +1,6 @@
 export const template: string = `
   <section id='invoice-list'>
-  </section
+  </section>
 `
 
 export const dateRowtemplate: string = `
@@ -24,7 +24,7 @@ export const dateRowtemplate: string = `
 `
 
 export const invoiceRowTemplate: string = `
-  <div class='row'>
+  <div class='row invoice'>
     <div class="float">
       <button class="button-edit">Edit</button>
     </div>
@@ -33,6 +33,7 @@ export const invoiceRowTemplate: string = `
       <div class="hidden-date"></div>
     </div>
     <div class="item left">
+      <div class="type"></div>
       <div class="category"></div>
       <div class="content"></div>
     </div>

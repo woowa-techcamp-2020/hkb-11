@@ -46,8 +46,4 @@ abstract class View {
   abstract mount(): void
 }
 
-<<<<<<< HEAD
-export { createElement, setText, getText, removeElement, getSibling, View }
-=======
-export { setText, getText, View }
->>>>>>> [#29] fix(view) - createElement 함수 제거
+export { setText, getText, removeElement, getSibling, View }
