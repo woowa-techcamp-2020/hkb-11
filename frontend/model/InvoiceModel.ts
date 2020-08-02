@@ -48,8 +48,7 @@ export class InvoiceModel extends Observable {
   }
   setInvoices(invoices: Array<Invoice>) {
     this.clear()
-    this.invoices = invoices
-    this.invoices.forEach((invoice) => {
+    invoices.forEach((invoice) => {
       this.addInvoice(invoice)
     })
   }

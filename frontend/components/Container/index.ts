@@ -52,12 +52,12 @@ export class Container extends Component<RouterView> {
       if (flag) {
         views.forEach((view: View) => {
           view.appendToView(this.view)
+          view.clear()
         })
         this.invoiceModel.render()
         return
       }
       views.forEach((view: View) => {
-        view.clear()
         view.remove()
       })
     })
