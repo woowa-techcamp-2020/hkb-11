@@ -30,4 +30,5 @@ export const FORM_CLASS = {
   REMOVE_BTN: 'button-remove-invoice',
   EARNING_TOGGLE: 'earning-toggle',
   SPENDING_TOGGLE: 'spending-toggle',
+  SUBMIT_BTN: 'button-submit',
 }

@@ -30,8 +30,8 @@ export default class FormView extends View {
   $item: HTMLInputElement
   $category: HTMLSelectElement
   $payment: HTMLSelectElement
-  $submit: HTMLButtonElement
   categoryType: string = CONSTANT.SPENDING
+  invoiceAddHandler: Function
 
   constructor() {
     super(template)
@@ -58,8 +58,6 @@ export default class FormView extends View {
     this.$payment = <HTMLSelectElement>(
       this.query(`.${FORM_CLASS.SELECT_PAYMENT}`)
     )
-    this.$submit = <HTMLButtonElement>this.query('.button-submit')
-
     this.setCategoryType(CONSTANT.SPENDING)
   }
 
@@ -77,11 +75,12 @@ export default class FormView extends View {
   }
 
   bindInvoiceAddHandler(handler) {
-    this.$submit.addEventListener('click', handler)
+    this.invoiceAddHandler = handler
   }
 
   onClickHandler(e) {
     if (!(e.target instanceof HTMLElement)) return
+
     const $clearBtn = e.target.closest(`.${FORM_CLASS.CLEAR_BTN}`)
     if ($clearBtn) {
       this.clearForm()
@@ -100,13 +99,19 @@ export default class FormView extends View {
       this.setCategoryType(CONSTANT.SPENDING)
       return
     }
+
+    const $submitBtn = e.target.closest(`.${FORM_CLASS.SUBMIT_BTN}`)
+    if ($submitBtn) {
+      this.invoiceAddHandler()
+      return
+    }
   }
 
   getInvoiceData(): Invoice {
     const invoice: Invoice = {
       date: new Date(this.$date.value),
       category: {
-        type: '수입',
+        type: this.categoryType,
         title: this.$category.value,
       },
       paymentMethod: {
