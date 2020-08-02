@@ -1,7 +1,7 @@
 import { Component } from '..'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import router from '../../router'
-import { ROUTER_EVENTS } from '../../utils/constants'
+import { ROUTER_EVENT } from '../../utils/constants'
 import { View } from '../../view'
 import RouterView from '../../view/ContainerView/RouterView'
 import CalendarView from '../../view/ContainerView/RouterView/CalendarView'
@@ -48,7 +48,7 @@ export class Container extends Component<RouterView> {
     router.add('list', [this.formView, this.filterView, this.listView])
     router.add('calendar', [this.filterView, this.calendarView])
     router.add('chart', [this.chartView])
-    router.on(ROUTER_EVENTS.MUTATE_VIEW, ({ path, flag, views }) => {
+    router.on(ROUTER_EVENT.MUTATE_VIEW, ({ path, flag, views }) => {
       if (flag) {
         views.forEach((view: View) => {
           view.appendToView(this.view)

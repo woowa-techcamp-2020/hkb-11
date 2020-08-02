@@ -10,7 +10,7 @@ export const EVENTS = {
   SPENDING_TOGGLE: 'SPENDING_TOGGLE',
 }
 
-export const ROUTER_EVENTS = {
+export const ROUTER_EVENT = {
   GO: 'GO',
   MUTATE_VIEW: 'MUTATE_VIEW',
 }

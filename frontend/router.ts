@@ -1,5 +1,5 @@
 import { Observable } from './model'
-import { ROUTER_EVENTS as ROUTER } from './utils/constants'
+import { ROUTER_EVENT } from './utils/constants'
 import { View } from './view'
 
 class Router extends Observable {
@@ -29,14 +29,18 @@ class Router extends Observable {
     if (!Object.keys(this.views).includes(path)) return
 
     history.pushState({}, '', path)
-    this.emit(ROUTER.GO, path)
+    this.emit(ROUTER_EVENT.GO, path)
     if (this.currentPath)
-      this.emit(ROUTER.MUTATE_VIEW, {
+      this.emit(ROUTER_EVENT.MUTATE_VIEW, {
         path: this.currentPath,
         flag: false,
         views: this.views[this.currentPath],
       })
-    this.emit(ROUTER.MUTATE_VIEW, { path, flag: true, views: this.views[path] })
+    this.emit(ROUTER_EVENT.MUTATE_VIEW, {
+      path,
+      flag: true,
+      views: this.views[path],
+    })
     this.currentPath = path
     return this.views[path]
   }
