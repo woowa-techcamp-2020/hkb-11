@@ -44,10 +44,8 @@ export default class FilterView extends View {
     this.onSpendingToggleHandler = handler
   }
   mount(): void {
-    this.$earningCheckBox = this.query('.earning-checkbox') as HTMLInputElement
-    this.$spendingCheckBox = this.query(
-      '.spending-checkbox'
-    ) as HTMLInputElement
+    this.$earningCheckBox = <HTMLInputElement>this.query('.earning-checkbox')
+    this.$spendingCheckBox = <HTMLInputElement>this.query('.spending-checkbox')
   }
   init() {
     return `

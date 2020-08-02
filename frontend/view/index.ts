@@ -1,15 +1,15 @@
 function createElement(tag: string, className?: string): HTMLDivElement {
-  const element = document.createElement(tag) as HTMLDivElement
+  const element = <HTMLDivElement>document.createElement(tag)
   if (className) element.classList.add(className)
   return element
 }
 function setText(element: HTMLElement, query: string, text: string | number) {
-  const target = element.querySelector(query) as HTMLDivElement
+  const target = <HTMLDivElement>element.querySelector(query)
   target.innerText = String(text)
 }
 
 function getText(element: HTMLElement, query: string) {
-  const target = element.querySelector(query) as HTMLDivElement
+  const target = <HTMLDivElement>element.querySelector(query)
   return target.innerText
 }
 function removeElement(element: Element) {

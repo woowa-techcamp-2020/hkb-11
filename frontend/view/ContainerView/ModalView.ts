@@ -10,10 +10,10 @@ export default class ModalView extends View {
     this.hide()
   }
   mount(): void {
-    this.$buttonPaymentModal = this.query(
-      '.button-payment-modal'
-    ) as HTMLButtonElement
-    this.$paymentList = this.query('.payment-list') as HTMLDivElement
+    this.$buttonPaymentModal = <HTMLButtonElement>(
+      this.query('.button-payment-modal')
+    )
+    this.$paymentList = <HTMLDivElement>this.query('.payment-list')
   }
   bindButtonPaymentModalHandler(handler) {
     this.$buttonPaymentModal.addEventListener('click', handler)
@@ -26,9 +26,7 @@ export default class ModalView extends View {
         <button class="button-remove-payment">X</button>
       </div>
     `
-    const itemName = $itemElement.querySelector(
-      '.item.center'
-    ) as HTMLDivElement
+    const itemName = <HTMLDivElement>$itemElement.querySelector('.item.center')
     itemName.innerText = item
     this.$paymentList.appendChild($itemElement)
   }

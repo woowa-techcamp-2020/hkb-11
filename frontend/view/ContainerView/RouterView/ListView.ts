@@ -19,22 +19,22 @@ function getPrettyDay(date: Date) {
 function addAmountInDateRowSum(invoice: Invoice, dateRow: HTMLDivElement) {
   const { category, amount } = invoice
   if (category.type === '수입') {
-    const earningSum = dateRow.querySelector('.earning-sum') as HTMLDivElement
+    const earningSum = <HTMLInputElement>dateRow.querySelector('.earning-sum')
     const sum = parseInt(earningSum.innerText)
     earningSum.innerText = String(sum + amount)
   } else {
-    const spendingSum = dateRow.querySelector('.spending-sum') as HTMLDivElement
+    const spendingSum = <HTMLInputElement>dateRow.querySelector('.spending-sum')
     const sum = parseInt(spendingSum.innerText)
     spendingSum.innerText = String(sum + amount)
   }
 }
 function appendRowInDateRow(invoice, $dateRow) {
   const { date } = invoice
-  const $rows = $dateRow.querySelector('.rows') as HTMLDivElement
+  const $rows = <HTMLInputElement>$dateRow.querySelector('.rows')
   if ($rows === null) return
   const $invoiceRow = createInvoiceRow(invoice)
-  const targetRow = Array.from($rows.children).find(($row) => {
-    if (parseInt(getText($row as HTMLDivElement, '.hidden-date')) > +date) {
+  const targetRow = Array.from($rows.children).find(($row: HTMLDivElement) => {
+    if (parseInt(getText($row, '.hidden-date')) > +date) {
       return true
     }
   })
@@ -104,10 +104,12 @@ export default class ListView extends View {
   findDateRow(date: Date): HTMLDivElement {
     const dateRows = this.$element.querySelectorAll('.invoice-wrapper')
     if (dateRows === null) return null
-    return Array.from(dateRows).find(
-      ($dateRow) =>
-        getText($dateRow as HTMLDivElement, '.date') === getPrettyDate(date)
-    ) as HTMLDivElement
+    return <HTMLDivElement>(
+      Array.from(dateRows).find(
+        ($dateRow: HTMLDivElement) =>
+          getText($dateRow, '.date') === getPrettyDate(date)
+      )
+    )
   }
   addDateRow(date: Date) {
     const $dateRow = createDateRow(date)
@@ -125,13 +127,15 @@ export default class ListView extends View {
   }
   getInvoiceRowsByType(type) {
     return this.getInvoiceRows().filter(
-      (x) => getText(x as HTMLDivElement, '.type') === type
+      (x) => getText(<HTMLDivElement>x, '.type') === type
     )
   }
   findInvoiceRow(id: Number): HTMLDivElement {
-    return this.getInvoiceRows().find(
-      ($row) => getText($row as HTMLDivElement, '.hidden-id') === String(id)
-    ) as HTMLDivElement
+    return <HTMLDivElement>(
+      this.getInvoiceRows().find(
+        ($row) => getText(<HTMLDivElement>$row, '.hidden-id') === String(id)
+      )
+    )
   }
   removeInvoice(id: number): void {
     const $invoiceRow = this.findInvoiceRow(id)
@@ -147,7 +151,7 @@ export default class ListView extends View {
       if (target instanceof HTMLElement) {
         const $edit = target.closest('.button-edit')
         if (!$edit) return
-        const $invoiceRow = $edit.closest('.invoice') as HTMLDivElement
+        const $invoiceRow = <HTMLDivElement>$edit.closest('.invoice')
         handler(parseInt(getText($invoiceRow, '.hidden-id')))
       }
     })
@@ -155,7 +159,7 @@ export default class ListView extends View {
   bindInvoiceClickledHandler(handler: Function) {
     this.$element.addEventListener('click', ({ target }) => {
       if (target instanceof HTMLElement) {
-        const $invoiceRow = target.closest('.invoice') as HTMLDivElement
+        const $invoiceRow = <HTMLDivElement>target.closest('.invoice')
         handler(parseInt(getText($invoiceRow, '.hidden-id')))
       }
     })
