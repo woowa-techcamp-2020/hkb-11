@@ -74,4 +74,16 @@ export class InvoiceModel extends Observable {
     this.invoices = new Array<Invoice>()
     this.emit(EVENTS.CLEAR_INVOICES)
   }
+  findInvoiceById(id: number) {
+    return this.invoices.find((invoice) => invoice.id === id)
+  }
+  render() {
+    this.invoices.forEach((invoice) => {
+      this.emit(EVENTS.ADD_INVOICE, invoice)
+    })
+    this.emit(EVENTS.EARNING_TOGGLE, this.earningToggle)
+    this.emit(EVENTS.SPENDING_TOGGLE, this.spendingToggle)
+    this.emit(EVENTS.SET_SUM_EARNING, this.sumEarning)
+    this.emit(EVENTS.SET_SUM_SPENDING, this.sumSpending)
+  }
 }

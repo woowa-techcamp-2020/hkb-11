@@ -12,6 +12,17 @@ export class List extends Component<ListView, Container> {
 
     this.invoiceModel = this.parent.invoiceModel
 
+    this.view.bindInvoiceEditHandler((id) => {
+      // TODO: Communcate with API
+      this.invoiceModel.removeInvoice(id)
+    })
+    this.view.bindInvoiceClickledHandler((id) => {
+      this.invoiceModel.highlight(id)
+    })
+
+    this.bind()
+  }
+  bind() {
     this.invoiceModel.on(EVENTS.ADD_INVOICE, (invoice) => {
       this.view.addInvoice(invoice)
     })
@@ -22,12 +33,18 @@ export class List extends Component<ListView, Container> {
       this.view.highlightInvoice(id, flag)
     })
 
-    this.view.bindInvoiceEditHandler((id) => {
-      // TODO: Communcate with API
-      this.invoiceModel.removeInvoice(id)
+    this.invoiceModel.on(EVENTS.EARNING_TOGGLE, (value) => {
+      this.view.setEarningToggle(value)
     })
-    this.view.bindInvoiceClickledHandler((id) => {
-      this.invoiceModel.highlight(id)
+    this.invoiceModel.on(EVENTS.SPENDING_TOGGLE, (value) => {
+      this.view.setSpendingToggle(value)
     })
+  }
+  unbind() {
+    this.invoiceModel.off(EVENTS.ADD_INVOICE)
+    this.invoiceModel.off(EVENTS.REMOVE_INVOICE)
+    this.invoiceModel.off(EVENTS.HIGHLIGHT_INVOICE)
+    this.invoiceModel.off(EVENTS.EARNING_TOGGLE)
+    this.invoiceModel.off(EVENTS.SPENDING_TOGGLE)
   }
 }

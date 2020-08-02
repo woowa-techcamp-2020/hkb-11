@@ -9,11 +9,14 @@ export default class FilterView extends View {
   onSpendingToggleHandler: Function
   constructor() {
     super(template)
+    this.$element.addEventListener('input', this.onInputChanged.bind(this))
+    this.clear()
+  }
+  clear() {
     this.setEarningToggle(true)
       .setSpendingToggle(true)
       .setEarningTotal(0)
       .setSpendingTotal(0)
-    this.$element.addEventListener('input', this.onInputChanged.bind(this))
   }
   onInputChanged({ target }) {
     if (target instanceof HTMLInputElement) {
@@ -23,6 +26,7 @@ export default class FilterView extends View {
         this.onSpendingToggleHandler(checked)
     }
   }
+
   setEarningTotal(amount) {
     setText(this.$element, '.earning-total', `${amount}원`)
     return this

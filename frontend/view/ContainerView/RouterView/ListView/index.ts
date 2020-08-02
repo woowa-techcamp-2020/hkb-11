@@ -70,8 +70,14 @@ export default class ListView extends View {
   constructor() {
     super(template)
   }
+  clear() {
+    const $wrapperRows = this.queryAll('invoice-wrapper')
+    $wrapperRows.forEach(($wrapperRow) => {
+      removeElement($wrapperRow)
+    })
+  }
   findDateRow(date: Date): HTMLDivElement {
-    const dateRows = this.$element.querySelectorAll('.invoice-wrapper')
+    const dateRows = this.queryAll('.invoice-wrapper')
     if (dateRows === null) return null
     return <HTMLDivElement>(
       Array.from(dateRows).find(

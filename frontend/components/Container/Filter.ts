@@ -12,17 +12,23 @@ export class Filter extends Component<FilterView, Container> {
 
     this.invoiceModel = this.parent.invoiceModel
 
-    this.invoiceModel.on(EVENTS.SET_SUM_EARNING, (amount) => {
-      this.view.setEarningTotal(amount)
-    })
-    this.invoiceModel.on(EVENTS.SET_SUM_SPENDING, (amount) => {
-      this.view.setSpendingTotal(amount)
-    })
     this.view.bindEarningToggleHandler((value) => {
       this.invoiceModel.setEarningToggle(value)
     })
     this.view.bindSpendingToggleHandler((value) => {
       this.invoiceModel.setSpendingToggle(value)
     })
+  }
+  bind() {
+    this.invoiceModel.on(EVENTS.SET_SUM_EARNING, (amount) => {
+      this.view.setEarningTotal(amount)
+    })
+    this.invoiceModel.on(EVENTS.SET_SUM_SPENDING, (amount) => {
+      this.view.setSpendingTotal(amount)
+    })
+  }
+  unbind() {
+    this.invoiceModel.off(EVENTS.SET_SUM_EARNING)
+    this.invoiceModel.off(EVENTS.SET_SUM_SPENDING)
   }
 }

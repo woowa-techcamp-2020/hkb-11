@@ -28,15 +28,18 @@ abstract class View {
   appendToView(view: View) {
     this.appendToElement(view.$element)
   }
+  remove() {
+    const $parentElement = this.$element.parentElement
+    if (!$parentElement) return
+    $parentElement.removeChild(this.$element)
+  }
   query(query: string) {
     return this.$element.querySelector(query)
   }
   queryAll(query: string) {
     return this.$element.querySelectorAll(query)
   }
-  clear() {
-    this.$element.innerHTML = ''
-  }
+  clear() {}
   hide() {
     this.$element.classList.add('hidden')
   }

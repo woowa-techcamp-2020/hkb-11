@@ -1,6 +1,8 @@
 import { View } from '../view'
-
-export class Component<T extends View, G extends Component<View, any> = any> {
+export abstract class Component<
+  T extends View,
+  G extends Component<View, any> = any
+> {
   view: T
   parent: G
   constructor(parent, view: T) {
@@ -10,4 +12,6 @@ export class Component<T extends View, G extends Component<View, any> = any> {
   mount(element: HTMLElement) {
     this.view.appendToElement(element)
   }
+  bind(): void {}
+  unbind(): void {}
 }

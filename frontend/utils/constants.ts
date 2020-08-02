@@ -9,3 +9,7 @@ export const EVENTS = {
   EARNING_TOGGLE: 'EARNING_TOGGLE',
   SPENDING_TOGGLE: 'SPENDING_TOGGLE',
 }
+
+export const ROUTER_EVENTS = {
+  GO: 'GO',
+}

@@ -1,6 +1,5 @@
 import { Component } from '..'
 import { InvoiceModel } from '../../model/InvoiceModel'
-import { EVENTS } from '../../utils/constants'
 import RouterView from '../../view/ContainerView/RouterView'
 import CalendarView from '../../view/ContainerView/RouterView/CalendarView'
 import ChartView from '../../view/ContainerView/RouterView/ChartView'
@@ -32,44 +31,17 @@ export class Container extends Component<RouterView> {
 
     this.invoiceModel = new InvoiceModel()
 
-    // TEMP : generate views by route
-    const route = ''
-    if (route === '') {
-      this.generateList()
-    } else if (route === 'calendar') {
-      this.generateCalendar()
-    } else if (route === 'chart') {
-      this.generateChart()
-    }
+    this.listView = this.view.listView
+    this.filterView = this.view.filterView
+    this.formView = this.view.formView
+    this.calendarView = this.view.calendarView
+    this.chartView = this.view.chartView
+    this.list = new List(this, this.listView)
+    this.filter = new Filter(this, this.filterView)
+    this.form = new Form(this, this.formView)
+    this.calendar = new Calendar(this, this.calendarView)
+    this.chart = new Chart(this, this.chartView)
 
     this.invoiceModel.setInvoices(mockup)
-
-    this.invoiceModel.on(EVENTS.EARNING_TOGGLE, (value) => {
-      this.listView.setEarningToggle(value)
-    })
-    this.invoiceModel.on(EVENTS.SPENDING_TOGGLE, (value) => {
-      this.listView.setSpendingToggle(value)
-    })
-  }
-
-  generateList() {
-    this.listView = this.view.listView
-    this.list = new List(this, this.listView)
-
-    this.filterView = this.view.filterView
-    this.filter = new Filter(this, this.filterView)
-
-    this.formView = this.view.formView
-    this.form = new Form(this, this.formView)
-  }
-
-  generateCalendar() {
-    this.calendarView = this.view.calendarView
-    this.calendar = new Calendar(this, this.calendarView)
-  }
-
-  generateChart() {
-    this.chartView = this.view.chartView
-    this.chart = new Chart(this, this.chartView)
   }
 }
