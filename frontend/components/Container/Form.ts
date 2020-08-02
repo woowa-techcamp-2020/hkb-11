@@ -13,8 +13,7 @@ export class Form extends Component<FormView, Container> {
 
     this.invoiceModel = this.parent.invoiceModel
 
-    this.view.bindInvoiceAddHandler(() => {
-      const invoice: Invoice = this.view.getInvoiceData()
+    this.view.bindInvoiceAddHandler((invoice: Invoice) => {
       this.invoiceModel.addInvoice(invoice)
 
       this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
@@ -23,6 +22,13 @@ export class Form extends Component<FormView, Container> {
 
     this.view.bindInvoiceRemoveHandler((id: number) => {
       this.invoiceModel.removeInvoice(id)
+
+      this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
+      this.view.clearForm()
+    })
+
+    this.view.bindInvoiceUpdateHandler((invoice: Invoice) => {
+      this.invoiceModel.updateInvoice(invoice)
 
       this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
       this.view.clearForm()
