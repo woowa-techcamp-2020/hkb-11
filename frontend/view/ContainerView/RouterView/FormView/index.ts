@@ -36,10 +36,11 @@ export default class FormView extends View {
   $payment: HTMLSelectElement
   $remove: HTMLButtonElement
   $clear: HTMLButtonElement
-  invoiceId: number
+  invoiceId: number = 0
   categoryType: string = CONSTANT.SPENDING
   invoiceAddHandler: Function
   invoiceRemoveHandler: Function
+  invoiceUpdateHandler: Function
 
   constructor() {
     super(template)
@@ -92,6 +93,10 @@ export default class FormView extends View {
     this.invoiceRemoveHandler = handler
   }
 
+  bindInvoiceUpdateHandler(handler) {
+    this.invoiceUpdateHandler = handler
+  }
+
   onClickHandler(e) {
     if (!(e.target instanceof HTMLElement)) return
 
@@ -111,7 +116,6 @@ export default class FormView extends View {
     }
 
     const $earningToggle = e.target.closest(`.${FORM_CLASS.EARNING_TOGGLE}`)
-    console.log($earningToggle)
     if ($earningToggle) {
       this.setCategoryType(CONSTANT.EARNING)
       return
@@ -125,13 +129,19 @@ export default class FormView extends View {
 
     const $submitBtn = e.target.closest(`.${FORM_CLASS.SUBMIT_BTN}`)
     if ($submitBtn) {
-      this.invoiceAddHandler()
+      if (this.invoiceId > 0) {
+        this.invoiceUpdateHandler(this.getInvoiceData())
+        return
+      }
+
+      this.invoiceAddHandler(this.getInvoiceData())
       return
     }
   }
 
   getInvoiceData(): Invoice {
     const invoice: Invoice = {
+      id: this.invoiceId,
       date: new Date(this.$date.value),
       category: {
         type: this.categoryType,
@@ -198,5 +208,6 @@ export default class FormView extends View {
     this.$item.value = ''
     this.$category.value = ''
     this.$payment.value = ''
+    this.invoiceId = 0
   }
 }
