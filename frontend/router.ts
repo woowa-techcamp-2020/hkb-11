@@ -1,11 +1,17 @@
 import { Observable } from './model'
 import { ROUTER_EVENTS as ROUTER } from './utils/constants'
+import { View } from './view'
 
 class Router extends Observable {
   url: URL
   currentPath: string
+  views: Map<string, View[]>
   constructor() {
     super()
+    this.views = new Map<string, View[]>()
+  }
+  add(path: string, views: View[]) {
+    this.views[path] = views
   }
   getURL() {
     this.url = new URL(window.location.href)
@@ -20,12 +26,19 @@ class Router extends Observable {
   go(path) {
     console.log(`${this.currentPath} >> ${path}`)
     if (this.currentPath === path) return
-    if (!path) return
+    if (!Object.keys(this.views).includes(path)) return
+
     history.pushState({}, '', path)
     this.emit(ROUTER.GO, path)
-    this.emit(`${ROUTER.GO}-${this.currentPath}`, false)
-    this.emit(`${ROUTER.GO}-${path}`, true)
+    if (this.currentPath)
+      this.emit(ROUTER.MUTATE_VIEW, {
+        path: this.currentPath,
+        flag: false,
+        views: this.views[this.currentPath],
+      })
+    this.emit(ROUTER.MUTATE_VIEW, { path, flag: true, views: this.views[path] })
     this.currentPath = path
+    return this.views[path]
   }
 }
 

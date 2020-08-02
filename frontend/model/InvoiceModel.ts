@@ -39,6 +39,7 @@ export class InvoiceModel extends Observable {
   removeInvoice(id) {
     const invoice = this.invoices.find((x) => x.id === id)
     if (!invoice) return
+    if (this.highlightId === id) this.highlightId = undefined
     const { category, amount } = invoice
     if (category.type === '수입') this.addSumEarning(-amount)
     else this.addSumSpending(-amount)

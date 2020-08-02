@@ -71,7 +71,7 @@ export default class ListView extends View {
     super(template)
   }
   clear() {
-    const $wrapperRows = this.queryAll('invoice-wrapper')
+    const $wrapperRows = this.queryAll('.invoice-wrapper')
     $wrapperRows.forEach(($wrapperRow) => {
       removeElement($wrapperRow)
     })
@@ -135,12 +135,14 @@ export default class ListView extends View {
     this.$element.addEventListener('click', ({ target }) => {
       if (target instanceof HTMLElement) {
         const $invoiceRow = <HTMLDivElement>target.closest('.invoice')
+        if (!$invoiceRow) return
         handler(parseInt(getText($invoiceRow, '.hidden-id')))
       }
     })
   }
   highlightInvoice(id: number, flag: boolean): void {
     const $invoiceRow = this.findInvoiceRow(id)
+    if (!$invoiceRow) return
     if (flag) $invoiceRow.classList.add('highlight')
     else $invoiceRow.classList.remove('highlight')
   }

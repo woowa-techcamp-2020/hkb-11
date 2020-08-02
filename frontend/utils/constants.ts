@@ -12,4 +12,5 @@ export const EVENTS = {
 
 export const ROUTER_EVENTS = {
   GO: 'GO',
+  MUTATE_VIEW: 'MUTATE_VIEW',
 }

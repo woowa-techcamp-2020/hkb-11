@@ -1,5 +1,8 @@
 import { Component } from '..'
 import { InvoiceModel } from '../../model/InvoiceModel'
+import router from '../../router'
+import { ROUTER_EVENTS } from '../../utils/constants'
+import { View } from '../../view'
 import RouterView from '../../view/ContainerView/RouterView'
 import CalendarView from '../../view/ContainerView/RouterView/CalendarView'
 import ChartView from '../../view/ContainerView/RouterView/ChartView'
@@ -42,6 +45,22 @@ export class Container extends Component<RouterView> {
     this.calendar = new Calendar(this, this.calendarView)
     this.chart = new Chart(this, this.chartView)
 
+    router.add('list', [this.formView, this.filterView, this.listView])
+    router.add('calendar', [this.filterView, this.calendarView])
+    router.add('chart', [this.chartView])
+    router.on(ROUTER_EVENTS.MUTATE_VIEW, ({ path, flag, views }) => {
+      if (flag) {
+        views.forEach((view: View) => {
+          view.appendToView(this.view)
+        })
+        this.invoiceModel.render()
+        return
+      }
+      views.forEach((view: View) => {
+        view.clear()
+        view.remove()
+      })
+    })
     this.invoiceModel.setInvoices(mockup)
   }
 }

@@ -29,6 +29,9 @@ export class List extends Component<ListView, Container> {
     this.invoiceModel.on(EVENTS.REMOVE_INVOICE, (id) => {
       this.view.removeInvoice(id)
     })
+    this.invoiceModel.on(EVENTS.CLEAR_INVOICES, () => {
+      this.view.clear()
+    })
     this.invoiceModel.on(EVENTS.HIGHLIGHT_INVOICE, ({ id, flag }) => {
       this.view.highlightInvoice(id, flag)
     })
