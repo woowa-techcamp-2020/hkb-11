@@ -8,8 +8,8 @@ export const template: string = `
       <div class="row">
         <div class="item">
           <label class="form-label">분류</label>
-          <button type='button' class="button earning-toggle active">수입</button>
-          <button type='button' class="button spending-toggle">지출</button>
+          <button type='button' class="button earning-toggle">수입</button>
+          <button type='button' class="button spending-toggle active">지출</button>
         </div>
       </div>
       <div class="row">
@@ -21,13 +21,14 @@ export const template: string = `
           <label class="form-label">카테고리</label>
           <select class="select-category" value=''>
             <option value="" disabled selected>선택하세요</option>
-            <option value='123'>123</option>
-          </select>
+            <option value='식비'>식비</option>
+            </select>
         </div>
         <div class="item">
           <label class="form-label">결제수단</label>
           <select class="select-payment">
-            <option value="">선택하세요</option>
+            <option value="" disabled selected>선택하세요</option>
+            <option value='은행'>은행</option>
           </select>
         </div>
       </div>

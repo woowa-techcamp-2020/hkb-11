@@ -81,11 +81,11 @@
         justify-content: center;
         align-items: center;
         padding: 2px 14px;
-        border: 1px solid $color-main;
+        border: 1px solid $color-sub-main;
         border-radius: 4px;
         font-size: 14px;
-        color: $color-white;
-        background-color: $color-main;
+        color: $color-main;
+        background-color: $color-white;
         cursor: pointer;
 
         &:last-child {
@@ -93,12 +93,14 @@
         }
 
         &.active {
-          color: $color-main;
-          background-color: $color-white;
+          color: $color-white;
+          border-color: $color-main;
+          background-color: $color-main;
         }
 
         &:hover {
           color: $color-main;
+          border-color: $color-main;
           background-color: $color-light-beige;
         }
       }
