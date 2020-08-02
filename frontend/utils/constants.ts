@@ -9,3 +9,13 @@ export const EVENTS = {
   EARNING_TOGGLE: 'EARNING_TOGGLE',
   SPENDING_TOGGLE: 'SPENDING_TOGGLE',
 }
+
+export const FORM_CLASS = {
+  INPUT_AMOUNT: 'input-amount',
+  INPUT_DATE: 'input-date',
+  INPUT_ITEM: 'input-item',
+  SELECT_CATEGORY: 'select-category',
+  SELECT_PAYMENT: 'select-payment',
+  CLEAR_BTN: 'button-clear-form',
+  REMOVE_BTN: 'button-remove-invoice',
+}
