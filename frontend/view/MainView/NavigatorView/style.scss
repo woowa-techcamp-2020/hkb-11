@@ -1,1 +1,6 @@
 @use '@/static/styles/package' as *;
+
+#navigator {
+  width: $width-container;
+  margin: 0 auto;
+}
