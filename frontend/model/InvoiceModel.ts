@@ -40,7 +40,7 @@ export class InvoiceModel extends Observable {
     this.spendingToggle = value
     this.emit(EVENT.SPENDING_TOGGLE, value)
   }
-  removeInvoice(id) {
+  removeInvoice(id: number) {
     const invoice = this.invoices.find((x) => x.id === id)
     if (!invoice) return
     const { category, amount } = invoice
