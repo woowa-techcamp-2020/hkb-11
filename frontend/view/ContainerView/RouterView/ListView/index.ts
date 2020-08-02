@@ -108,6 +108,7 @@ export default class ListView extends View {
   }
   removeInvoice(id: number): void {
     const $invoiceRow = this.findInvoiceRow(id)
+    if (!$invoiceRow) return
     if (getSibling($invoiceRow).length === 1) {
       const $dateRow = $invoiceRow.closest('.invoice-wrapper')
       removeElement($dateRow)

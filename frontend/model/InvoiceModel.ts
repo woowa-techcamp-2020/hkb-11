@@ -59,9 +59,7 @@ export class InvoiceModel extends Observable {
   updateInvoice(invoice: Invoice) {
     const { id } = invoice
     this.removeInvoice(id)
-    this.emit(EVENT.REMOVE_INVOICE, id)
     this.addInvoice(invoice)
-    this.emit(EVENT.ADD_INVOICE, invoice)
   }
   highlight(id: number) {
     if (id === this.highlightId) {
