@@ -129,6 +129,7 @@ export default class ListView extends View {
     this.$element.addEventListener('click', ({ target }) => {
       if (target instanceof HTMLElement) {
         const $invoiceRow = <HTMLDivElement>target.closest('.invoice')
+        if (!$invoiceRow) return
         handler(parseInt(getText($invoiceRow, '.hidden-id')))
       }
     })
