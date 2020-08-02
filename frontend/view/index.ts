@@ -1,8 +1,5 @@
-function createElement(tag: string, className?: string): HTMLDivElement {
-  const element = <HTMLDivElement>document.createElement(tag)
-  if (className) element.classList.add(className)
-  return element
-}
+import { templateToElement } from '../utils/ElementGenerator'
+
 function setText(element: HTMLElement, query: string, text: string | number) {
   const target = <HTMLDivElement>element.querySelector(query)
   target.innerText = String(text)
@@ -21,10 +18,8 @@ function getSibling(element: Element) {
 }
 abstract class View {
   $element: HTMLElement
-  constructor(id: string, tag: string = 'div') {
-    this.$element = createElement(tag)
-    this.$element.setAttribute('id', id)
-    this.$element.innerHTML = this.init()
+  constructor(template: string) {
+    this.$element = templateToElement(template) as HTMLElement
     this.mount()
   }
   appendToElement($element: HTMLElement) {
@@ -49,9 +44,6 @@ abstract class View {
     this.$element.classList.remove('hidden')
   }
   abstract mount(): void
-  init() {
-    return ''
-  }
 }
 
-export { createElement, setText, getText, removeElement, getSibling, View }
+export { setText, getText, removeElement, getSibling, View }
