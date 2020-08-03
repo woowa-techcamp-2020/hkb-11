@@ -1,1 +1,14 @@
 @use '@/static/styles/package' as *;
+#invoice-chart {
+  height: auto;
+}
+
+svg {
+  height: 400px;
+  width: 800px;
+}
+
+.grid {
+  stroke-width: 1;
+  color: grey;
+}

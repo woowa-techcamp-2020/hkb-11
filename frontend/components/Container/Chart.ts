@@ -33,7 +33,13 @@ export class Chart extends Component<ChartView, Container> {
   bind() {
     this.invoiceModel.on(EVENT.SET_INVOICES, (invoices: Invoice[]) => {
       const result = this.aggregateByDate(invoices)
-      console.log(result)
+      const maxAmount = Math.max(...(<number[]>Object.values(result)))
+      if (maxAmount == 0) return
+      const maxHeight = 1.5 * maxAmount
+      this.view.setBarMaxHeight(maxHeight)
+      Object.entries(result).forEach(([date, amount]: [string, number]) => {
+        this.view.setBarHeight(date, amount / maxHeight)
+      })
       const result2 = this.aggregateByCategory(invoices)
       console.log(result2)
     })

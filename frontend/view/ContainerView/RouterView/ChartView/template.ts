@@ -16,12 +16,12 @@ export const template: string = /*html*/ `
 export const barChartTemplate = /*html*/ `
   <div id="bar-chart">
     <small>bar-chart</small>
-    <svg></svg>
+    <svg viewBox="0 0 800 400"></svg>
   </div>
 `
 export const piChartTemplate = /*html*/ `
   <div id="pi-chart">
     <small>pi-chart</small>
-    <svg></svg>
+    <svg viewBox="0 0 800 400"></svg>
   </div>
 `
