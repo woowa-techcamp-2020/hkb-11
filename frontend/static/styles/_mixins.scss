@@ -6,3 +6,59 @@
   align-items: center;
   justify-content: center;
 }
+
+@mixin calendar-cell() {
+  $L-border: 1px solid $color-light-beige;
+  $L-border-radius: 6px;
+
+  border: {
+    bottom: $L-border;
+    left: $L-border;
+  }
+  padding: 10px;
+
+  @for $i from 1 through 42 {
+    @if $i ==1 {
+      &:nth-child(#{$i}) {
+        border-radius: $L-border-radius 0 0 0;
+      }
+    }
+
+    @if $i == 7 {
+      &:nth-child(#{$i}) {
+        border-radius: 0 $L-border-radius 0 0;
+      }
+    }
+
+    @if $i == 36 {
+      &:nth-child(#{$i}) {
+        border-radius: 0 0 0 $L-border-radius;
+      }
+    }
+
+    @if $i == 42 {
+      &:nth-child(#{$i}) {
+        border-radius: 0 0 $L-border-radius 0;
+      }
+    }
+
+    @if $i % 7 == 1 {
+      &:nth-child(#{$i}) {
+        color: $color-red;
+      }
+    }
+
+    @if $i % 7 == 0 {
+      &:nth-child(#{$i}) {
+        color: $color-blue;
+        border-right: $L-border;
+      }
+    }
+
+    @if $i <= 7 {
+      &:nth-child(#{$i}) {
+        border-top: $L-border;
+      }
+    }
+  }
+}
