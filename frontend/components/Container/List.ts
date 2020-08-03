@@ -1,4 +1,5 @@
 import { Component } from '..'
+import { Invoice } from '../../../types'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { EVENT } from '../../utils/constants'
 import ListView from '../../view/ContainerView/RouterView/ListView'
@@ -23,6 +24,12 @@ export class List extends Component<ListView, Container> {
   bind() {
     this.invoiceModel.on(EVENT.ADD_INVOICE, ({ invoice, hidden }) => {
       this.view.addInvoice(invoice, hidden)
+    })
+    this.invoiceModel.on(EVENT.SET_INVOICES, (invoices) => {
+      this.view.clear()
+      invoices.forEach((invoice: Invoice) => {
+        this.view.addInvoice(invoice, false)
+      })
     })
     this.invoiceModel.on(EVENT.REMOVE_INVOICE, (id) => {
       this.view.removeInvoice(id)

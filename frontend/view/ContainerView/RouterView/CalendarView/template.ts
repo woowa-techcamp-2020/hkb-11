@@ -1,4 +1,4 @@
-export const template: string = `
+export const template: string = /*html*/ `
   <section id='invoice-calendar'>
   </section>
 `
@@ -10,11 +10,11 @@ export const headerCellTemplate: string = `
 `
 
 export const dateCellTemplate: string = `
-  <div class='cell date-cell'>
+  <div class='cell date-cell' data-date=''>
     <div class='date'></div>
     <div class='sum-wrapper'>
-      <div class='sum earning-sum'>+123,000</div>
-      <div class='sum spending-sum'>-456,000</div>
+      <div class='sum earning-sum hidden'></div>
+      <div class='sum spending-sum hidden'></div>
     </div>
   </div>
 `
