@@ -140,6 +140,7 @@ export default class FormView extends View {
   }
 
   getInvoiceData(): Invoice {
+    console.log(this.$date.value)
     const invoice: Invoice = {
       id: this.invoiceId,
       date: new Date(this.$date.value),
