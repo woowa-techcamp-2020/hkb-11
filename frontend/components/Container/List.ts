@@ -1,6 +1,6 @@
 import { Component } from '..'
 import { InvoiceModel } from '../../model/InvoiceModel'
-import { EVENTS } from '../../utils/constants'
+import { EVENT } from '../../utils/constants'
 import ListView from '../../view/ContainerView/RouterView/ListView'
 import { Container } from './index'
 
@@ -14,7 +14,7 @@ export class List extends Component<ListView, Container> {
 
     this.view.bindInvoiceEditHandler((id) => {
       // TODO: Communcate with API
-      this.invoiceModel.removeInvoice(id)
+      // this.invoiceModel.removeInvoice(id)
     })
     this.view.bindInvoiceClickledHandler((id) => {
       this.invoiceModel.highlight(id)
@@ -24,7 +24,7 @@ export class List extends Component<ListView, Container> {
     this.invoiceModel.on(EVENTS.ADD_INVOICE, ({ invoice, hidden }) => {
       this.view.addInvoice(invoice, hidden)
     })
-    this.invoiceModel.on(EVENTS.REMOVE_INVOICE, (id) => {
+    this.invoiceModel.on(EVENT.REMOVE_INVOICE, (id) => {
       this.view.removeInvoice(id)
     })
     this.invoiceModel.on(EVENTS.CLEAR_INVOICES, () => {

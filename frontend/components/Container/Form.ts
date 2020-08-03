@@ -1,8 +1,9 @@
 import { Container } from '.'
 import { Component } from '..'
+import { Invoice } from '../../../types'
 import { InvoiceModel } from '../../model/InvoiceModel'
+import { EVENT, FORM_CLASS } from '../../utils/constants'
 import FormView from '../../view/ContainerView/RouterView/FormView'
-import mockup from '../mockup'
 
 export class Form extends Component<FormView, Container> {
   invoiceModel: InvoiceModel
@@ -12,8 +13,32 @@ export class Form extends Component<FormView, Container> {
 
     this.invoiceModel = this.parent.invoiceModel
 
-    this.view.bindInvoiceAddHandler(() => {
-      this.invoiceModel.addInvoice(mockup[0])
+    this.view.bindInvoiceAddHandler((invoice: Invoice) => {
+      this.invoiceModel.addInvoice(invoice)
+
+      this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
+      this.view.clearForm()
+    })
+
+    this.view.bindInvoiceRemoveHandler((id: number) => {
+      this.invoiceModel.removeInvoice(id)
+
+      this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
+      this.view.clearForm()
+    })
+
+    this.view.bindInvoiceUpdateHandler((invoice: Invoice) => {
+      this.invoiceModel.updateInvoice(invoice)
+
+      this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
+      this.view.clearForm()
+    })
+
+    this.invoiceModel.on(EVENT.HIGHLIGHT_INVOICE, ({ id, flag }) => {
+      if (flag === false) return
+
+      const invoice: Invoice = this.invoiceModel.getInvoice(id)
+      this.view.setInvoiceData(invoice)
     })
   }
 }

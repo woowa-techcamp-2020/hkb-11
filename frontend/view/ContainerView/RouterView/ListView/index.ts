@@ -12,7 +12,7 @@ import { dateRowtemplate, invoiceRowTemplate, template } from './template'
 
 const days = ['월', '화', '수', '목', '금', '토', '일']
 function getPrettyDate(date: Date) {
-  return `${date.getFullYear()} ${date.getMonth()} ${date.getDate()}`
+  return `${date.getFullYear()} ${date.getMonth() + 1} ${date.getDate()}`
 }
 function getPrettyDay(date: Date) {
   return days[date.getDay()]
@@ -118,6 +118,7 @@ export default class ListView extends View {
   }
   removeInvoice(id: number): void {
     const $invoiceRow = this.findInvoiceRow(id)
+    if (!$invoiceRow) return
     if (getSibling($invoiceRow).length === 1) {
       const $dateRow = $invoiceRow.closest('.invoice-wrapper')
       removeElement($dateRow)

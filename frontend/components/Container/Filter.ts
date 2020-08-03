@@ -1,7 +1,7 @@
 import { Container } from '.'
 import { Component } from '..'
 import { InvoiceModel } from '../../model/InvoiceModel'
-import { EVENTS } from '../../utils/constants'
+import { EVENT } from '../../utils/constants'
 import FilterView from '../../view/ContainerView/RouterView/FilterView'
 
 export class Filter extends Component<FilterView, Container> {
@@ -23,7 +23,7 @@ export class Filter extends Component<FilterView, Container> {
     this.invoiceModel.on(EVENTS.SET_SUM_EARNING, (amount) => {
       this.view.setEarningTotal(amount)
     })
-    this.invoiceModel.on(EVENTS.SET_SUM_SPENDING, (amount) => {
+    this.invoiceModel.on(EVENT.SET_SUM_SPENDING, (amount) => {
       this.view.setSpendingTotal(amount)
     })
 

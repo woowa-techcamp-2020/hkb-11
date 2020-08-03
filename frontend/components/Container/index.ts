@@ -1,7 +1,7 @@
 import { Component } from '..'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import router from '../../router'
-import { ROUTER } from '../../utils/constants'
+import { ROUTER, EVENT } from '../../utils/constants'
 import RouterView from '../../view/ContainerView/RouterView'
 import CalendarView from '../../view/ContainerView/RouterView/CalendarView'
 import ChartView from '../../view/ContainerView/RouterView/ChartView'
