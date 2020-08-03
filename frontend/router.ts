@@ -1,6 +1,6 @@
 import { Component } from './components'
 import { Observable } from './model'
-import { ROUTER_EVENT } from './utils/constants'
+import { ROUTER } from './utils/constants'
 import { View } from './view'
 
 class Router extends Observable {
@@ -30,14 +30,13 @@ class Router extends Observable {
     if (!Object.keys(this.components).includes(path)) return
 
     history.pushState({}, '', path)
-    this.emit(ROUTER_EVENT.GO, path)
     if (this.currentPath)
-      this.emit(ROUTER_EVENT.MUTATE_VIEW, {
+      this.emit(ROUTER.MUTATE_VIEW, {
         path: this.currentPath,
         flag: false,
         components: this.components[this.currentPath],
       })
-    this.emit(ROUTER_EVENT.MUTATE_VIEW, {
+    this.emit(ROUTER.MUTATE_VIEW, {
       path,
       flag: true,
       components: this.components[path],

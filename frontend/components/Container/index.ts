@@ -1,7 +1,7 @@
 import { Component } from '..'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import router from '../../router'
-import { ROUTER_EVENT } from '../../utils/constants'
+import { ROUTER } from '../../utils/constants'
 import RouterView from '../../view/ContainerView/RouterView'
 import CalendarView from '../../view/ContainerView/RouterView/CalendarView'
 import ChartView from '../../view/ContainerView/RouterView/ChartView'
@@ -48,7 +48,7 @@ export class Container extends Component<RouterView> {
     router.add('calendar', [this.filter, this.calendar])
     router.add('chart', [this.chart])
     router.on(
-      ROUTER_EVENT.MUTATE_VIEW,
+      ROUTER.MUTATE_VIEW,
       ({
         path,
         flag,
