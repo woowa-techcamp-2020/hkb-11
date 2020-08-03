@@ -1,4 +1,4 @@
-export const template: string = `
+export const template: string = /*html*/ `
   <header id="header">
     <div class="row">
       <div class="item center main-title"><a to="list">룰루랄라 가계부</a></div>

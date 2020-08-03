@@ -17,7 +17,7 @@
   }
   padding: 10px;
 
-  @for $i from 1 through 42 {
+  @for $i from 1 through 49 {
     @if $i ==1 {
       &:nth-child(#{$i}) {
         border-radius: $L-border-radius 0 0 0;
@@ -30,13 +30,13 @@
       }
     }
 
-    @if $i == 36 {
+    @if $i == 43 {
       &:nth-child(#{$i}) {
         border-radius: 0 0 0 $L-border-radius;
       }
     }
 
-    @if $i == 42 {
+    @if $i == 49 {
       &:nth-child(#{$i}) {
         border-radius: 0 0 $L-border-radius 0;
       }

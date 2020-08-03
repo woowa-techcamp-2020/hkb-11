@@ -19,6 +19,15 @@
       justify-content: space-between;
       height: calc(#{$width-container} / 7);
 
+      &.today {
+        background-color: unquote($color-pink + '33');
+
+        .date {
+          color: $color-main !important;
+          font-weight: 600;
+        }
+      }
+
       &.other-month {
         * {
           opacity: 0.5;
@@ -31,7 +40,6 @@
         .sum {
           font-size: 15px;
           font-weight: 600;
-          margin-top: 4px;
           letter-spacing: 0.4px;
 
           &.earning-sum {

@@ -1,4 +1,4 @@
-export const template: string = `
+export const template: string = /*html*/ `
   <div id="login">
     <form class="rows">
       <div class="row">
