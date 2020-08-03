@@ -8,12 +8,39 @@
   .cell {
     @include calendar-cell();
 
+    .date,
+    .day {
+      color: $color-gray-800;
+    }
+
     &.date-cell {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       height: calc(#{$width-container} / 7);
 
       &.other-month {
         * {
-          opacity: 0.3;
+          opacity: 0.5;
+        }
+      }
+
+      .sum-wrapper {
+        align-self: flex-end;
+
+        .sum {
+          font-size: 15px;
+          font-weight: 600;
+          margin-top: 4px;
+          letter-spacing: 0.4px;
+
+          &.earning-sum {
+            color: $color-main;
+          }
+
+          &.spending-sum {
+            color: $color-complementary;
+          }
         }
       }
     }

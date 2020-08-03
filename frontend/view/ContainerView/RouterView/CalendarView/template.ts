@@ -13,8 +13,8 @@ export const dateCellTemplate: string = `
   <div class='cell date-cell'>
     <div class='date'></div>
     <div class='sum-wrapper'>
-      <div class='sum earning-sum'></div>
-      <div class='sum spending-sum'></div>
+      <div class='sum earning-sum'>+123,000</div>
+      <div class='sum spending-sum'>-456,000</div>
     </div>
   </div>
 `

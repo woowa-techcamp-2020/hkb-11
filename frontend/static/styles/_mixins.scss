@@ -44,14 +44,19 @@
 
     @if $i % 7 == 1 {
       &:nth-child(#{$i}) {
-        color: $color-red;
+        .date {
+          color: $color-red;
+        }
       }
     }
 
     @if $i % 7 == 0 {
       &:nth-child(#{$i}) {
-        color: $color-blue;
         border-right: $L-border;
+
+        .date {
+          color: $color-blue;
+        }
       }
     }
 
