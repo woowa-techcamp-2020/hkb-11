@@ -31,8 +31,6 @@ export default class CalendarView extends View {
     this.$dateCells = <HTMLDivElement[]>(
       Array.from(this.queryAll(`.${CALENDAR_CLASS.DATE_CELL}`))
     )
-
-    this.setDate(2020, 8)
   }
 
   appendCells() {
@@ -51,10 +49,13 @@ export default class CalendarView extends View {
     }
   }
 
-  setDate(year: number = 2020, month: number = 8) {
-    const todayDate = new Date().getDate()
+  setDateCells(year: number = 2020, month: number = 8) {
+    const today = new Date()
     getDateList(year, month).forEach((date: Date, index: number) => {
       const $dateCell = this.$dateCells[index]
+      $dateCell.classList.remove(CALENDAR_CLASS.OTHER_MONTH)
+      $dateCell.classList.remove(CALENDAR_CLASS.TODAY)
+
       const $date = <HTMLDivElement>(
         $dateCell.querySelector(`.${CALENDAR_CLASS.DATE}`)
       )
@@ -64,17 +65,23 @@ export default class CalendarView extends View {
 
       if (date.getMonth() + 1 !== month) {
         $dateCell.classList.add(CALENDAR_CLASS.OTHER_MONTH)
-      } else if (date.getDate() === todayDate) {
+      } else if (
+        date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
+      ) {
         $dateCell.classList.add(CALENDAR_CLASS.TODAY)
       }
     })
   }
 
   setDateEarning(dateEarningObj) {
+    console.log(dateEarningObj)
     for (let key in dateEarningObj) {
       const $dateCell = this.query(
         `.${CALENDAR_CLASS.DATE_CELL}:not(.${CALENDAR_CLASS.OTHER_MONTH})[data-date='${key}']`
       )
+      console.log($dateCell)
       const $earningSum = <HTMLDivElement>(
         $dateCell.querySelector(`.${CALENDAR_CLASS.EARNING_SUM}`)
       )
@@ -126,5 +133,21 @@ export default class CalendarView extends View {
     $spendingSums.forEach(($spendingSum) =>
       $spendingSum.classList.add(CLASS.HIDDEN)
     )
+  }
+
+  clear() {
+    const $earnings = <HTMLDivElement[]>(
+      Array.from(this.queryAll(`.${CALENDAR_CLASS.EARNING_SUM}`))
+    )
+    $earnings.forEach(($earning) => {
+      $earning.innerText = ''
+    })
+
+    const $spendings = <HTMLDivElement[]>(
+      Array.from(this.queryAll(`.${CALENDAR_CLASS.SPENDING_SUM}`))
+    )
+    $spendings.forEach(($spending) => {
+      $spending.innerText = ''
+    })
   }
 }

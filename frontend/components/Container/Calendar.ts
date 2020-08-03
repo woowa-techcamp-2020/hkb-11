@@ -2,6 +2,7 @@ import { Container } from '.'
 import { Component } from '..'
 import { Invoice } from '../../../types'
 import { InvoiceModel } from '../../model/InvoiceModel'
+import router from '../../router'
 import { CONSTANT, EVENT } from '../../utils/constants'
 import CalendarView from '../../view/ContainerView/RouterView/CalendarView'
 
@@ -27,6 +28,9 @@ export class Calendar extends Component<CalendarView, Container> {
 
   bind() {
     this.invoiceModel.on(EVENT.SET_INVOICES, (invoices) => {
+      this.view.clear()
+
+      this.view.setDateCells(router.getYear(), router.getMonth())
       const [dateEarningObj, dateSpendingObj] = this.formatDateSum(invoices)
       this.view.setDateEarning(dateEarningObj)
       this.view.setDateSpending(dateSpendingObj)

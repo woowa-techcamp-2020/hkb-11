@@ -47,6 +47,11 @@ export class Container extends Component<RouterView> {
     router.add('list', [this.form, this.filter, this.list])
     router.add('calendar', [this.filter, this.calendar])
     router.add('chart', [this.chart])
+    router.on(ROUTER.CHANGE_DATE, ({ year, month }) => {
+      // TODO: backend invociecs
+      const mockData = month % 2 == 0 ? mockup : []
+      this.invoiceModel.setInvoices(mockData)
+    })
     router.on(
       ROUTER.MUTATE_VIEW,
       ({
@@ -76,6 +81,5 @@ export class Container extends Component<RouterView> {
         })
       }
     )
-    this.invoiceModel.setInvoices(mockup)
   }
 }

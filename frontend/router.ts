@@ -100,6 +100,13 @@ class Router extends Observable {
     this.renderURL()
     return this.components[path]
   }
+
+  getYear() {
+    return this.year
+  }
+  getMonth() {
+    return this.month
+  }
 }
 
 const router = new Router()
