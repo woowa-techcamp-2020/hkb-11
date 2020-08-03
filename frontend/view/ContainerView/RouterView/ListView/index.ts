@@ -41,6 +41,7 @@ function appendRowInDateRow(invoice, $dateRow) {
     }
   })
   $rows.insertBefore($invoiceRow, targetRow)
+  return $invoiceRow
 }
 
 function createDateRow(date: Date) {
@@ -70,8 +71,14 @@ export default class ListView extends View {
   constructor() {
     super(template)
   }
+  clear() {
+    const $wrapperRows = this.queryAll('.invoice-wrapper')
+    $wrapperRows.forEach(($wrapperRow) => {
+      removeElement($wrapperRow)
+    })
+  }
   findDateRow(date: Date): HTMLDivElement {
-    const dateRows = this.$element.querySelectorAll('.invoice-wrapper')
+    const dateRows = this.queryAll('.invoice-wrapper')
     if (dateRows === null) return null
     return <HTMLDivElement>(
       Array.from(dateRows).find(
@@ -85,11 +92,14 @@ export default class ListView extends View {
     this.$element.appendChild($dateRow)
     return $dateRow
   }
-  addInvoice(invoice: Invoice) {
+  addInvoice(invoice: Invoice, hidden = false) {
     const { date } = invoice
     const $dateRow = this.findDateRow(date) || this.addDateRow(date)
     addAmountInDateRowSum(invoice, $dateRow)
-    appendRowInDateRow(invoice, $dateRow)
+    const $row = appendRowInDateRow(invoice, $dateRow)
+    if (hidden) {
+      $row.classList.add('hidden')
+    }
   }
   getInvoiceRows() {
     return Array.from(this.queryAll('.invoice'))
@@ -141,13 +151,13 @@ export default class ListView extends View {
     if (flag) $invoiceRow.classList.add('highlight')
     else $invoiceRow.classList.remove('highlight')
   }
-  setEarningToggle(flag: boolean) {
+  setEarningVisible(flag: boolean) {
     this.getInvoiceRowsByType('수입').forEach(($row) => {
       if (flag) $row.classList.remove('hidden')
       else $row.classList.add('hidden')
     })
   }
-  setSpendingToggle(flag: boolean) {
+  setSpendingVisible(flag: boolean) {
     this.getInvoiceRowsByType('지출').forEach(($row) => {
       if (flag) $row.classList.remove('hidden')
       else $row.classList.add('hidden')

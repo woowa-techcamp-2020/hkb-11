@@ -20,6 +20,10 @@ export const EVENT = {
   SPENDING_TOGGLE: 'SPENDING_TOGGLE',
 }
 
+export const ROUTER = {
+  MUTATE_VIEW: 'MUTATE_VIEW',
+}
+
 export const FORM_CLASS = {
   INPUT_AMOUNT: 'input-amount',
   INPUT_DATE: 'input-date',

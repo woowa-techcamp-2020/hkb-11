@@ -1,6 +1,7 @@
 import { Component } from '..'
 import { InvoiceModel } from '../../model/InvoiceModel'
-import { EVENT } from '../../utils/constants'
+import router from '../../router'
+import { ROUTER, EVENT } from '../../utils/constants'
 import RouterView from '../../view/ContainerView/RouterView'
 import CalendarView from '../../view/ContainerView/RouterView/CalendarView'
 import ChartView from '../../view/ContainerView/RouterView/ChartView'
@@ -32,44 +33,48 @@ export class Container extends Component<RouterView> {
 
     this.invoiceModel = new InvoiceModel()
 
-    // TEMP : generate views by route
-    const route = ''
-    if (route === '') {
-      this.generateList()
-    } else if (route === 'calendar') {
-      this.generateCalendar()
-    } else if (route === 'chart') {
-      this.generateChart()
-    }
-
-    this.invoiceModel.setInvoices(mockup)
-
-    this.invoiceModel.on(EVENT.EARNING_TOGGLE, (value) => {
-      this.listView.setEarningToggle(value)
-    })
-    this.invoiceModel.on(EVENT.SPENDING_TOGGLE, (value) => {
-      this.listView.setSpendingToggle(value)
-    })
-  }
-
-  generateList() {
     this.listView = this.view.listView
-    this.list = new List(this, this.listView)
-
     this.filterView = this.view.filterView
-    this.filter = new Filter(this, this.filterView)
-
     this.formView = this.view.formView
-    this.form = new Form(this, this.formView)
-  }
-
-  generateCalendar() {
     this.calendarView = this.view.calendarView
-    this.calendar = new Calendar(this, this.calendarView)
-  }
-
-  generateChart() {
     this.chartView = this.view.chartView
+    this.list = new List(this, this.listView)
+    this.filter = new Filter(this, this.filterView)
+    this.form = new Form(this, this.formView)
+    this.calendar = new Calendar(this, this.calendarView)
     this.chart = new Chart(this, this.chartView)
+
+    router.add('list', [this.form, this.filter, this.list])
+    router.add('calendar', [this.filter, this.calendar])
+    router.add('chart', [this.chart])
+    router.on(
+      ROUTER.MUTATE_VIEW,
+      ({
+        path,
+        flag,
+        components,
+      }: {
+        path: string
+        flag: boolean
+        components: Component<any>[]
+      }) => {
+        if (flag) {
+          components.forEach((component) => {
+            const view = component.view
+            view.appendToView(this.view)
+            view.clear()
+            component.bind()
+          })
+          this.invoiceModel.render()
+          return
+        }
+        components.forEach((component) => {
+          const view = component.view
+          view.remove()
+          component.unbind()
+        })
+      }
+    )
+    this.invoiceModel.setInvoices(mockup)
   }
 }

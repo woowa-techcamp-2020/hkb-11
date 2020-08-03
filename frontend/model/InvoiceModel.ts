@@ -25,11 +25,12 @@ export class InvoiceModel extends Observable {
   addInvoice(invoice: Invoice) {
     this.invoices = [...this.invoices, invoice]
     const { category, amount } = invoice
-    this.emit(EVENT.ADD_INVOICE, invoice)
     if (category.type === '수입') {
+      this.emit(EVENTS.ADD_INVOICE, { invoice, hidden: !this.earningToggle })
       this.addSumEarning(amount)
       return
     }
+    this.emit(EVENTS.ADD_INVOICE, { invoice, hidden: !this.spendingToggle })
     this.addSumSpending(amount)
   }
   setEarningToggle(value) {
@@ -43,6 +44,7 @@ export class InvoiceModel extends Observable {
   removeInvoice(id: number) {
     const invoice = this.invoices.find((x) => x.id === id)
     if (!invoice) return
+    if (this.highlightId === id) this.highlightId = undefined
     const { category, amount } = invoice
     if (category.type === '수입') this.addSumEarning(-amount)
     else this.addSumSpending(-amount)
@@ -51,8 +53,7 @@ export class InvoiceModel extends Observable {
   }
   setInvoices(invoices: Array<Invoice>) {
     this.clear()
-    this.invoices = invoices
-    this.invoices.forEach((invoice) => {
+    invoices.forEach((invoice) => {
       this.addInvoice(invoice)
     })
   }
@@ -75,5 +76,17 @@ export class InvoiceModel extends Observable {
   clear() {
     this.invoices = new Array<Invoice>()
     this.emit(EVENT.CLEAR_INVOICES)
+  }
+  findInvoiceById(id: number) {
+    return this.invoices.find((invoice) => invoice.id === id)
+  }
+  render() {
+    this.invoices.forEach((invoice) => {
+      this.emit(EVENTS.ADD_INVOICE, { invoice })
+    })
+    this.emit(EVENTS.EARNING_TOGGLE, this.earningToggle)
+    this.emit(EVENTS.SPENDING_TOGGLE, this.spendingToggle)
+    this.emit(EVENTS.SET_SUM_EARNING, this.sumEarning)
+    this.emit(EVENTS.SET_SUM_SPENDING, this.sumSpending)
   }
 }
