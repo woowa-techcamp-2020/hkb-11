@@ -148,6 +148,7 @@ textarea:focus {
 
 * {
   font-family: $font-main;
+  box-sizing: border-box;
 }
 
 /* custom base style */
@@ -159,7 +160,6 @@ textarea:focus {
 .row {
   display: flex;
   flex-direction: row;
-  width: 800px;
 
   .item {
     flex: none;

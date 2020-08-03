@@ -12,7 +12,7 @@ import { dateRowtemplate, invoiceRowTemplate, template } from './template'
 
 const days = ['월', '화', '수', '목', '금', '토', '일']
 function getPrettyDate(date: Date) {
-  return `${date.getFullYear()} ${date.getMonth()} ${date.getDate()}`
+  return `${date.getFullYear()} ${date.getMonth() + 1} ${date.getDate()}`
 }
 function getPrettyDay(date: Date) {
   return days[date.getDay()]
@@ -108,6 +108,7 @@ export default class ListView extends View {
   }
   removeInvoice(id: number): void {
     const $invoiceRow = this.findInvoiceRow(id)
+    if (!$invoiceRow) return
     if (getSibling($invoiceRow).length === 1) {
       const $dateRow = $invoiceRow.closest('.invoice-wrapper')
       removeElement($dateRow)
@@ -129,12 +130,14 @@ export default class ListView extends View {
     this.$element.addEventListener('click', ({ target }) => {
       if (target instanceof HTMLElement) {
         const $invoiceRow = <HTMLDivElement>target.closest('.invoice')
+        if (!$invoiceRow) return
         handler(parseInt(getText($invoiceRow, '.hidden-id')))
       }
     })
   }
   highlightInvoice(id: number, flag: boolean): void {
     const $invoiceRow = this.findInvoiceRow(id)
+    if (!$invoiceRow) return
     if (flag) $invoiceRow.classList.add('highlight')
     else $invoiceRow.classList.remove('highlight')
   }
