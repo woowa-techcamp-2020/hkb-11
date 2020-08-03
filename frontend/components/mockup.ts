@@ -1,4 +1,33 @@
-import { Invoice } from '../../types'
+import { Category, Invoice } from '../../types'
+
+export const mockupCategory: Array<Category> = [
+  {
+    id: 1,
+    title: '식비',
+    type: '지출',
+  },
+  {
+    id: 2,
+    title: '교통비',
+    type: '지출',
+  },
+  {
+    id: 3,
+    title: '생활비',
+    type: '지출',
+  },
+  {
+    id: 4,
+    title: '월급',
+    type: '수입',
+  },
+  {
+    id: 5,
+    title: '용돈',
+    type: '수입',
+  },
+]
+
 const mockup: Array<Invoice> = [
   {
     id: 1,

@@ -1,17 +1,20 @@
 import { Container } from '.'
 import { Component } from '..'
 import { Invoice } from '../../../types'
+import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { EVENT, FORM_CLASS } from '../../utils/constants'
 import FormView from '../../view/ContainerView/RouterView/FormView'
 
 export class Form extends Component<FormView, Container> {
   invoiceModel: InvoiceModel
+  categoryModel: CategoryModel
 
   constructor(parent, view: FormView) {
     super(parent, view)
 
     this.invoiceModel = this.parent.invoiceModel
+    this.categoryModel = this.parent.categoryModel
 
     this.view.bindInvoiceAddHandler((invoice: Invoice) => {
       this.invoiceModel.addInvoice(invoice)
