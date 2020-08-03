@@ -33,7 +33,15 @@ class Router extends Observable {
   fetchURL() {
     this.getURL()
     const path = this.url.pathname.substr(1)
+    const year = parseInt(this.url.searchParams.get('year'))
+    const month = parseInt(this.url.searchParams.get('month'))
+
     const routes = Object.keys(this.components)
+    if (!(this.year === year && this.month === month) && year && month) {
+      this.year = year
+      this.month = month
+    }
+    this.commitDateChange()
     if (path === '') {
       this.go('list')
       return
@@ -42,24 +50,49 @@ class Router extends Observable {
       this.go(path)
     }
   }
+  commitDateChange() {
+    this.emit(ROUTER.CHANGE_DATE, { year: this.year, month: this.month })
+  }
+  movePreviousMonth() {
+    if (this.month == 1) {
+      this.year -= 1
+      this.month = 12
+    } else this.month -= 1
+    this.commitDateChange()
+  }
+  moveNextMonth() {
+    if (this.month == 12) {
+      this.year += 1
+      this.month = 1
+    } else this.month += 1
+    this.commitDateChange()
+  }
   go(path) {
     console.log(`${this.currentPath} >> ${path}`)
-    if (this.currentPath === path) return
-    if (!Object.keys(this.components).includes(path)) return
-
-    history.pushState({}, '', `${path}?year=${this.year}&month=${this.month}`)
-    if (this.currentPath)
+    if (path === 'previous-month') {
+      this.movePreviousMonth()
+    } else if (path === 'next-month') {
+      this.moveNextMonth()
+    } else if (this.currentPath !== path) {
+      if (!Object.keys(this.components).includes(path)) return
+      if (this.currentPath)
+        this.emit(ROUTER.MUTATE_VIEW, {
+          path: this.currentPath,
+          flag: false,
+          components: this.components[this.currentPath],
+        })
       this.emit(ROUTER.MUTATE_VIEW, {
-        path: this.currentPath,
-        flag: false,
-        components: this.components[this.currentPath],
+        path,
+        flag: true,
+        components: this.components[path],
       })
-    this.emit(ROUTER.MUTATE_VIEW, {
-      path,
-      flag: true,
-      components: this.components[path],
-    })
-    this.currentPath = path
+      this.currentPath = path
+    }
+    history.pushState(
+      {},
+      '',
+      `${this.currentPath}?year=${this.year}&month=${this.month}`
+    )
     return this.components[path]
   }
 }
