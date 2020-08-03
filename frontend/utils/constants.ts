@@ -37,3 +37,9 @@ export const FORM_CLASS = {
   SPENDING_TOGGLE: 'spending-toggle',
   SUBMIT_BTN: 'button-submit',
 }
+
+export const CALENDAR_CLASS = {
+  DAY: 'day',
+  DATE: 'DATE',
+  OTHER_MONTH: 'other-month',
+}
