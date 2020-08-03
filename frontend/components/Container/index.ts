@@ -1,7 +1,7 @@
 import { Component } from '..'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import router from '../../router'
-import { ROUTER, EVENT } from '../../utils/constants'
+import { ROUTER } from '../../utils/constants'
 import RouterView from '../../view/ContainerView/RouterView'
 import CalendarView from '../../view/ContainerView/RouterView/CalendarView'
 import ChartView from '../../view/ContainerView/RouterView/ChartView'
@@ -58,6 +58,7 @@ export class Container extends Component<RouterView> {
         flag: boolean
         components: Component<any>[]
       }) => {
+        if (path !== 'list' && path !== 'calendar' && path !== 'chart') return
         if (flag) {
           components.forEach((component) => {
             const view = component.view

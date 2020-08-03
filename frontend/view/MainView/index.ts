@@ -1,4 +1,3 @@
-import router from '../../router'
 import ModalView from '../ContainerView/ModalView'
 import { View } from '../index'
 import HeaderView from './HeaderView'
@@ -21,9 +20,5 @@ export default class MainView extends View {
     this.headerView.appendToView(this)
     this.modalView.appendToView(this)
     this.navigatorView.appendToView(this)
-
-    this.navigatorView.bindRouterChangedHandler((to) => {
-      router.go(to)
-    })
   }
 }

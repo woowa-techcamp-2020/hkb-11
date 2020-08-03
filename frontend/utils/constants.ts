@@ -22,6 +22,7 @@ export const EVENT = {
 
 export const ROUTER = {
   MUTATE_VIEW: 'MUTATE_VIEW',
+  CHANGE_DATE: 'CHANGE_DATE',
 }
 
 export const FORM_CLASS = {

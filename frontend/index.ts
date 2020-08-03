@@ -11,4 +11,4 @@ const container = new Container(new RouterView())
 
 main.mount(body)
 container.mount(body)
-router.fetchURL()
+router.parseURL()

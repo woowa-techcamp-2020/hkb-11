@@ -14,6 +14,7 @@ module.exports = merge(common, {
   },
   devServer: {
     index: 'index.html',
+    historyApiFallback: true,
     contentBase: path.join(__dirname, './frontend/static'),
     port: 9000,
     hot: true,

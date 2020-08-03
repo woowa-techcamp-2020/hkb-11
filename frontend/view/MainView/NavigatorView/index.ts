@@ -3,20 +3,19 @@ import './style.scss'
 import { template } from './template'
 
 export default class NavigatorView extends View {
-  handlers: Function[]
+  $month: HTMLDivElement
   constructor() {
     super(template)
   }
-  bindRouterChangedHandler(handler) {
-    this.$element.addEventListener('click', ({ target }) => {
-      if (target instanceof HTMLElement) {
-        const { nodeName } = target
-        if (!(nodeName === 'A')) return
-        const to = target.getAttribute('to')
-        if (!to) return
-        handler(to)
-      }
-    })
+  mount(): void {
+    this.$month = <HTMLDivElement>this.query('.month')
   }
-  mount(): void {}
+  setDate(year, month) {
+    let str = ``
+    if (year != new Date().getFullYear()) {
+      str += `${year}년 `
+    }
+    str += `${month}월`
+    this.$month.innerText = str
+  }
 }
