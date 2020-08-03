@@ -58,6 +58,7 @@ export class Container extends Component<RouterView> {
         flag: boolean
         components: Component<any>[]
       }) => {
+        if (path !== 'list' && path !== 'calendar' && path !== 'chart') return
         if (flag) {
           components.forEach((component) => {
             const view = component.view
