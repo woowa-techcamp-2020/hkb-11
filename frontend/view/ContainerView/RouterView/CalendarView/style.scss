@@ -1,8 +1,8 @@
 @use '@/static/styles/package' as *;
 
 #invoice-calendar {
-  $L-border: 1px solid $color-gray-800;
-  $L-border-radius: 6px;
+  $L-border: 1px solid $color-light-beige;
+  $L-border-radius: 8px;
 
   display: grid;
   grid-template-columns: repeat(7, 1fr);
