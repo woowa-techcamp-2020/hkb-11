@@ -37,7 +37,7 @@ export class Form extends Component<FormView, Container> {
     this.invoiceModel.on(EVENT.HIGHLIGHT_INVOICE, ({ id, flag }) => {
       if (flag === false) return
 
-      const invoice: Invoice = this.invoiceModel.getInvoice(id)
+      const invoice: Invoice = this.invoiceModel.findInvoiceById(id)
       this.view.setInvoiceData(invoice)
     })
   }

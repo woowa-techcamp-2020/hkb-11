@@ -1,4 +1,4 @@
-export const template: string = `
+export const template: string = /*html*/ `
   <main id='main'>
   </main>
 `

@@ -1,4 +1,4 @@
-export const template: string = `
+export const template: string = /*html*/ `
   <div id='payment-modal'>
     <div class="modal-background"></div>
     <div class="modal">
@@ -20,7 +20,7 @@ export const template: string = `
   </div>
 `
 
-export const paymentItemTemplate: string = `
+export const paymentItemTemplate: string = /*html*/ `
   <div class='row'>
     <div class="item center">현대카드</div>
     <div class="item right">

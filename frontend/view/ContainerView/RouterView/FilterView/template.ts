@@ -1,4 +1,4 @@
-export const template: string = `
+export const template: string = /*html*/ `
   <section id='invoice-filter'>
     <div>
       <input type="checkbox" class="earning-checkbox" />

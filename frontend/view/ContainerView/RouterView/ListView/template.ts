@@ -1,9 +1,9 @@
-export const template: string = `
+export const template: string = /*html*/ `
   <section id='invoice-list'>
   </section>
 `
 
-export const dateRowtemplate: string = `
+export const dateRowtemplate: string = /*html*/ `
   <div class='invoice-wrapper'>
     <div class="date-row row">
       <div class="item left">
@@ -23,7 +23,7 @@ export const dateRowtemplate: string = `
   </div>
 `
 
-export const invoiceRowTemplate: string = `
+export const invoiceRowTemplate: string = /*html*/ `
   <div class='row invoice'>
     <div class="float">
       <button class="button-edit">Edit</button>

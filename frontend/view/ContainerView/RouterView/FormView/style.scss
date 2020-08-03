@@ -57,6 +57,10 @@
         &::placeholder {
           color: $color-gray-400;
         }
+
+        &.input-date {
+          width: 66%;
+        }
       }
 
       select {

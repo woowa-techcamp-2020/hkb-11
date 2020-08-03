@@ -10,10 +10,6 @@ export class InvoiceModel extends Observable {
   earningToggle: boolean = true
   spendingToggle: boolean = true
 
-  getInvoice(id: number): Invoice | undefined {
-    return this.invoices.find((invoice) => invoice.id === id)
-  }
-
   addSumEarning(offset: number) {
     this.sumEarning += offset
     this.emit(EVENT.SET_SUM_EARNING, this.sumEarning)
@@ -56,6 +52,7 @@ export class InvoiceModel extends Observable {
     invoices.forEach((invoice) => {
       this.addInvoice(invoice)
     })
+    this.emit(EVENT.SET_INVOICES, this.invoices)
   }
   updateInvoice(invoice: Invoice) {
     const { id } = invoice
@@ -81,9 +78,7 @@ export class InvoiceModel extends Observable {
     return this.invoices.find((invoice) => invoice.id === id)
   }
   render() {
-    this.invoices.forEach((invoice) => {
-      this.emit(EVENT.ADD_INVOICE, { invoice })
-    })
+    this.emit(EVENT.SET_INVOICES, this.invoices)
     this.emit(EVENT.EARNING_TOGGLE, this.earningToggle)
     this.emit(EVENT.SPENDING_TOGGLE, this.spendingToggle)
     this.emit(EVENT.SET_SUM_EARNING, this.sumEarning)

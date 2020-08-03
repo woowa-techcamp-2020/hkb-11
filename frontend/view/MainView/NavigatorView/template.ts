@@ -1,4 +1,4 @@
-export const template: string = `
+export const template: string = /*html*/ `
   <section id='navigator'>
     <div class="rows">
       <nav class="row month-picker">
