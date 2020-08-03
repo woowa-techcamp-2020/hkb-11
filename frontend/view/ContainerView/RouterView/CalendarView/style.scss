@@ -36,6 +36,9 @@
 
       .sum-wrapper {
         align-self: flex-end;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
 
         .sum {
           font-size: 15px;
