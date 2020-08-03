@@ -5,11 +5,24 @@ import { View } from './view'
 
 class Router extends Observable {
   url: URL
+  year: number
+  month: number
   currentPath: string
   components: Map<string, Component<View>[]>
   constructor() {
     super()
     this.components = new Map<string, Component<View>[]>()
+    this.year = new Date().getFullYear()
+    this.month = new Date().getMonth() + 1
+    document.body.addEventListener('click', ({ target }) => {
+      if (target instanceof HTMLElement) {
+        const { nodeName } = target
+        if (!(nodeName === 'A')) return
+        const to = target.getAttribute('to')
+        if (!to) return
+        this.go(to)
+      }
+    })
   }
   add(path: string, components: Component<View>[]) {
     this.components[path] = components
@@ -19,17 +32,22 @@ class Router extends Observable {
   }
   fetchURL() {
     this.getURL()
-    if (this.url.pathname === '' || this.url.pathname === '/') {
+    const path = this.url.pathname.substr(1)
+    const routes = Object.keys(this.components)
+    if (path === '') {
       this.go('list')
+      return
     }
-    // do parse and emit proper event
+    if (routes.includes(path)) {
+      this.go(path)
+    }
   }
   go(path) {
     console.log(`${this.currentPath} >> ${path}`)
     if (this.currentPath === path) return
     if (!Object.keys(this.components).includes(path)) return
 
-    history.pushState({}, '', path)
+    history.pushState({}, '', `${path}?year=${this.year}&month=${this.month}`)
     if (this.currentPath)
       this.emit(ROUTER.MUTATE_VIEW, {
         path: this.currentPath,
