@@ -21,31 +21,31 @@ export class List extends Component<ListView, Container> {
     })
   }
   bind() {
-    this.invoiceModel.on(EVENTS.ADD_INVOICE, ({ invoice, hidden }) => {
+    this.invoiceModel.on(EVENT.ADD_INVOICE, ({ invoice, hidden }) => {
       this.view.addInvoice(invoice, hidden)
     })
     this.invoiceModel.on(EVENT.REMOVE_INVOICE, (id) => {
       this.view.removeInvoice(id)
     })
-    this.invoiceModel.on(EVENTS.CLEAR_INVOICES, () => {
+    this.invoiceModel.on(EVENT.CLEAR_INVOICES, () => {
       this.view.clear()
     })
-    this.invoiceModel.on(EVENTS.HIGHLIGHT_INVOICE, ({ id, flag }) => {
+    this.invoiceModel.on(EVENT.HIGHLIGHT_INVOICE, ({ id, flag }) => {
       this.view.highlightInvoice(id, flag)
     })
 
-    this.invoiceModel.on(EVENTS.EARNING_TOGGLE, (value) => {
+    this.invoiceModel.on(EVENT.EARNING_TOGGLE, (value) => {
       this.view.setEarningVisible(value)
     })
-    this.invoiceModel.on(EVENTS.SPENDING_TOGGLE, (value) => {
+    this.invoiceModel.on(EVENT.SPENDING_TOGGLE, (value) => {
       this.view.setSpendingVisible(value)
     })
   }
   unbind() {
-    this.invoiceModel.off(EVENTS.ADD_INVOICE)
-    this.invoiceModel.off(EVENTS.REMOVE_INVOICE)
-    this.invoiceModel.off(EVENTS.HIGHLIGHT_INVOICE)
-    this.invoiceModel.off(EVENTS.EARNING_TOGGLE)
-    this.invoiceModel.off(EVENTS.SPENDING_TOGGLE)
+    this.invoiceModel.off(EVENT.ADD_INVOICE)
+    this.invoiceModel.off(EVENT.REMOVE_INVOICE)
+    this.invoiceModel.off(EVENT.HIGHLIGHT_INVOICE)
+    this.invoiceModel.off(EVENT.EARNING_TOGGLE)
+    this.invoiceModel.off(EVENT.SPENDING_TOGGLE)
   }
 }

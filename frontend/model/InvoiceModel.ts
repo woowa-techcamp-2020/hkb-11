@@ -26,11 +26,11 @@ export class InvoiceModel extends Observable {
     this.invoices = [...this.invoices, invoice]
     const { category, amount } = invoice
     if (category.type === '수입') {
-      this.emit(EVENTS.ADD_INVOICE, { invoice, hidden: !this.earningToggle })
+      this.emit(EVENT.ADD_INVOICE, { invoice, hidden: !this.earningToggle })
       this.addSumEarning(amount)
       return
     }
-    this.emit(EVENTS.ADD_INVOICE, { invoice, hidden: !this.spendingToggle })
+    this.emit(EVENT.ADD_INVOICE, { invoice, hidden: !this.spendingToggle })
     this.addSumSpending(amount)
   }
   setEarningToggle(value) {
@@ -82,11 +82,11 @@ export class InvoiceModel extends Observable {
   }
   render() {
     this.invoices.forEach((invoice) => {
-      this.emit(EVENTS.ADD_INVOICE, { invoice })
+      this.emit(EVENT.ADD_INVOICE, { invoice })
     })
-    this.emit(EVENTS.EARNING_TOGGLE, this.earningToggle)
-    this.emit(EVENTS.SPENDING_TOGGLE, this.spendingToggle)
-    this.emit(EVENTS.SET_SUM_EARNING, this.sumEarning)
-    this.emit(EVENTS.SET_SUM_SPENDING, this.sumSpending)
+    this.emit(EVENT.EARNING_TOGGLE, this.earningToggle)
+    this.emit(EVENT.SPENDING_TOGGLE, this.spendingToggle)
+    this.emit(EVENT.SET_SUM_EARNING, this.sumEarning)
+    this.emit(EVENT.SET_SUM_SPENDING, this.sumSpending)
   }
 }

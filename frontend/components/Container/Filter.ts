@@ -20,22 +20,22 @@ export class Filter extends Component<FilterView, Container> {
     })
   }
   bind() {
-    this.invoiceModel.on(EVENTS.SET_SUM_EARNING, (amount) => {
+    this.invoiceModel.on(EVENT.SET_SUM_EARNING, (amount) => {
       this.view.setEarningTotal(amount)
     })
     this.invoiceModel.on(EVENT.SET_SUM_SPENDING, (amount) => {
       this.view.setSpendingTotal(amount)
     })
 
-    this.invoiceModel.on(EVENTS.EARNING_TOGGLE, (value) => {
+    this.invoiceModel.on(EVENT.EARNING_TOGGLE, (value) => {
       this.view.setEarningToggle(value)
     })
-    this.invoiceModel.on(EVENTS.SPENDING_TOGGLE, (value) => {
+    this.invoiceModel.on(EVENT.SPENDING_TOGGLE, (value) => {
       this.view.setSpendingToggle(value)
     })
   }
   unbind() {
-    this.invoiceModel.off(EVENTS.SET_SUM_EARNING)
-    this.invoiceModel.off(EVENTS.SET_SUM_SPENDING)
+    this.invoiceModel.off(EVENT.SET_SUM_EARNING)
+    this.invoiceModel.off(EVENT.SET_SUM_SPENDING)
   }
 }
