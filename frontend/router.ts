@@ -23,6 +23,17 @@ class Router extends Observable {
         this.go(to)
       }
     })
+    window.onpopstate = (event) => {
+      const { state } = event
+      console.log(state)
+      const { path, year, month } = state
+      if (path !== 'login') {
+        this.year = year
+        this.month = month
+        this.commitDateChange()
+      }
+      this.go(path, false)
+    }
   }
   add(path: string, components: Component<View>[]) {
     this.components[path] = components
@@ -53,11 +64,15 @@ class Router extends Observable {
   renderURL() {
     const { currentPath, year, month } = this
     if (currentPath === 'login') {
-      history.pushState({}, '', 'login')
+      history.pushState({ path: 'login' }, '', 'login')
       return
     }
     const params = `year=${year}&month=${month}`
-    history.pushState({}, '', `${currentPath}?${params}`)
+    history.pushState(
+      { path: currentPath, year, month },
+      '',
+      `${currentPath}?${params}`
+    )
   }
   movePreviousMonth() {
     if (this.month == 1) {
@@ -76,7 +91,7 @@ class Router extends Observable {
   isInvalidPath(path) {
     return !Object.keys(this.components).includes(path)
   }
-  go(path) {
+  go(path, renderFlag = true) {
     console.log(`${this.currentPath} >> ${path}`)
     if (path === 'previous-month') {
       this.movePreviousMonth()
@@ -97,7 +112,7 @@ class Router extends Observable {
       })
       this.currentPath = path
     }
-    this.renderURL()
+    if (renderFlag) this.renderURL()
     return this.components[path]
   }
 }
