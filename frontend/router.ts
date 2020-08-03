@@ -30,13 +30,12 @@ class Router extends Observable {
   getURL() {
     this.url = new URL(window.location.href)
   }
-  fetchURL() {
+  parseURL() {
     this.getURL()
     const path = this.url.pathname.substr(1)
     const year = parseInt(this.url.searchParams.get('year'))
     const month = parseInt(this.url.searchParams.get('month'))
 
-    const routes = Object.keys(this.components)
     if (!(this.year === year && this.month === month) && year && month) {
       this.year = year
       this.month = month
@@ -46,12 +45,19 @@ class Router extends Observable {
       this.go('list')
       return
     }
-    if (routes.includes(path)) {
-      this.go(path)
-    }
+    if (!this.isInvalidPath(path)) this.go(path)
   }
   commitDateChange() {
     this.emit(ROUTER.CHANGE_DATE, { year: this.year, month: this.month })
+  }
+  renderURL() {
+    const { currentPath, year, month } = this
+    if (currentPath === 'login') {
+      history.pushState({}, '', 'login')
+      return
+    }
+    const params = `year=${year}&month=${month}`
+    history.pushState({}, '', `${currentPath}?${params}`)
   }
   movePreviousMonth() {
     if (this.month == 1) {
@@ -67,6 +73,9 @@ class Router extends Observable {
     } else this.month += 1
     this.commitDateChange()
   }
+  isInvalidPath(path) {
+    return !Object.keys(this.components).includes(path)
+  }
   go(path) {
     console.log(`${this.currentPath} >> ${path}`)
     if (path === 'previous-month') {
@@ -74,7 +83,7 @@ class Router extends Observable {
     } else if (path === 'next-month') {
       this.moveNextMonth()
     } else if (this.currentPath !== path) {
-      if (!Object.keys(this.components).includes(path)) return
+      if (this.isInvalidPath(path)) return
       if (this.currentPath)
         this.emit(ROUTER.MUTATE_VIEW, {
           path: this.currentPath,
@@ -88,11 +97,7 @@ class Router extends Observable {
       })
       this.currentPath = path
     }
-    history.pushState(
-      {},
-      '',
-      `${this.currentPath}?year=${this.year}&month=${this.month}`
-    )
+    this.renderURL()
     return this.components[path]
   }
 }
