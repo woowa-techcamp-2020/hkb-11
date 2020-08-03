@@ -21,10 +21,21 @@ function getDateList(year: number, month: number) {
   return dateList
 }
 export default class CalendarView extends View {
+  $dateCells: HTMLDivElement[]
+
   constructor() {
     super(template)
   }
   mount(): void {
+    this.appendCells()
+    this.$dateCells = <HTMLDivElement[]>(
+      Array.from(this.queryAll(`.${CALENDAR_CLASS.DATE_CELL}`))
+    )
+
+    this.setDate(2020, 8)
+  }
+
+  appendCells() {
     days.forEach((day: string) => {
       const $headerCell = templateToElement(headerCellTemplate)
       const $day = <HTMLDivElement>(
@@ -34,10 +45,16 @@ export default class CalendarView extends View {
       this.$element.appendChild($headerCell)
     })
 
-    const [year, month] = [2020, 8]
-    const todayDate = new Date().getDate()
-    getDateList(year, month).forEach((date: Date) => {
+    for (let i = 0; i < 42; i++) {
       const $dateCell = templateToElement(dateCellTemplate)
+      this.$element.appendChild($dateCell)
+    }
+  }
+
+  setDate(year: number = 2020, month: number = 8) {
+    const todayDate = new Date().getDate()
+    getDateList(year, month).forEach((date: Date, index: number) => {
+      const $dateCell = this.$dateCells[index]
       const $date = <HTMLDivElement>(
         $dateCell.querySelector(`.${CALENDAR_CLASS.DATE}`)
       )
@@ -50,8 +67,6 @@ export default class CalendarView extends View {
       } else if (date.getDate() === todayDate) {
         $dateCell.classList.add(CALENDAR_CLASS.TODAY)
       }
-
-      this.$element.appendChild($dateCell)
     })
   }
 
