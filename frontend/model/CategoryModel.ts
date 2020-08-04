@@ -1,10 +1,15 @@
 import { Observable } from '.'
-import { Category } from '../../types'
+import { Category, Invoice } from '../../types'
 import { EVENT } from '../utils/constants'
 
 export class CategoryModel extends Observable {
   categories: Array<Category> = []
 
+  fillInvoice(invoice: Invoice) {
+    const category = this.findCategoryById(invoice.category.id)
+    invoice.category.type = category.type
+    invoice.category.title = category.title
+  }
   setCategories(categories: Array<Category>) {
     this.clear()
     this.categories = categories

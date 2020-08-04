@@ -1,10 +1,10 @@
-import { Component } from '.'
-import router from '../router'
-import { ROUTER } from '../utils/constants'
-import { Login } from './Login'
-import LoginView from './Login/view'
-import MainView from './Main/view'
-import NavigationView from './Navigator/view'
+import { Component } from '..'
+import router from '../../router'
+import { ROUTER } from '../../utils/constants'
+import { Login } from '../Login'
+import LoginView from '../Login/view'
+import NavigationView from '../Navigator/view'
+import MainView from './view'
 export class Main extends Component<MainView> {
   navigationView: NavigationView
   loginView: LoginView
@@ -18,15 +18,14 @@ export class Main extends Component<MainView> {
       this.navigationView.setDate(year, month)
     })
     router.on(ROUTER.MUTATE_VIEW, ({ path, flag }) => {
-      if (path === 'login') {
-        if (flag) {
-          this.navigationView.remove()
-          this.loginView.appendToView(this.view)
-          return
-        }
-        this.loginView.remove()
-        this.navigationView.appendToView(this.view)
+      if (path !== 'login') return
+      if (flag) {
+        this.navigationView.remove()
+        this.loginView.appendToView(this.view)
+        return
       }
+      this.loginView.remove()
+      this.navigationView.appendToView(this.view)
     })
     this.navigationView = this.view.navigatorView
   }

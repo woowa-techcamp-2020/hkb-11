@@ -34,17 +34,6 @@ export class List extends Component<ListView, Container> {
     this.invoiceModel.on(EVENT.SET_INVOICES, (invoices) => {
       this.view.clear()
       invoices.forEach((invoice: Invoice) => {
-        const category = this.categoryModel.findCategoryById(
-          invoice.category.id
-        )
-        invoice.category.type = category.type
-        invoice.category.title = category.title
-
-        const payment = this.paymentModel.findPaymentMethodsById(
-          invoice.paymentMethod.id
-        )
-        invoice.paymentMethod.title = payment.title
-
         this.view.addInvoice(invoice, false)
       })
     })
