@@ -1,10 +1,10 @@
-import { Container } from '.'
 import { Component } from '..'
 import { Invoice } from '../../../types'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import router from '../../router'
 import { CONSTANT, EVENT } from '../../utils/constants'
-import CalendarView from '../../view/ContainerView/RouterView/CalendarView'
+import { Container } from '../Container'
+import CalendarView from './view'
 
 function formatAmountObj(dateAmountObj) {
   for (let key in dateAmountObj) {

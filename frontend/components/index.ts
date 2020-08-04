@@ -1,4 +1,4 @@
-import { View } from '../view'
+import { View } from './view'
 export abstract class Component<
   T extends View,
   G extends Component<View, any> = any

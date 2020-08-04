@@ -1,7 +1,7 @@
-import { Category, Invoice, PaymentMethod } from '../../../../../types'
-import { CLASS, CONSTANT, FORM_CLASS } from '../../../../utils/constants'
-import { templateToElement } from '../../../../utils/ElementGenerator'
-import { View } from '../../../index'
+import { Category, Invoice, PaymentMethod } from '../../../types'
+import { CLASS, CONSTANT, FORM_CLASS } from '../../utils/constants'
+import { templateToElement } from '../../utils/ElementGenerator'
+import { View } from '../view'
 import './style.scss'
 import { optionTemplate, template } from './template'
 

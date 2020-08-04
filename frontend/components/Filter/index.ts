@@ -1,8 +1,8 @@
-import { Container } from '.'
 import { Component } from '..'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { EVENT } from '../../utils/constants'
-import FilterView from '../../view/ContainerView/RouterView/FilterView'
+import { Container } from '../Container'
+import FilterView from './view'
 
 export class Filter extends Component<FilterView, Container> {
   invoiceModel: InvoiceModel

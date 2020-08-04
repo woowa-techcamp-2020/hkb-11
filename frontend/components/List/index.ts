@@ -4,8 +4,8 @@ import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { PaymentModel } from '../../model/PaymentModel'
 import { EVENT } from '../../utils/constants'
-import ListView from '../../view/ContainerView/RouterView/ListView'
-import { Container } from './index'
+import { Container } from '../Container/index'
+import ListView from './view'
 
 export class List extends Component<ListView, Container> {
   invoiceModel: InvoiceModel

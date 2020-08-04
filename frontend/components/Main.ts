@@ -1,10 +1,10 @@
 import { Component } from '.'
 import router from '../router'
 import { ROUTER } from '../utils/constants'
-import MainView from '../view/MainView'
-import LoginView from '../view/MainView/LoginView'
-import NavigationView from '../view/MainView/NavigatorView'
 import { Login } from './Login'
+import LoginView from './Login/view'
+import MainView from './Main/view'
+import NavigationView from './Navigator/view'
 export class Main extends Component<MainView> {
   navigationView: NavigationView
   loginView: LoginView

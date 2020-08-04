@@ -1,9 +1,9 @@
-import { Container } from '.'
 import { Component } from '..'
 import { Invoice } from '../../../types'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { CONSTANT, EVENT } from '../../utils/constants'
-import ChartView from '../../view/ContainerView/RouterView/ChartView'
+import { Container } from '../Container'
+import ChartView from './view'
 
 function isSpending(invoice: Invoice) {
   return invoice.category.type === CONSTANT.SPENDING

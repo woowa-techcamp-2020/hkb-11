@@ -1,5 +1,5 @@
-import { templateToElement } from '../../../utils/ElementGenerator'
-import { View } from '../../index'
+import { templateToElement } from '../../utils/ElementGenerator'
+import { View } from '../view'
 import './style.scss'
 import { paymentItemTemplate, template } from './template'
 

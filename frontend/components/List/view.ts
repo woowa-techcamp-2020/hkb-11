@@ -1,12 +1,6 @@
-import { Invoice } from '../../../../../types'
-import { templateToElement } from '../../../../utils/ElementGenerator'
-import {
-  getSibling,
-  getText,
-  removeElement,
-  setText,
-  View,
-} from '../../../../view/'
+import { Invoice } from '../../../types'
+import { templateToElement } from '../../utils/ElementGenerator'
+import { getSibling, getText, removeElement, setText, View } from '../view'
 import './style.scss'
 import { dateRowtemplate, invoiceRowTemplate, template } from './template'
 

@@ -1,7 +1,7 @@
 import { Component } from './components'
+import { View } from './components/view'
 import { Observable } from './model'
 import { ROUTER } from './utils/constants'
-import { View } from './view'
 
 class Router extends Observable {
   url: URL

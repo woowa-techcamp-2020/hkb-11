@@ -1,7 +1,7 @@
-import ModalView from '../ContainerView/ModalView'
-import { View } from '../index'
-import HeaderView from './HeaderView'
-import NavigatorView from './NavigatorView'
+import HeaderView from '../Header/view'
+import ModalView from '../Modal/view'
+import NavigatorView from '../Navigator/view'
+import { View } from '../view'
 import './style.scss'
 import { template } from './template'
 

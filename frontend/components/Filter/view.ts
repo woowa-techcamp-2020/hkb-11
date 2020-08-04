@@ -1,4 +1,4 @@
-import { setText, View } from '../../../index'
+import { setText, View } from '../view'
 import './style.scss'
 import { template } from './template'
 

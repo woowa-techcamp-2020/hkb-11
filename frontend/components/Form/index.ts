@@ -1,11 +1,11 @@
-import { Container } from '.'
 import { Component } from '..'
 import { Category, Invoice, PaymentMethod } from '../../../types'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { PaymentModel } from '../../model/PaymentModel'
 import { EVENT, FORM_CLASS } from '../../utils/constants'
-import FormView from '../../view/ContainerView/RouterView/FormView'
+import { Container } from '../Container'
+import FormView from './view'
 
 export class Form extends Component<FormView, Container> {
   invoiceModel: InvoiceModel

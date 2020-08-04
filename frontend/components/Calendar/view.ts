@@ -1,6 +1,6 @@
-import { CALENDAR_CLASS, CLASS } from '../../../../utils/constants'
-import { templateToElement } from '../../../../utils/ElementGenerator'
-import { View } from '../../../index'
+import { CALENDAR_CLASS, CLASS } from '../../utils/constants'
+import { templateToElement } from '../../utils/ElementGenerator'
+import { View } from '../view'
 import './style.scss'
 import { dateCellTemplate, headerCellTemplate, template } from './template'
 

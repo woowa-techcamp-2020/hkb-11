@@ -1,4 +1,4 @@
-import { View } from '../../index'
+import { View } from '../view'
 import { template } from './template'
 
 export default class LoginView extends View {
