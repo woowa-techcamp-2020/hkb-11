@@ -23,8 +23,7 @@ export const template: string = /*html*/ `
             <label class="form-label">카테고리</label>
             <select class="select-category" value=''>
               <option value="" disabled selected>선택하세요</option>
-              <option value='식비'>식비</option>
-              </select>
+            </select>
           </div>
           <div class="item">
             <label class="form-label">결제수단</label>
@@ -49,4 +48,8 @@ export const template: string = /*html*/ `
       </div>
     </form>
   </section>
+`
+
+export const optionTemplate = /*html*/ `
+  <option value=''></option>
 `

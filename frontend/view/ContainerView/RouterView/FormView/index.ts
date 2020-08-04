@@ -1,8 +1,9 @@
-import { Invoice } from '../../../../../types'
+import { Category, Invoice } from '../../../../../types'
 import { CLASS, CONSTANT, FORM_CLASS } from '../../../../utils/constants'
+import { templateToElement } from '../../../../utils/ElementGenerator'
 import { View } from '../../../index'
 import './style.scss'
-import { template } from './template'
+import { optionTemplate, template } from './template'
 
 function formatAmount($target: HTMLInputElement) {
   $target.value = $target.value
@@ -83,6 +84,21 @@ export default class FormView extends View {
       return
     }
     this.categoryType = categoryType
+    this.setCategoryOptions()
+  }
+
+  setCategoryOptions() {
+    const $options = <HTMLOptionElement[]>(
+      Array.from(this.$category.querySelectorAll(`option:not([disabled])`))
+    )
+    $options.forEach(($option) => {
+      console.log('?')
+      if ($option.dataset.type !== this.categoryType) {
+        $option.classList.add(CLASS.HIDDEN)
+        return
+      }
+      $option.classList.remove(CLASS.HIDDEN)
+    })
   }
 
   bindInvoiceAddHandler(handler) {
@@ -170,6 +186,21 @@ export default class FormView extends View {
     formatAmount(this.$amount)
 
     this.changeFloatBtn(FORM_CLASS.REMOVE_BTN)
+  }
+
+  setCategories(categories: Category[]) {
+    categories.forEach((category) => {
+      const $option = <HTMLOptionElement>templateToElement(optionTemplate)
+      $option.value = category.id.toString()
+      $option.innerText = category.title
+      $option.dataset.type = category.type
+
+      if (this.categoryType !== category.type) {
+        $option.classList.add(CLASS.HIDDEN)
+      }
+
+      this.$category.appendChild($option)
+    })
   }
 
   changeFloatBtn(showClass: string): void {

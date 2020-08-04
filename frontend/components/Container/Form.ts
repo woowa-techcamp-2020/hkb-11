@@ -1,6 +1,6 @@
 import { Container } from '.'
 import { Component } from '..'
-import { Invoice } from '../../../types'
+import { Category, Invoice } from '../../../types'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { EVENT, FORM_CLASS } from '../../utils/constants'
@@ -42,6 +42,10 @@ export class Form extends Component<FormView, Container> {
 
       const invoice: Invoice = this.invoiceModel.findInvoiceById(id)
       this.view.setInvoiceData(invoice)
+    })
+
+    this.categoryModel.on(EVENT.SET_CATEGORIES, (categories: Category[]) => {
+      this.view.setCategories(categories)
     })
   }
 }
