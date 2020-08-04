@@ -17,14 +17,8 @@ function getNumberByAmount(amount: string): number {
 }
 
 function formatDate(date: Date) {
-  let month = '' + (date.getMonth() + 1)
-  let day = '' + date.getDate()
-  const year = date.getFullYear()
-
-  if (month.length < 2) month = '0' + month
-  if (day.length < 2) day = '0' + day
-
-  return [year, month, day].join('-')
+  // return datetime format = yyyy-MM-ddThh:mm
+  return date.toISOString().slice(0, 16)
 }
 
 export default class FormView extends View {
@@ -156,12 +150,13 @@ export default class FormView extends View {
   }
 
   setInvoiceData(invoice: Invoice) {
+    console.log(invoice)
     this.invoiceId = invoice.id
     this.$date.value = formatDate(invoice.date)
     this.$item.value = invoice.item
-    this.$category.value = invoice.category.title
+    this.$category.value = invoice.category.id.toString()
     this.setCategoryType(invoice.category.type)
-    this.$payment.value = invoice.paymentMethod.title
+    this.$payment.value = invoice.paymentMethod.id.toString()
     this.$amount.value = invoice.amount.toString()
     formatAmount(this.$amount)
 
