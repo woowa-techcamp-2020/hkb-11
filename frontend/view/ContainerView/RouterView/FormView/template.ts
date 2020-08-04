@@ -35,9 +35,10 @@ export const template: string = /*html*/ `
           </div>
         </div>
       <div class="row">
-        <div class="item">
+        <div class="item amount-item">
           <label class="form-label">금액</label>
-          <input class="input-amount" inputmode="numeric" pattern="[0-9]*" placeholder='금액을 입력해주세요' />
+          <input class="input-amount" inputmode="numeric" pattern="[0-9]*" placeholder='0' />
+          <span class='unit'>원</span>
         </div>
         <div class="item">
           <label class="form-label">내용</label>
