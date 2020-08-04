@@ -39,7 +39,9 @@ export class Form extends Component<FormView, Container> {
       this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
       this.view.clearForm()
     })
+  }
 
+  bind() {
     this.invoiceModel.on(EVENT.HIGHLIGHT_INVOICE, ({ id, flag }) => {
       if (flag === false) return
 
@@ -54,5 +56,16 @@ export class Form extends Component<FormView, Container> {
     this.paymentModel.on(EVENT.SET_PAYMENTS, (payments: PaymentMethod[]) => {
       this.view.setPayments(payments)
     })
+
+    this.paymentModel.on(EVENT.ADD_PAYMENT, (payment: PaymentMethod) => {
+      this.view.addPayment(payment)
+    })
+  }
+
+  unbind() {
+    this.invoiceModel.off(EVENT.HIGHLIGHT_INVOICE)
+    this.categoryModel.off(EVENT.SET_CATEGORIES)
+    this.paymentModel.off(EVENT.ADD_PAYMENT)
+    this.paymentModel.off(EVENT.SET_PAYMENTS)
   }
 }
