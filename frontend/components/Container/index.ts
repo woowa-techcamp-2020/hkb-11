@@ -60,6 +60,11 @@ export class Container extends Component<RouterView> {
     router.on(ROUTER.CHANGE_DATE, ({ year, month }) => {
       // TODO: backend invociecs
       const mockData = month % 2 == 0 ? mockup : []
+      const invoices = mockData
+      invoices.forEach((invoice) => {
+        this.categoryModel.fillInvoice(invoice)
+        this.paymentModel.fillInvoice(invoice)
+      })
       this.invoiceModel.setInvoices(mockData)
     })
     router.on(

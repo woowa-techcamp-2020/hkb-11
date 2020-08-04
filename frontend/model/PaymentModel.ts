@@ -1,10 +1,14 @@
 import { Observable } from '.'
-import { PaymentMethod } from '../../types'
+import { Invoice, PaymentMethod } from '../../types'
 import { EVENT } from '../utils/constants'
 
 export class PaymentModel extends Observable {
   paymentMethods: Array<PaymentMethod> = []
 
+  fillInvoice(invoice: Invoice) {
+    const payment = this.findPaymentMethodsById(invoice.paymentMethod.id)
+    invoice.paymentMethod.title = payment.title
+  }
   addPaymentMethod(paymentMethod: PaymentMethod) {
     this.paymentMethods = [...this.paymentMethods, paymentMethod]
     this.emit(EVENT.ADD_PAYMENT, paymentMethod)
