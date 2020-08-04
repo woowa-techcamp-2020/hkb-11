@@ -82,6 +82,8 @@ export class Container extends Component<RouterView> {
             component.bind()
           })
           this.invoiceModel.render()
+          this.categoryModel.render()
+          this.paymentModel.render()
           return
         }
         components.forEach((component) => {
