@@ -1,6 +1,7 @@
 import { Component } from '..'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
+import { PaymentModel } from '../../model/PaymentModel'
 import router from '../../router'
 import { ROUTER } from '../../utils/constants'
 import RouterView from '../../view/ContainerView/RouterView'
@@ -9,7 +10,7 @@ import ChartView from '../../view/ContainerView/RouterView/ChartView'
 import FilterView from '../../view/ContainerView/RouterView/FilterView'
 import FormVIew from '../../view/ContainerView/RouterView/FormView'
 import ListView from '../../view/ContainerView/RouterView/ListView'
-import mockup, { mockupCategory } from '../mockup'
+import mockup, { mockupCategory, mockupPayment } from '../mockup'
 import { Calendar } from './Calendar'
 import { Chart } from './Chart'
 import { Filter } from './Filter'
@@ -24,6 +25,7 @@ export class Container extends Component<RouterView> {
   chartView: ChartView
   invoiceModel: InvoiceModel
   categoryModel: CategoryModel
+  paymentModel: PaymentModel
   list: List
   filter: Filter
   form: Form
@@ -35,6 +37,7 @@ export class Container extends Component<RouterView> {
 
     this.invoiceModel = new InvoiceModel()
     this.categoryModel = new CategoryModel()
+    this.paymentModel = new PaymentModel()
 
     this.listView = this.view.listView
     this.filterView = this.view.filterView
@@ -47,7 +50,9 @@ export class Container extends Component<RouterView> {
     this.calendar = new Calendar(this, this.calendarView)
     this.chart = new Chart(this, this.chartView)
 
+    // TEMP : fetching data
     this.categoryModel.setCategories(mockupCategory)
+    this.paymentModel.setPaymentMethods(mockupPayment)
 
     router.add('list', [this.form, this.filter, this.list])
     router.add('calendar', [this.filter, this.calendar])

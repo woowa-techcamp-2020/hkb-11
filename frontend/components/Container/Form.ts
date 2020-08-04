@@ -1,20 +1,23 @@
 import { Container } from '.'
 import { Component } from '..'
-import { Category, Invoice } from '../../../types'
+import { Category, Invoice, PaymentMethod } from '../../../types'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
+import { PaymentModel } from '../../model/PaymentModel'
 import { EVENT, FORM_CLASS } from '../../utils/constants'
 import FormView from '../../view/ContainerView/RouterView/FormView'
 
 export class Form extends Component<FormView, Container> {
   invoiceModel: InvoiceModel
   categoryModel: CategoryModel
+  paymentModel: PaymentModel
 
   constructor(parent, view: FormView) {
     super(parent, view)
 
     this.invoiceModel = this.parent.invoiceModel
     this.categoryModel = this.parent.categoryModel
+    this.paymentModel = this.parent.paymentModel
 
     this.view.bindInvoiceAddHandler((invoice: Invoice) => {
       this.invoiceModel.addInvoice(invoice)
@@ -46,6 +49,10 @@ export class Form extends Component<FormView, Container> {
 
     this.categoryModel.on(EVENT.SET_CATEGORIES, (categories: Category[]) => {
       this.view.setCategories(categories)
+    })
+
+    this.paymentModel.on(EVENT.SET_PAYMENTS, (payments: PaymentMethod[]) => {
+      this.view.setPayments(payments)
     })
   }
 }

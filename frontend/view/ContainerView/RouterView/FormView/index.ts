@@ -1,4 +1,4 @@
-import { Category, Invoice } from '../../../../../types'
+import { Category, Invoice, PaymentMethod } from '../../../../../types'
 import { CLASS, CONSTANT, FORM_CLASS } from '../../../../utils/constants'
 import { templateToElement } from '../../../../utils/ElementGenerator'
 import { View } from '../../../index'
@@ -166,21 +166,24 @@ export default class FormView extends View {
   }
 
   getInvoiceData(): Invoice {
-    const $selectedOption = <HTMLOptionElement>(
+    const $selectedCategoryOption = <HTMLOptionElement>(
       this.$category.querySelector(`option[value='${this.$category.value}']`)
     )
+    const $selectedPaymentOption = <HTMLOptionElement>(
+      this.$payment.querySelector(`option[value='${this.$payment.value}']`)
+    )
+
     const invoice: Invoice = {
       id: this.invoiceId,
       date: new Date(this.$date.value),
       category: {
         id: +this.$category.value,
         type: this.categoryType,
-        title: $selectedOption.innerText,
+        title: $selectedCategoryOption.innerText,
       },
       paymentMethod: {
-        id: 1,
-        userId: 'agrajak2',
-        title: this.$payment.value,
+        id: +this.$payment.value,
+        title: $selectedPaymentOption.innerText,
       },
       amount: getNumberByAmount(this.$amount.value),
       item: this.$item.value,
@@ -214,6 +217,16 @@ export default class FormView extends View {
       }
 
       this.$category.appendChild($option)
+    })
+  }
+
+  setPayments(payments: PaymentMethod[]) {
+    payments.forEach((payment) => {
+      const $option = <HTMLOptionElement>templateToElement(optionTemplate)
+      $option.value = payment.id.toString()
+      $option.innerText = payment.title
+
+      this.$payment.appendChild($option)
     })
   }
 
