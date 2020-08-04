@@ -22,7 +22,6 @@ export default class RouterView extends View {
     this.listView = new ListView()
     this.calendarView = new CalendarView()
     this.chartView = new ChartView()
-    this.chartView.appendToView(this)
   }
   mount(): void {}
 }
