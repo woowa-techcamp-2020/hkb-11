@@ -161,6 +161,7 @@ export default class FormView extends View {
     formatAmount(this.$amount)
 
     this.changeFloatBtn(FORM_CLASS.REMOVE_BTN)
+    this.checkInvoiceValidation()
   }
 
   checkInvoiceValidation(): Boolean {
@@ -293,5 +294,6 @@ export default class FormView extends View {
     this.$category.value = ''
     this.$payment.value = ''
     this.invoiceId = 0
+    this.checkInvoiceValidation()
   }
 }
