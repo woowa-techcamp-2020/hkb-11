@@ -1,17 +1,23 @@
 import { Component } from '..'
 import { Invoice } from '../../../types'
+import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
+import { PaymentModel } from '../../model/PaymentModel'
 import { EVENT } from '../../utils/constants'
 import ListView from '../../view/ContainerView/RouterView/ListView'
 import { Container } from './index'
 
 export class List extends Component<ListView, Container> {
   invoiceModel: InvoiceModel
+  categoryModel: CategoryModel
+  paymentModel: PaymentModel
 
   constructor(parent, view: ListView) {
     super(parent, view)
 
     this.invoiceModel = this.parent.invoiceModel
+    this.categoryModel = this.parent.categoryModel
+    this.paymentModel = this.parent.paymentModel
 
     this.view.bindInvoiceEditHandler((id) => {
       // TODO: Communcate with API
@@ -28,6 +34,17 @@ export class List extends Component<ListView, Container> {
     this.invoiceModel.on(EVENT.SET_INVOICES, (invoices) => {
       this.view.clear()
       invoices.forEach((invoice: Invoice) => {
+        const category = this.categoryModel.findCategoryById(
+          invoice.category.id
+        )
+        invoice.category.type = category.type
+        invoice.category.title = category.title
+
+        const payment = this.paymentModel.findPaymentMethodsById(
+          invoice.paymentMethod.id
+        )
+        invoice.paymentMethod.title = payment.title
+
         this.view.addInvoice(invoice, false)
       })
     })
@@ -50,6 +67,8 @@ export class List extends Component<ListView, Container> {
   }
   unbind() {
     this.invoiceModel.off(EVENT.ADD_INVOICE)
+    this.invoiceModel.off(EVENT.SET_INVOICES)
+    this.invoiceModel.off(EVENT.CLEAR_INVOICES)
     this.invoiceModel.off(EVENT.REMOVE_INVOICE)
     this.invoiceModel.off(EVENT.HIGHLIGHT_INVOICE)
     this.invoiceModel.off(EVENT.EARNING_TOGGLE)

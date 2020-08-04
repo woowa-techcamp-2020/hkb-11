@@ -1,8 +1,9 @@
-import { Invoice } from '../../../../../types'
+import { Category, Invoice, PaymentMethod } from '../../../../../types'
 import { CLASS, CONSTANT, FORM_CLASS } from '../../../../utils/constants'
+import { templateToElement } from '../../../../utils/ElementGenerator'
 import { View } from '../../../index'
 import './style.scss'
-import { template } from './template'
+import { optionTemplate, template } from './template'
 
 function formatAmount($target: HTMLInputElement) {
   $target.value = $target.value
@@ -36,6 +37,7 @@ export default class FormView extends View {
   $payment: HTMLSelectElement
   $remove: HTMLButtonElement
   $clear: HTMLButtonElement
+  $submit: HTMLButtonElement
   invoiceId: number = 0
   categoryType: string = CONSTANT.SPENDING
   invoiceAddHandler: Function
@@ -69,20 +71,9 @@ export default class FormView extends View {
     )
     this.$remove = <HTMLButtonElement>this.query(`.${FORM_CLASS.REMOVE_BTN}`)
     this.$clear = <HTMLButtonElement>this.query(`.${FORM_CLASS.CLEAR_BTN}`)
-    this.setCategoryType(CONSTANT.SPENDING)
-  }
+    this.$submit = <HTMLButtonElement>this.query(`.${FORM_CLASS.SUBMIT_BTN}`)
 
-  setCategoryType(categoryType) {
-    if (categoryType === CONSTANT.SPENDING) {
-      this.$spending.classList.add(CLASS.ACTIVE)
-      this.$earning.classList.remove(CLASS.ACTIVE)
-    } else if (categoryType === CONSTANT.EARNING) {
-      this.$spending.classList.remove(CLASS.ACTIVE)
-      this.$earning.classList.add(CLASS.ACTIVE)
-    } else {
-      return
-    }
-    this.categoryType = categoryType
+    this.setCategoryType(CONSTANT.SPENDING)
   }
 
   bindInvoiceAddHandler(handler) {
@@ -129,6 +120,8 @@ export default class FormView extends View {
 
     const $submitBtn = e.target.closest(`.${FORM_CLASS.SUBMIT_BTN}`)
     if ($submitBtn) {
+      if (!this.$submit.classList.contains(CLASS.ACTIVE)) return
+
       if (this.invoiceId > 0) {
         this.invoiceUpdateHandler(this.getInvoiceData())
         return
@@ -136,49 +129,6 @@ export default class FormView extends View {
 
       this.invoiceAddHandler(this.getInvoiceData())
       return
-    }
-  }
-
-  getInvoiceData(): Invoice {
-    console.log(this.$date.value)
-    const invoice: Invoice = {
-      id: this.invoiceId,
-      date: new Date(this.$date.value),
-      category: {
-        type: this.categoryType,
-        title: this.$category.value,
-      },
-      paymentMethod: {
-        userId: 'agrajak2',
-        title: this.$payment.value,
-      },
-      amount: getNumberByAmount(this.$amount.value),
-      item: this.$item.value,
-    }
-
-    return invoice
-  }
-
-  setInvoiceData(invoice: Invoice) {
-    this.invoiceId = invoice.id
-    this.$date.value = formatDate(invoice.date)
-    this.$item.value = invoice.item
-    this.$category.value = invoice.category.title
-    this.setCategoryType(invoice.category.type)
-    this.$payment.value = invoice.paymentMethod.title
-    this.$amount.value = invoice.amount.toString()
-    formatAmount(this.$amount)
-
-    this.changeFloatBtn(FORM_CLASS.REMOVE_BTN)
-  }
-
-  changeFloatBtn(showClass: string): void {
-    if (showClass === FORM_CLASS.REMOVE_BTN) {
-      this.$remove.classList.remove(CLASS.HIDDEN)
-      this.$clear.classList.add(CLASS.HIDDEN)
-    } else if (showClass === FORM_CLASS.CLEAR_BTN) {
-      this.$remove.classList.add(CLASS.HIDDEN)
-      this.$clear.classList.remove(CLASS.HIDDEN)
     }
   }
 
@@ -197,9 +147,147 @@ export default class FormView extends View {
   onInputHandler(e) {
     if (!(e.target instanceof HTMLElement)) return
 
+    this.checkInvoiceValidation()
+
     if (e.target.classList.contains(FORM_CLASS.INPUT_AMOUNT)) {
       formatAmount(e.target)
       return
+    }
+  }
+
+  setInvoiceData(invoice: Invoice) {
+    this.invoiceId = invoice.id
+    this.$date.value = formatDate(invoice.date)
+    this.$item.value = invoice.item
+    this.$category.value = invoice.category.title
+    this.setCategoryType(invoice.category.type)
+    this.$payment.value = invoice.paymentMethod.title
+    this.$amount.value = invoice.amount.toString()
+    formatAmount(this.$amount)
+
+    this.changeFloatBtn(FORM_CLASS.REMOVE_BTN)
+  }
+
+  checkInvoiceValidation(): Boolean {
+    const checkList = [
+      this.$date,
+      this.$category,
+      this.$payment,
+      this.$amount,
+      this.$item,
+    ]
+    for (let checkItem of checkList) {
+      if (checkItem.value === '') {
+        this.$submit.classList.remove(CLASS.ACTIVE)
+        return false
+      }
+    }
+
+    this.$submit.classList.add(CLASS.ACTIVE)
+    return true
+  }
+
+  getInvoiceData(): Invoice {
+    const $selectedCategoryOption = <HTMLOptionElement>(
+      this.$category.querySelector(`option[value='${this.$category.value}']`)
+    )
+    const $selectedPaymentOption = <HTMLOptionElement>(
+      this.$payment.querySelector(`option[value='${this.$payment.value}']`)
+    )
+
+    const invoice: Invoice = {
+      id: this.invoiceId,
+      date: new Date(this.$date.value),
+      category: {
+        id: +this.$category.value,
+        type: this.categoryType,
+        title: $selectedCategoryOption.innerText,
+      },
+      paymentMethod: {
+        id: +this.$payment.value,
+        title: $selectedPaymentOption.innerText,
+      },
+      amount: getNumberByAmount(this.$amount.value),
+      item: this.$item.value,
+    }
+
+    return invoice
+  }
+
+  setCategories(categories: Category[]) {
+    categories.forEach((category) => {
+      const $option = <HTMLOptionElement>templateToElement(optionTemplate)
+      $option.value = category.id.toString()
+      $option.innerText = category.title
+      $option.dataset.type = category.type
+
+      if (this.categoryType !== category.type) {
+        $option.classList.add(CLASS.HIDDEN)
+      }
+
+      this.$category.appendChild($option)
+    })
+  }
+
+  setCategoryType(categoryType) {
+    if (categoryType === CONSTANT.SPENDING) {
+      this.$spending.classList.add(CLASS.ACTIVE)
+      this.$earning.classList.remove(CLASS.ACTIVE)
+    } else if (categoryType === CONSTANT.EARNING) {
+      this.$spending.classList.remove(CLASS.ACTIVE)
+      this.$earning.classList.add(CLASS.ACTIVE)
+    } else {
+      return
+    }
+    this.categoryType = categoryType
+
+    this.setCategorySelect()
+    this.setCategoryOptions()
+  }
+
+  setCategorySelect() {
+    const $selectedOption = <HTMLOptionElement>(
+      this.$category.querySelector(`option[value='${this.$category.value}']`)
+    )
+    if ($selectedOption.dataset.type !== this.categoryType) {
+      this.$category.value = ''
+    }
+  }
+
+  setCategoryOptions() {
+    const $options = <HTMLOptionElement[]>(
+      Array.from(this.$category.querySelectorAll(`option:not([disabled])`))
+    )
+    $options.forEach(($option) => {
+      if ($option.dataset.type !== this.categoryType) {
+        $option.classList.add(CLASS.HIDDEN)
+        return
+      }
+      $option.classList.remove(CLASS.HIDDEN)
+    })
+  }
+
+  addPayment(payment: PaymentMethod) {
+    const $option = <HTMLOptionElement>templateToElement(optionTemplate)
+    $option.value = payment.id.toString()
+    $option.innerText = payment.title
+
+    this.$payment.appendChild($option)
+  }
+
+  setPayments(payments: PaymentMethod[]) {
+    payments.forEach((payment) => {
+      this.addPayment(payment)
+    })
+  }
+
+  changeFloatBtn(showClass: string): void {
+    if (showClass === FORM_CLASS.REMOVE_BTN) {
+      this.$remove.classList.remove(CLASS.HIDDEN)
+      this.$clear.classList.add(CLASS.HIDDEN)
+    } else if (showClass === FORM_CLASS.CLEAR_BTN) {
+      this.$remove.classList.add(CLASS.HIDDEN)
+      this.$clear.classList.remove(CLASS.HIDDEN)
     }
   }
 
