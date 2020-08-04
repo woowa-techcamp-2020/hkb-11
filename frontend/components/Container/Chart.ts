@@ -2,11 +2,11 @@ import { Container } from '.'
 import { Component } from '..'
 import { Invoice } from '../../../types'
 import { InvoiceModel } from '../../model/InvoiceModel'
-import { EVENT } from '../../utils/constants'
+import { CONSTANT, EVENT } from '../../utils/constants'
 import ChartView from '../../view/ContainerView/RouterView/ChartView'
 
 function isSpending(invoice: Invoice) {
-  return invoice.category.type === '지출'
+  return invoice.category.type === CONSTANT.SPENDING
 }
 function invoiceReducer(picker) {
   return (prev, invoice: Invoice) => {

@@ -4,43 +4,11 @@ import { View } from '../../../index'
 import config from './config'
 import './style.scss'
 import { barChartTemplate, piChartTemplate, template } from './template'
-class PathBuilder {
-  d: string = ''
-  cx: 0
-  cy: 0
-  r: 0
-  constructor(cx, cy, r) {
-    this.cx = cx
-    this.cy = cy
-    this.r = r
-  }
-  dx(ang) {
-    return this.r * Math.cos(((ang - 90) / 180) * Math.PI)
-  }
-  dy(ang) {
-    return this.r * Math.sin(((ang - 90) / 180) * Math.PI)
-  }
-  start(ang) {
-    return this.c().move(this.cx + this.dx(ang), this.cy + this.dy(ang))
-  }
-  end(ang) {
-    return this.arc(ang)
-  }
-  move(x, y) {
-    this.d += `M${x} ${y} `
-    return this
-  }
-  arc(ang) {
-    this.d += `A${this.r} ${this.r} 0 ${ang >= 180 ? 1 : 0} 1 ${
-      this.cx + this.dx(ang)
-    } ${this.cy + this.dy(ang)} `
-    this.d += `L${this.cx} ${this.cy} Z`
-    return this
-  }
-  c() {
-    this.d = ''
-    return this
-  }
+function dx(r, ang) {
+  return r * Math.cos(((ang - 90) / 180) * Math.PI)
+}
+function dy(r, ang) {
+  return r * Math.sin(((ang - 90) / 180) * Math.PI)
 }
 export default class ChartView extends View {
   $bar: HTMLInputElement
@@ -57,11 +25,9 @@ export default class ChartView extends View {
     this.$piFragment = <HTMLDivElement>this.query('#pi-chart')
     this.$barChart = <SVGElement>this.query('#bar-chart svg')
     this.$piChart = <SVGElement>this.query('#pi-chart svg')
-    console.log(this.$barChart, this.$piChart)
     this.initBarChart()
     this.$element.addEventListener('click', ({ target }) => {
       if (!(target instanceof HTMLInputElement)) return
-      console.log(target)
       if (target === this.$pi) {
         this.showPiChart()
       }
@@ -74,7 +40,7 @@ export default class ChartView extends View {
     this.initBarChart()
     const maxAmount = Math.max(...(<number[]>Object.values(arr)))
     if (maxAmount == 0) return
-    const maxHeight = 1.5 * maxAmount
+    const maxHeight = 1.5 * maxAmount - ((1.5 * maxAmount) % 1000)
     this.setBarMaxHeight(maxHeight)
     Object.entries(arr).forEach(([date, amount]: [string, number]) => {
       this.setBarHeight(date, amount / maxHeight)
@@ -104,11 +70,19 @@ export default class ChartView extends View {
     for (let i = 1; i <= dayN; i++) {
       const padding = paddingX + paddingX2
       const x = padding + ((width - padding * 2) / dayN) * i
+      const y = height - paddingY
+      if (i !== 1) {
+        const beforeX = padding + ((width - padding * 2) / dayN) * (i - 1)
+        this.$barChart.insertAdjacentHTML(
+          'beforeend',
+          `<line id="l${
+            i - 1
+          }" x1="${beforeX}" x2="${x}" y1="${y}" y2="${y}" stroke="blue">s</line>`
+        )
+      }
       this.$barChart.insertAdjacentHTML(
         'beforeend',
-        `<circle id="c${i}" cx="${x}" cy="${
-          height - paddingY
-        }" r="${3}" stroke-width="1"></circle>`
+        `<circle id="c${i}" cx="${x}" cy="${y}" r="${3}" stroke-width="1"></circle>`
       )
       this.$barChart.insertAdjacentHTML(
         'beforeend',
@@ -121,17 +95,17 @@ export default class ChartView extends View {
   renderPiChart(arr) {
     this.$piChart.innerHTML = ''
     const { height, width, circles, radius: r, circleColors } = config
-    const p = new PathBuilder(width / 2, height / 2, r)
+    const cx = width / 2,
+      cy = height / 2
     let ang = 0
-    arr.splice(0, circles).forEach(({ title, value, ang: theta }, idx) => {
+    arr.splice(0, circles).forEach(({ title, ang: theta }, idx) => {
       this.$piChart.insertAdjacentHTML(
         'beforeend',
-        `<path d="${
-          p
-            .c()
-            .start(ang)
-            .end(ang + theta - 0.1).d
-        }" stroke="2" fill="${circleColors[idx]}"></path>`
+        `<path d="M ${cx + dx(r, ang)} ${cy + dy(r, ang)} A ${r} ${r} 0 ${
+          theta >= 180 ? 1 : 0
+        } 1 ${cx + dx(r, ang + theta)} ${
+          cy + dy(r, ang + theta)
+        } L ${cx} ${cy} Z" stroke="2" fill="${circleColors[idx]}"></path>`
       )
       ang += theta
     })
@@ -146,11 +120,18 @@ export default class ChartView extends View {
   setBarHeight(date, ratio) {
     const { paddingY, height, lineHeight } = config
     const circle = <SVGCircleElement>this.$barChart.querySelector(`#c${date}`)
-    circle.setAttribute(
-      'cy',
-      String(height - paddingY - (height - 2 * paddingY - lineHeight) * ratio)
+    const line = <SVGLineElement>this.$barChart.querySelector(`#l${date}`)
+    const beforeLine = <SVGLineElement>(
+      this.$barChart.querySelector(`#l${parseInt(date) - 1}`)
     )
-    // padding Y   ~   height-paddingY
+    const y = height - paddingY - (height - 2 * paddingY - lineHeight) * ratio
+    if (line) {
+      line.setAttribute('y1', `${y}`)
+    }
+    if (beforeLine) {
+      beforeLine.setAttribute('y2', `${y}`)
+    }
+    circle.setAttribute('cy', `${y}`)
   }
   showBarChart() {
     this.$bar.checked = true
