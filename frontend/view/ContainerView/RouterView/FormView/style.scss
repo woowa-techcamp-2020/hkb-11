@@ -60,10 +60,13 @@
 
         &.input-date {
           width: 66%;
+          cursor: pointer;
         }
       }
 
       select {
+        cursor: pointer;
+
         option {
           color: $color-black;
 
@@ -118,11 +121,15 @@
       margin: 0 $L-padding * -1;
       font-size: 17px;
       color: $color-white;
-      background-color: $color-sub-main;
-      cursor: pointer;
+      background-color: $color-pink;
 
-      &:hover {
-        background-color: $color-main;
+      &.active {
+        background-color: $color-sub-main;
+
+        &:hover {
+          background-color: $color-main;
+          cursor: pointer;
+        }
       }
     }
   }
