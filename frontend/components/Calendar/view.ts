@@ -4,7 +4,7 @@ import { View } from '../view'
 import './style.scss'
 import { dateCellTemplate, headerCellTemplate, template } from './template'
 
-const days: string[] = ['일', '월', '화', '수', '목', '금', '토']
+const days: string[] = ['Sun', 'Mon', 'Thu', 'Web', 'Thr', 'Fri', 'Sat']
 
 function getDateList(year: number, month: number) {
   const dateList: Date[] = []
