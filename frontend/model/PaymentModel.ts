@@ -5,6 +5,11 @@ import { EVENT } from '../utils/constants'
 export class PaymentModel extends Observable {
   paymentMethods: Array<PaymentMethod> = []
 
+  addPaymentMethod(paymentMethod: PaymentMethod) {
+    this.paymentMethods = [...this.paymentMethods, paymentMethod]
+    this.emit(EVENT.ADD_PAYMENT, paymentMethod)
+  }
+
   setPaymentMethods(paymentMethods: Array<PaymentMethod>) {
     this.clear()
     this.paymentMethods = paymentMethods
@@ -21,6 +26,6 @@ export class PaymentModel extends Observable {
   }
 
   render() {
-    this.emit(EVENT.CLEAR_PAYMENTS, this.paymentMethods)
+    this.emit(EVENT.SET_PAYMENTS, this.paymentMethods)
   }
 }

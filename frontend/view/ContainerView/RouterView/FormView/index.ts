@@ -220,13 +220,17 @@ export default class FormView extends View {
     })
   }
 
+  addPayment(payment: PaymentMethod) {
+    const $option = <HTMLOptionElement>templateToElement(optionTemplate)
+    $option.value = payment.id.toString()
+    $option.innerText = payment.title
+
+    this.$payment.appendChild($option)
+  }
+
   setPayments(payments: PaymentMethod[]) {
     payments.forEach((payment) => {
-      const $option = <HTMLOptionElement>templateToElement(optionTemplate)
-      $option.value = payment.id.toString()
-      $option.innerText = payment.title
-
-      this.$payment.appendChild($option)
+      this.addPayment(payment)
     })
   }
 
