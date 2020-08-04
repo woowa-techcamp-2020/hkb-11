@@ -84,7 +84,18 @@ export default class FormView extends View {
       return
     }
     this.categoryType = categoryType
+
+    this.setCategorySelect()
     this.setCategoryOptions()
+  }
+
+  setCategorySelect() {
+    const $selectedOption = <HTMLOptionElement>(
+      this.$category.querySelector(`option[value='${this.$category.value}']`)
+    )
+    if ($selectedOption.dataset.type !== this.categoryType) {
+      this.$category.value = ''
+    }
   }
 
   setCategoryOptions() {
@@ -92,7 +103,6 @@ export default class FormView extends View {
       Array.from(this.$category.querySelectorAll(`option:not([disabled])`))
     )
     $options.forEach(($option) => {
-      console.log('?')
       if ($option.dataset.type !== this.categoryType) {
         $option.classList.add(CLASS.HIDDEN)
         return
