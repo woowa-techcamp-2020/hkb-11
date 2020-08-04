@@ -1,7 +1,7 @@
 type Category = {
-  id?: number
-  type: string
-  title: string
+  id: number
+  type?: string
+  title?: string
 }
 
 type PaymentMethod = {

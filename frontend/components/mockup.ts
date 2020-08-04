@@ -34,8 +34,6 @@ const mockup: Array<Invoice> = [
     date: new Date('2020-08-01T03:24:00'),
     category: {
       id: 1,
-      type: '지출',
-      title: '식비',
     },
     paymentMethod: {
       id: 1,
@@ -50,9 +48,7 @@ const mockup: Array<Invoice> = [
     id: 2,
     date: new Date('2020-08-01T05:24:00'),
     category: {
-      id: 1,
-      type: '지출',
-      title: '식비',
+      id: 2,
     },
     paymentMethod: {
       id: 1,
@@ -67,9 +63,7 @@ const mockup: Array<Invoice> = [
     id: 3,
     date: new Date('2020-08-01T11:24:00'),
     category: {
-      id: 1,
-      type: '지출',
-      title: '식비',
+      id: 3,
     },
     paymentMethod: {
       id: 1,
@@ -84,9 +78,7 @@ const mockup: Array<Invoice> = [
     id: 4,
     date: new Date('2020-08-02T03:24:00'),
     category: {
-      id: 1,
-      type: '지출',
-      title: '식비',
+      id: 4,
     },
     paymentMethod: {
       id: 1,
@@ -101,9 +93,7 @@ const mockup: Array<Invoice> = [
     id: 5,
     date: new Date('2020-08-01T03:26:00'),
     category: {
-      id: 1,
-      type: '지출',
-      title: '식비',
+      id: 5,
     },
     paymentMethod: {
       id: 1,
@@ -119,8 +109,6 @@ const mockup: Array<Invoice> = [
     date: new Date('2020-08-03T03:24:00'),
     category: {
       id: 1,
-      type: '지출',
-      title: '식비',
     },
     paymentMethod: {
       id: 1,
@@ -135,9 +123,7 @@ const mockup: Array<Invoice> = [
     id: 7,
     date: new Date('2020-08-06T03:24:00'),
     category: {
-      id: 1,
-      type: '수입',
-      title: '은행이자',
+      id: 2,
     },
     paymentMethod: {
       id: 1,

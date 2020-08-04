@@ -1,5 +1,6 @@
 import { Component } from '..'
 import { Invoice } from '../../../types'
+import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { EVENT } from '../../utils/constants'
 import ListView from '../../view/ContainerView/RouterView/ListView'
@@ -7,11 +8,13 @@ import { Container } from './index'
 
 export class List extends Component<ListView, Container> {
   invoiceModel: InvoiceModel
+  categoryModel: CategoryModel
 
   constructor(parent, view: ListView) {
     super(parent, view)
 
     this.invoiceModel = this.parent.invoiceModel
+    this.categoryModel = this.parent.categoryModel
 
     this.view.bindInvoiceEditHandler((id) => {
       // TODO: Communcate with API
@@ -28,6 +31,11 @@ export class List extends Component<ListView, Container> {
     this.invoiceModel.on(EVENT.SET_INVOICES, (invoices) => {
       this.view.clear()
       invoices.forEach((invoice: Invoice) => {
+        const category = this.categoryModel.findCategoryById(
+          invoice.category.id
+        )
+        invoice.category.type = category.type
+        invoice.category.title = category.title
         this.view.addInvoice(invoice, false)
       })
     })

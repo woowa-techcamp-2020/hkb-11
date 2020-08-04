@@ -156,13 +156,16 @@ export default class FormView extends View {
   }
 
   getInvoiceData(): Invoice {
-    console.log(this.$date.value)
+    const $selectedOption = <HTMLOptionElement>(
+      this.$category.querySelector(`option[value='${this.$category.value}']`)
+    )
     const invoice: Invoice = {
       id: this.invoiceId,
       date: new Date(this.$date.value),
       category: {
+        id: +this.$category.value,
         type: this.categoryType,
-        title: this.$category.value,
+        title: $selectedOption.innerText,
       },
       paymentMethod: {
         userId: 'agrajak2',

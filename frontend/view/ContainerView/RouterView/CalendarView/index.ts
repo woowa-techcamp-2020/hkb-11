@@ -81,7 +81,8 @@ export default class CalendarView extends View {
       const $dateCell = this.query(
         `.${CALENDAR_CLASS.DATE_CELL}:not(.${CALENDAR_CLASS.OTHER_MONTH})[data-date='${key}']`
       )
-      console.log($dateCell)
+      if (!$dateCell) return
+
       const $earningSum = <HTMLDivElement>(
         $dateCell.querySelector(`.${CALENDAR_CLASS.EARNING_SUM}`)
       )
@@ -95,6 +96,8 @@ export default class CalendarView extends View {
       const $dateCell = this.query(
         `.${CALENDAR_CLASS.DATE_CELL}:not(.${CALENDAR_CLASS.OTHER_MONTH})[data-date='${key}']`
       )
+      if (!$dateCell) return
+
       const $spendingSum = <HTMLDivElement>(
         $dateCell.querySelector(`.${CALENDAR_CLASS.SPENDING_SUM}`)
       )
