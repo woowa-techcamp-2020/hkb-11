@@ -31,28 +31,23 @@ export const mockupCategory: Array<Category> = [
 export const mockupPayment: Array<PaymentMethod> = [
   {
     id: 1,
-    title: '식비',
-    userId: 'agrajak2',
+    title: '삼성페이',
   },
   {
     id: 2,
-    title: '교통비',
-    userId: 'agrajak2',
+    title: '롯데카드',
   },
   {
     id: 3,
-    title: '생활비',
-    userId: 'agrajak2',
+    title: '페이코',
   },
   {
     id: 4,
-    title: '월급',
-    userId: 'agrajak2',
+    title: '토스',
   },
   {
     id: 5,
-    title: '용돈',
-    userId: 'agrajak2',
+    title: '카카오페이',
   },
 ]
 
