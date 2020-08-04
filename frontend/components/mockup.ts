@@ -1,4 +1,4 @@
-import { Category, Invoice } from '../../types'
+import { Category, Invoice, PaymentMethod } from '../../types'
 
 export const mockupCategory: Array<Category> = [
   {
@@ -28,6 +28,34 @@ export const mockupCategory: Array<Category> = [
   },
 ]
 
+export const mockupPayment: Array<PaymentMethod> = [
+  {
+    id: 1,
+    title: '식비',
+    userId: 'agrajak2',
+  },
+  {
+    id: 2,
+    title: '교통비',
+    userId: 'agrajak2',
+  },
+  {
+    id: 3,
+    title: '생활비',
+    userId: 'agrajak2',
+  },
+  {
+    id: 4,
+    title: '월급',
+    userId: 'agrajak2',
+  },
+  {
+    id: 5,
+    title: '용돈',
+    userId: 'agrajak2',
+  },
+]
+
 const mockup: Array<Invoice> = [
   {
     id: 1,
@@ -37,12 +65,9 @@ const mockup: Array<Invoice> = [
     },
     paymentMethod: {
       id: 1,
-      userId: '아그라작',
-      title: '은행',
     },
     amount: 10000,
     item: '버거킹',
-    userId: '아그라작',
   },
   {
     id: 2,
@@ -52,12 +77,9 @@ const mockup: Array<Invoice> = [
     },
     paymentMethod: {
       id: 1,
-      userId: '아그라작',
-      title: '은행',
     },
     amount: 5000,
     item: '메가치킨마요는너무맛있어',
-    userId: '아그라작',
   },
   {
     id: 3,
@@ -67,12 +89,9 @@ const mockup: Array<Invoice> = [
     },
     paymentMethod: {
       id: 1,
-      userId: '아그라작',
-      title: '은행',
     },
     amount: 5200,
     item: '버거킹',
-    userId: '아그라작',
   },
   {
     id: 4,
@@ -82,12 +101,9 @@ const mockup: Array<Invoice> = [
     },
     paymentMethod: {
       id: 1,
-      userId: '아그라작',
-      title: '은행',
     },
     amount: 10000,
     item: '',
-    userId: '아그라작',
   },
   {
     id: 5,
@@ -97,12 +113,9 @@ const mockup: Array<Invoice> = [
     },
     paymentMethod: {
       id: 1,
-      userId: '아그라작',
-      title: '은행',
     },
     amount: 1700,
     item: '대추차',
-    userId: '아그라작',
   },
   {
     id: 6,
@@ -112,12 +125,9 @@ const mockup: Array<Invoice> = [
     },
     paymentMethod: {
       id: 1,
-      userId: '아그라작',
-      title: '티모카드',
     },
     amount: 2414,
     item: '이히히',
-    userId: '아그라작',
   },
   {
     id: 7,
@@ -127,12 +137,9 @@ const mockup: Array<Invoice> = [
     },
     paymentMethod: {
       id: 1,
-      userId: '아그라작',
-      title: '티모카드',
     },
     amount: 1,
     item: '은행이자',
-    userId: '아그라작',
   },
 ]
 export default mockup

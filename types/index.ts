@@ -5,9 +5,9 @@ type Category = {
 }
 
 type PaymentMethod = {
-  id?: number
-  userId: string
-  title: string
+  id: number
+  userId?: string
+  title?: string
 }
 
 type Invoice = {

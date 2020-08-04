@@ -178,6 +178,7 @@ export default class FormView extends View {
         title: $selectedOption.innerText,
       },
       paymentMethod: {
+        id: 1,
         userId: 'agrajak2',
         title: this.$payment.value,
       },
