@@ -5,6 +5,30 @@ import { InvoiceModel } from '../../model/InvoiceModel'
 import { EVENT } from '../../utils/constants'
 import ChartView from '../../view/ContainerView/RouterView/ChartView'
 
+function isSpending(invoice: Invoice) {
+  return invoice.category.type === '지출'
+}
+function invoiceReducer(picker) {
+  return (prev, invoice: Invoice) => {
+    const key = picker(invoice)
+    const beforeAmount = key in prev ? prev[key] : 0
+    return {
+      ...prev,
+      [key]: invoice.amount + beforeAmount,
+    }
+  }
+}
+function pickDate(invoice: Invoice) {
+  return invoice.date.getDate()
+}
+function pickCategory(invoice: Invoice) {
+  return invoice.category.title
+}
+function sortByValue(obj) {
+  return Object.entries(obj).sort(
+    (a: [string, number], b: [string, number]) => a[1] - b[1]
+  )
+}
 export class Chart extends Component<ChartView, Container> {
   invoiceModel: InvoiceModel
 
@@ -13,35 +37,22 @@ export class Chart extends Component<ChartView, Container> {
     this.invoiceModel = this.parent.invoiceModel
   }
   aggregateByDate(invoices: Invoice[]) {
-    return invoices
-      .filter((x) => x.category.type === '지출')
-      .reduce((prev, { amount, date }) => {
-        const _date = date.getDate()
-        const beforeAmount = _date in prev ? prev[_date] : 0
-        return { ...prev, [_date]: amount + beforeAmount }
-      }, {})
+    return invoices.filter(isSpending).reduce(invoiceReducer(pickDate), {})
   }
   aggregateByCategory(invoices: Invoice[]) {
-    return invoices
-      .filter((x) => x.category.type === '지출')
-      .reduce((prev, { amount, date, category }) => {
-        const _category = category.title
-        const beforeAmount = category.title in prev ? prev[category.title] : 0
-        return { ...prev, [category.title]: amount + beforeAmount }
-      }, {})
+    const totalAmount = invoices.reduce((a, b) => a + b.amount, 0)
+    return sortByValue(
+      invoices.filter(isSpending).reduce(invoiceReducer(pickCategory), {})
+    ).map(([key, value]: [string, number]) => ({
+      title: key,
+      ang: (value / totalAmount) * 360,
+      value,
+    }))
   }
   bind() {
     this.invoiceModel.on(EVENT.SET_INVOICES, (invoices: Invoice[]) => {
-      const result = this.aggregateByDate(invoices)
-      const maxAmount = Math.max(...(<number[]>Object.values(result)))
-      if (maxAmount == 0) return
-      const maxHeight = 1.5 * maxAmount
-      this.view.setBarMaxHeight(maxHeight)
-      Object.entries(result).forEach(([date, amount]: [string, number]) => {
-        this.view.setBarHeight(date, amount / maxHeight)
-      })
-      const result2 = this.aggregateByCategory(invoices)
-      console.log(result2)
+      this.view.renderBarChart(this.aggregateByDate(invoices))
+      this.view.renderPiChart(this.aggregateByCategory(invoices))
     })
   }
   unbind() {

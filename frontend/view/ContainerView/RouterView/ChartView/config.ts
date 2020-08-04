@@ -5,9 +5,12 @@ const config = {
   paddingY: 50,
   paddingX2: 20,
   lines: 13,
+  circles: 5,
+  circleColors: ['#96CEB4', '#FFEEAD', '#FF6F69', '#FFCC5C', '#88D8B0'],
 }
 
 export default {
   ...config,
   lineHeight: (config.height - config.paddingY * 2) / config.lines,
+  radius: config.height / 3,
 }

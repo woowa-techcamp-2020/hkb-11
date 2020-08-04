@@ -4,7 +4,44 @@ import { View } from '../../../index'
 import config from './config'
 import './style.scss'
 import { barChartTemplate, piChartTemplate, template } from './template'
-
+class PathBuilder {
+  d: string = ''
+  cx: 0
+  cy: 0
+  r: 0
+  constructor(cx, cy, r) {
+    this.cx = cx
+    this.cy = cy
+    this.r = r
+  }
+  dx(ang) {
+    return this.r * Math.cos(((ang - 90) / 180) * Math.PI)
+  }
+  dy(ang) {
+    return this.r * Math.sin(((ang - 90) / 180) * Math.PI)
+  }
+  start(ang) {
+    return this.c().move(this.cx + this.dx(ang), this.cy + this.dy(ang))
+  }
+  end(ang) {
+    return this.arc(ang)
+  }
+  move(x, y) {
+    this.d += `M${x} ${y} `
+    return this
+  }
+  arc(ang) {
+    this.d += `A${this.r} ${this.r} 0 ${ang >= 180 ? 1 : 0} 1 ${
+      this.cx + this.dx(ang)
+    } ${this.cy + this.dy(ang)} `
+    this.d += `L${this.cx} ${this.cy} Z`
+    return this
+  }
+  c() {
+    this.d = ''
+    return this
+  }
+}
 export default class ChartView extends View {
   $bar: HTMLInputElement
   $pi: HTMLInputElement
@@ -31,6 +68,16 @@ export default class ChartView extends View {
       if (target === this.$bar) {
         this.showBarChart()
       }
+    })
+  }
+  renderBarChart(arr) {
+    this.initBarChart()
+    const maxAmount = Math.max(...(<number[]>Object.values(arr)))
+    if (maxAmount == 0) return
+    const maxHeight = 1.5 * maxAmount
+    this.setBarMaxHeight(maxHeight)
+    Object.entries(arr).forEach(([date, amount]: [string, number]) => {
+      this.setBarHeight(date, amount / maxHeight)
     })
   }
   initBarChart() {
@@ -70,6 +117,24 @@ export default class ChartView extends View {
         }" font-size="${10}" stroke-width="1">${i}</text>`
       )
     }
+  }
+  renderPiChart(arr) {
+    this.$piChart.innerHTML = ''
+    const { height, width, circles, radius: r, circleColors } = config
+    const p = new PathBuilder(width / 2, height / 2, r)
+    let ang = 0
+    arr.splice(0, circles).forEach(({ title, value, ang: theta }, idx) => {
+      this.$piChart.insertAdjacentHTML(
+        'beforeend',
+        `<path d="${
+          p
+            .c()
+            .start(ang)
+            .end(ang + theta - 0.1).d
+        }" stroke="2" fill="${circleColors[idx]}"></path>`
+      )
+      ang += theta
+    })
   }
   setBarMaxHeight(height) {
     const { lines } = config
