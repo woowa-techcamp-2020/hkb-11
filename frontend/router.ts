@@ -126,7 +126,7 @@ class Router extends Observable {
       })
       this.currentPath = path
     }
-    if (fromPopState) this.pushURL()
+    if (!fromPopState) this.pushURL()
     return this.components[path]
   }
 
