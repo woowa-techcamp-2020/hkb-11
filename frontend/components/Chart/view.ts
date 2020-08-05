@@ -15,21 +15,24 @@ function dx(r, ang) {
 function dy(r, ang) {
   return r * Math.sin(((ang - 90) / 180) * Math.PI)
 }
-function createGridLine({ x1, x2, y }) {
-  return `<line class="grid-line" x1="${x1}" y1="${y}" x2="${x2}" y2="${y}"></line>`
+function $if(name, value = undefined) {
+  if (value === undefined) return ''
+  else return `${name}="${value}"`
 }
-function createGridNumber({ id, x, y }) {
-  return `<text class="grid-number" id="${id}" x="${x}" y="${y}"></text>`
+function createSVGLine({ id = undefined, className, x1, x2, y1, y2 }) {
+  return `<line ${$if('id', id)} ${$if(
+    'class',
+    className
+  )} x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>`
 }
-
+function createSVGText({ id, className, x, y, text = undefined }) {
+  return `<text ${$if(
+    'class',
+    className
+  )} id="${id}" x="${x}" y="${y}">${text}</text>`
+}
 function createDateCircle({ id, cx, cy }) {
   return `<circle class="date-circle" id="${id}" cx="${cx}" cy="${cy}"></circle>`
-}
-function createDateNumber({ id, x, y, date }) {
-  return `<text class="date-number" id="${id}" x=${x} y="${y}">${date}</text>`
-}
-function createConnectionLine({ id, x1, x2, y }) {
-  return `<line class="connection-line" id="${id}" x1="${x1}" x2="${x2}" y1="${y}" y2="${y}"></line>`
 }
 function createPiTableItemElement({ title, ratio, amount, idx }) {
   const { circleColors, width } = config
@@ -53,7 +56,6 @@ function createPiIndicatorLine({ ang, title }) {
   const ix = cx + dx(r * ratio, ang),
     iy = cy + dy(r * ratio, ang)
   const jx = ix + signed(ang) * (ratio - 1) * r
-
   return `<line x1="${cx}" y1="${cy}" x2="${ix}" y2="${iy}" stroke="black"></line>
   <line x1="${ix}" y1="${iy}" x2="${jx}" y2="${iy}" stroke="black"></line>
   <text x="${jx + signed(ang) * 6}" y="${iy + 4}" text-anchor="${
@@ -131,12 +133,15 @@ export default class ChartView extends View {
     for (let i = 1; i <= lines; i++) {
       const y = paddingY + lineHeight * i
       this.insertBarChartTemplate(
-        createGridLine({
+        createSVGLine({
+          className: 'grid-line',
           x1: paddingX,
           x2: width - paddingX,
-          y,
+          y1: y,
+          y2: y,
         }),
-        createGridNumber({
+        createSVGText({
+          className: 'grid-number',
           id: `h${lines - i}`,
           x: paddingX - paddingX2,
           y: y + 6,
@@ -149,25 +154,28 @@ export default class ChartView extends View {
       const x = padding + offsetX * i
       const y = height - paddingY
       this.insertBarChartTemplate(
+        i !== 1
+          ? createSVGLine({
+              className: 'connection-line',
+              id: `l${i - 1}`,
+              x1: x - offsetX,
+              x2: x,
+              y1: y,
+              y2: y,
+            })
+          : '',
         createDateCircle({
           id: `c${i}`,
           cx: x,
           cy: y,
         }),
-        createDateNumber({
+        createSVGText({
+          className: 'date-number',
           id: `d${i}`,
           x,
           y: height - paddingY + paddingX2,
-          date: i,
-        }),
-        i !== 1
-          ? createConnectionLine({
-              id: `l${i - 1}`,
-              x1: x - offsetX,
-              x2: x,
-              y,
-            })
-          : ''
+          text: i,
+        })
       )
     }
   }
