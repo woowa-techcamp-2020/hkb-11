@@ -1,6 +1,6 @@
+import { Component } from '..'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { EVENT } from '../../utils/constants'
-import { Component } from '../component'
 import { Container } from '../Container'
 import FilterView from './view'
 

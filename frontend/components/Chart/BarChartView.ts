@@ -20,7 +20,8 @@ export class BarChartView extends View {
     const { lines } = config
     for (let i = 0; i < lines; i++) {
       const text = <SVGTextElement>this.$barChart.querySelector(`text#h${i}`)
-      text.textContent = String(Math.floor((height / (lines - 1)) * i))
+      text.textContent =
+        height == 0 ? '' : String(Math.floor((height / (lines - 1)) * i))
     }
   }
   setBarHeight(date, ratio) {
@@ -41,12 +42,11 @@ export class BarChartView extends View {
   }
   renderBarChart(arr) {
     this.initBarChart()
-    const maxAmount = Math.max(...(<number[]>Object.values(arr)))
-    if (maxAmount == 0) return
+    const maxAmount = Math.max(...(<number[]>Object.values(arr)), 0)
     const maxHeight = 1.5 * maxAmount - ((1.5 * maxAmount) % 1000)
     this.setBarMaxHeight(maxHeight)
     Object.entries(arr).forEach(([date, amount]: [string, number]) => {
-      this.setBarHeight(date, amount / maxHeight)
+      this.setBarHeight(date, maxHeight == 0 ? 0 : amount / maxHeight)
     })
   }
   initBarChart() {

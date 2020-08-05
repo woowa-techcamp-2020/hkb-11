@@ -1,3 +1,4 @@
+import { Component } from '..'
 import * as api from '../../api'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
@@ -7,7 +8,6 @@ import { ROUTER } from '../../utils/constants'
 import { App } from '../app'
 import { Calendar } from '../Calendar'
 import { Chart } from '../Chart'
-import { Component } from '../component'
 import { Filter } from '../Filter'
 import { Form } from '../Form'
 import { List } from '../List'
@@ -36,8 +36,6 @@ export class Container extends Component<ContainerView, App> {
     this.form = new Form(this, this.view.formView)
     this.calendar = new Calendar(this, this.view.calendarView)
     this.chart = new Chart(this, this.view.chartView)
-
-    // TEMP : fetching data
 
     this.categoryModel.setCategories(mockupCategory)
     this.paymentModel.setPaymentMethods(mockupPayment)

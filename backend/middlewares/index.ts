@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 export function needAuth(req: Request, res: Response, next: NextFunction) {
   if (!req.auth) {
-    return res.status(401)
+    return res.status(401).end()
   }
   next()
 }

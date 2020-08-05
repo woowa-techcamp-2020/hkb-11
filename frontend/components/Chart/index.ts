@@ -1,7 +1,7 @@
+import { Component } from '..'
 import { Invoice } from '../../../types'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { CONSTANT, EVENT } from '../../utils/constants'
-import { Component } from '../component'
 import { Container } from '../Container'
 import ChartView from './view'
 
