@@ -54,12 +54,6 @@ export default class ModalView extends View {
     }
   }
 
-  setPayments(payments: PaymentMethod[]) {
-    payments.forEach((payment) => {
-      this.addPayment(payment)
-    })
-  }
-
   addPayment(payment: PaymentMethod) {
     const $payment = templateToElement(paymentTemplate)
     const itemName = <HTMLDivElement>(
@@ -67,6 +61,18 @@ export default class ModalView extends View {
     )
     itemName.innerText = payment.title
     this.$paymentList.appendChild($payment)
+  }
+
+  setPayments(payments: PaymentMethod[]) {
+    this.removePayments()
+
+    payments.forEach((payment) => {
+      this.addPayment(payment)
+    })
+  }
+
+  removePayments() {
+    this.$paymentList.innerHTML = ''
   }
 
   showModal() {
