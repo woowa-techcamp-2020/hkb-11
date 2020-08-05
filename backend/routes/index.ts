@@ -1,11 +1,13 @@
 import express from 'express'
 import controller from '../controller'
+import { needAuth } from '../middlewares'
 const router = express.Router()
 
 /* GET home page. */
 router.use('/login', controller.login)
 router.post('/signup', controller.signup)
 
+router.use(needAuth)
 /* Category API */
 router.get('/category', controller.getCategoryList)
 

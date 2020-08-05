@@ -93,3 +93,7 @@ export async function login({ id, password }) {
     METHOD.POST({ id, password })
   )
 }
+
+export async function fetchInvoices() {
+  return await api.requestForData(`${apiUrlBase}/invoice`, METHOD.GET())
+}

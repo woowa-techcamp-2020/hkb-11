@@ -5,11 +5,13 @@ import query from '../query'
 
 const getInvoiceList = async (req: Request, res: Response) => {
   try {
-    // jwt token 검사, false: 401
-
+    if (!req.auth) return res.status(401)
     const { year, month } = req.query
-
-    const [rows] = await pool.query(query.SELECT_INVOICE_LIST, [year, month])
+    const [rows] = await pool.query(query.SELECT_INVOICE_LIST, [
+      req.auth.id,
+      year,
+      month,
+    ])
     res.json({
       invoiceList: rows,
     })
@@ -22,9 +24,11 @@ const getInvoiceList = async (req: Request, res: Response) => {
 
 const postInvoice = async (req: Request, res: Response) => {
   try {
+    if (!req.auth) return res.status(401)
     const { invoice } = req.body
     const { date, categoryId, paymentMethodId, item, amount } = invoice
     const [row] = await pool.query<OkPacket>(query.INSERT_INVOICE, [
+      req.auth.id,
       date,
       categoryId,
       paymentMethodId,

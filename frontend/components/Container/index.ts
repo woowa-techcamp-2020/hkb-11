@@ -37,6 +37,7 @@ export class Container extends Component<ContainerView, App> {
     this.chart = new Chart(this, this.view.chartView)
 
     // TEMP : fetching data
+
     this.categoryModel.setCategories(mockupCategory)
     this.paymentModel.setPaymentMethods(mockupPayment)
 
