@@ -1,6 +1,7 @@
 import { Component } from './components/component'
 import { View } from './components/view'
 import { Observable } from './model'
+import store from './model/store'
 import { ROUTER } from './utils/constants'
 
 class Router extends Observable {
@@ -53,7 +54,11 @@ class Router extends Observable {
     }
     this.commitDateChange()
     if (path === '') {
-      this.go('list')
+      if (store.id) {
+        this.go('list')
+        return
+      }
+      this.go('login')
       return
     }
     if (!this.isInvalidPath(path)) this.go(path)

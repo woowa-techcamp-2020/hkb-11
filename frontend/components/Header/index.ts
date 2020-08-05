@@ -1,5 +1,6 @@
+import store from '../../model/store'
 import router from '../../router'
-import { ROUTER } from '../../utils/constants'
+import { GLOBAL, ROUTER } from '../../utils/constants'
 import { Component } from '../component'
 import { Login } from '../Login'
 import { Navigator } from '../Navigator'
@@ -17,6 +18,12 @@ export class Header extends Component<HeaderView> {
     this.view.navigatorView.appendToView(this.view)
 
     router.add('login', [this.login])
+    store.on(GLOBAL.LOGIN, () => {
+      this.view.login()
+    })
+    store.on(GLOBAL.LOGOUT, () => {
+      this.view.logout()
+    })
     router.on(ROUTER.CHANGE_DATE, ({ year, month }) => {
       this.view.navigatorView.setDate(year, month)
     })
