@@ -19,8 +19,11 @@ function login(req: Request, res: Response, next: NextFunction) {
         message: 'Something went Wrong',
       })
     }
-    // jwt를 활용한 토큰 발급
-    res.status(200)
+    // TODO: 토큰 들고기기
+    const token = JSON.stringify({ id: user.id })
+    res.status(200).json({
+      token,
+    })
   })(req, res, next)
 }
 async function signup(req: Request, res: Response, next: NextFunction) {
@@ -31,7 +34,7 @@ async function signup(req: Request, res: Response, next: NextFunction) {
     [id, password]
   )
   // TODO: 토큰 만들기
-  const token = ''
+  const token = JSON.stringify({ id })
   res.status(200).json({
     token,
   })

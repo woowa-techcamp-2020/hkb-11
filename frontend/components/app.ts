@@ -1,4 +1,7 @@
 import { PaymentModel } from '../model/PaymentModel'
+import store from '../model/store'
+import router from '../router'
+import { GLOBAL } from '../utils/constants'
 import { Component } from './component'
 import { Container } from './Container'
 import ContainerView from './Container/view'
@@ -41,7 +44,12 @@ export class App extends Component<AppView> {
 
     // set models
     this.paymentModel = new PaymentModel()
-
+    store.on(GLOBAL.LOGIN, () => {
+      router.go('list')
+    })
+    store.on(GLOBAL.LOGOUT, () => {
+      router.go('login')
+    })
     // set child components
     this.header = new Header(this, this.view.headerView)
     this.modal = new Modal(this, this.view.modalView)

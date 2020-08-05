@@ -9,7 +9,10 @@ export const CLASS = {
   ITEM: 'item',
   CENTER: 'center',
 }
-
+export const GLOBAL = {
+  LOGIN: 'LOGIN',
+  LOGOUT: 'LOGOUT',
+}
 export enum EVENT {
   ADD_INVOICE = 'ADD_INVOICE',
   CLEAR_INVOICES = 'CLEAR_INVOICES',
