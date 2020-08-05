@@ -18,7 +18,9 @@ function getNumberByAmount(amount: string): number {
 
 function formatDate(date: Date) {
   // return datetime format = yyyy-MM-ddThh:mm
-  return date.toISOString().slice(0, 16)
+  const timezoneOffset = date.getTimezoneOffset() * 60000
+  const timezoneDate = new Date(+date - timezoneOffset)
+  return timezoneDate.toISOString().slice(0, 16)
 }
 
 export default class FormView extends View {
@@ -66,7 +68,7 @@ export default class FormView extends View {
     this.$remove = <HTMLButtonElement>this.query(`.${FORM_CLASS.REMOVE_BTN}`)
     this.$clear = <HTMLButtonElement>this.query(`.${FORM_CLASS.CLEAR_BTN}`)
     this.$submit = <HTMLButtonElement>this.query(`.${FORM_CLASS.SUBMIT_BTN}`)
-
+    this.$date.value = formatDate(new Date())
     this.setCategoryType(CONSTANT.SPENDING)
   }
 
