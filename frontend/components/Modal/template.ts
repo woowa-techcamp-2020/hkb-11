@@ -21,7 +21,7 @@ export const template: string = /*html*/ `
 `
 
 export const paymentTemplate: string = /*html*/ `
-  <div class='row'>
+  <div class='row payment-row' data-id=''>
     <div class="item center">현대카드</div>
     <div class="item right">
       <i class="remove-btn f7-icons">trash</i>

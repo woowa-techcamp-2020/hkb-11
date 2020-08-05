@@ -21,9 +21,17 @@ export class Modal extends Component<ModalView, App> {
       this.view.addPayment(payment)
     })
 
+    this.paymentModel.on(EVENT.REMOVE_PAYMENT, (id: number) => {
+      this.view.removePayment(id)
+    })
+
     this.view.bindPaymentAddHandler((payment: PaymentMethod) => {
       this.paymentModel.addPaymentMethod(payment)
       this.view.clearModal()
+    })
+
+    this.view.bindPaymentRemoveHandler((paymentId: number) => {
+      this.paymentModel.removePaymentMethod(paymentId)
     })
   }
 }

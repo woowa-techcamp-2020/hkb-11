@@ -11,6 +11,7 @@ export default class ModalView extends View {
   $buttonAddPayment: HTMLButtonElement
   $paymentList: HTMLDivElement
   paymentAddHandler: Function
+  paymentRemoveHandler: Function
 
   constructor() {
     super(template)
@@ -33,6 +34,10 @@ export default class ModalView extends View {
     this.paymentAddHandler = handler
   }
 
+  bindPaymentRemoveHandler(handler) {
+    this.paymentRemoveHandler = handler
+  }
+
   onClickHandler(e) {
     const $buttonClose = e.target.closest(`.${MODAL_CLASS.CLOSE_BTN}`)
     if ($buttonClose) {
@@ -45,6 +50,14 @@ export default class ModalView extends View {
       this.paymentAddHandler(this.getPaymentData())
       return
     }
+
+    const $buttonRemovePayment = e.target.closest(`.${MODAL_CLASS.REMOVE_BTN}`)
+    if ($buttonRemovePayment) {
+      const $payment = $buttonRemovePayment.closest(
+        `.${MODAL_CLASS.PAYMENT_ROW}`
+      )
+      this.paymentRemoveHandler(+$payment.dataset.id)
+    }
   }
 
   getPaymentData() {
@@ -56,11 +69,19 @@ export default class ModalView extends View {
 
   addPayment(payment: PaymentMethod) {
     const $payment = templateToElement(paymentTemplate)
-    const itemName = <HTMLDivElement>(
+    $payment.dataset.id = payment.id.toString()
+    const $itemName = <HTMLDivElement>(
       $payment.querySelector(`.${CLASS.ITEM}.${CLASS.CENTER}`)
     )
-    itemName.innerText = payment.title
+    $itemName.innerText = payment.title
     this.$paymentList.appendChild($payment)
+  }
+
+  removePayment(paymentId: number) {
+    const $payment = this.query(
+      `.${MODAL_CLASS.PAYMENT_ROW}[data-id='${paymentId}']`
+    )
+    this.$paymentList.removeChild($payment)
   }
 
   setPayments(payments: PaymentMethod[]) {

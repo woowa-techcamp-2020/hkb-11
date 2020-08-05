@@ -27,6 +27,7 @@ export enum EVENT {
   SET_CATEGORIES = 'SET_CATEGORIES',
   CLEAR_CATEGORIES = 'CLEAR_CATEGORIES',
   ADD_PAYMENT = 'ADD_PAYMENT',
+  REMOVE_PAYMENT = 'REMOVE_PAYMENT',
   SET_PAYMENTS = 'SET_PAYMENTS',
   CLEAR_PAYMENTS = 'CLEAR_PAYMENTS',
 }
@@ -64,7 +65,9 @@ export enum MODAL_ID {
 }
 
 export enum MODAL_CLASS {
+  PAYMENT_ROW = 'payment-row',
   CLOSE_BTN = 'close-btn',
   ADD_BTN = 'button-add-payment',
+  REMOVE_BTN = 'remove-btn',
   INPUT_PAYMENT = 'input-payment',
 }
