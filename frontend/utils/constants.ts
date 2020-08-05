@@ -65,4 +65,6 @@ export enum MODAL_ID {
 
 export enum MODAL_CLASS {
   CLOSE_BTN = 'close-btn',
+  ADD_BTN = 'button-add-payment',
+  INPUT_PAYMENT = 'input-payment',
 }

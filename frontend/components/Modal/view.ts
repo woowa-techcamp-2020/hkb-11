@@ -6,36 +6,52 @@ import './style.scss'
 import { paymentTemplate, template } from './template'
 
 export default class ModalView extends View {
-  $closeBtn: HTMLElement
+  $buttonClose: HTMLElement
   $inputPayment: HTMLInputElement
   $buttonAddPayment: HTMLButtonElement
   $paymentList: HTMLDivElement
+  paymentAddHandler: Function
 
   constructor() {
     super(template)
     this.hide()
   }
   mount(): void {
-    this.$closeBtn = <HTMLElement>this.query(`.${MODAL_CLASS.CLOSE_BTN}`)
+    this.$buttonClose = <HTMLElement>this.query(`.${MODAL_CLASS.CLOSE_BTN}`)
+    this.$inputPayment = <HTMLInputElement>(
+      this.query(`.${MODAL_CLASS.INPUT_PAYMENT}`)
+    )
+    this.$buttonAddPayment = <HTMLInputElement>(
+      this.query(`.${MODAL_CLASS.ADD_BTN}`)
+    )
     this.$paymentList = <HTMLDivElement>this.query('.payment-list')
 
     this.$element.addEventListener('click', this.onClickHandler.bind(this))
   }
 
+  bindPaymentAddHandler(handler) {
+    this.paymentAddHandler = handler
+  }
+
   onClickHandler(e) {
-    const $closeBtn = e.target.closest(`.${MODAL_CLASS.CLOSE_BTN}`)
-    if ($closeBtn) {
+    const $buttonClose = e.target.closest(`.${MODAL_CLASS.CLOSE_BTN}`)
+    if ($buttonClose) {
       this.closeModal()
+      return
+    }
+
+    const $buttonAddPayment = e.target.closest(`.${MODAL_CLASS.ADD_BTN}`)
+    if ($buttonAddPayment) {
+      this.paymentAddHandler(this.getPaymentData())
       return
     }
   }
 
-  showModal() {
-    this.$element.classList.remove(CLASS.HIDDEN)
-  }
-
-  closeModal() {
-    this.$element.classList.add(CLASS.HIDDEN)
+  getPaymentData() {
+    return {
+      id: 0,
+      title: this.$inputPayment.value,
+    }
   }
 
   setPayments(payments: PaymentMethod[]) {
@@ -51,5 +67,17 @@ export default class ModalView extends View {
     )
     itemName.innerText = payment.title
     this.$paymentList.appendChild($payment)
+  }
+
+  showModal() {
+    this.$element.classList.remove(CLASS.HIDDEN)
+  }
+
+  closeModal() {
+    this.$element.classList.add(CLASS.HIDDEN)
+  }
+
+  clearModal() {
+    this.$inputPayment.value = ''
   }
 }
