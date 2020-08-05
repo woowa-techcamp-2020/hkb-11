@@ -1,1 +1,36 @@
 @use '@/static/styles/package' as *;
+
+#payment-modal {
+  .modal-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100vw;
+    height: 100vh;
+    background-color: $color-black;
+    opacity: 0.7;
+  }
+
+  .modal {
+    position: absolute;
+    top: calc(50vh - #{$height-modal} / 2);
+    left: calc(50vw - #{$width-modal} / 2);
+    z-index: 2000;
+    width: $width-modal;
+    height: $height-modal;
+    background-color: $color-white;
+    border: 1px solid $color-gray-200;
+    border-radius: 6px;
+    padding: 20px;
+
+    .modal-header {
+      position: relative;
+
+      .close-btn {
+        top: 0;
+        cursor: pointer;
+      }
+    }
+  }
+}
