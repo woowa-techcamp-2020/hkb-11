@@ -1,11 +1,12 @@
-export function needAuth(req, res, next) {
+import { NextFunction, Request, Response } from 'express'
+export function needAuth(req: Request, res: Response, next: NextFunction) {
   if (!req.auth) {
     return res.status(401)
   }
   next()
 }
 
-export function checkAuth(req, res, next) {
+export function checkAuth(req: Request, res: Response, next: NextFunction) {
   req.auth = null
   if (req.token) {
     const obj = JSON.parse(req.token)

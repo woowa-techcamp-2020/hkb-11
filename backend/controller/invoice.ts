@@ -1,19 +1,44 @@
 import { Request, Response } from 'express'
 import { OkPacket, ResultSetHeader, RowDataPacket } from 'mysql2'
+import { Invoice } from '../../types'
 import pool from '../pool'
 import query from '../query'
+
+const formatInvoice = (invoice): Invoice => {
+  const {
+    id,
+    date,
+    amount,
+    item,
+    userId,
+    categoryId,
+    paymentMethodId,
+  } = invoice
+  return {
+    id,
+    date,
+    amount,
+    item,
+    userId,
+    category: {
+      id: categoryId,
+    },
+    paymentMethod: {
+      id: paymentMethodId,
+    },
+  }
+}
 
 const getInvoiceList = async (req: Request, res: Response) => {
   try {
     if (!req.auth) return res.status(401)
     const { year, month } = req.query
-    const [rows] = await pool.query(query.SELECT_INVOICE_LIST, [
-      req.auth.id,
-      year,
-      month,
-    ])
+    const [rows] = await pool.query<RowDataPacket[]>(
+      query.SELECT_INVOICE_LIST,
+      [req.auth.id, year, month]
+    )
     res.json({
-      invoiceList: rows,
+      invoiceList: rows.map(formatInvoice),
     })
   } catch (e) {
     res.status(500).json({

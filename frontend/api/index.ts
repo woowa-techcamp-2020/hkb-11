@@ -94,6 +94,9 @@ export async function login({ id, password }) {
   )
 }
 
-export async function fetchInvoices() {
-  return await api.requestForData(`${apiUrlBase}/invoice`, METHOD.GET())
+export async function fetchInvoices(year, month) {
+  return await api.requestForData(
+    `${apiUrlBase}/invoice?year=${year}&month=${month}`,
+    METHOD.GET()
+  )
 }
