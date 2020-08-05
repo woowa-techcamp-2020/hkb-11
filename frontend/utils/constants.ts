@@ -62,3 +62,7 @@ export const CALENDAR_CLASS = {
 export enum MODAL_ID {
   PAYMENT_MODAL = 'payment-modal',
 }
+
+export enum MODAL_CLASS {
+  CLOSE_BTN = 'close-btn',
+}

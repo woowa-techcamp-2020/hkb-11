@@ -36,4 +36,8 @@ export default class HeaderView extends View {
     this.$login = <HTMLAnchorElement>this.query('.link-login')
     this.$logout = <HTMLAnchorElement>this.query('.link-logout')
   }
+
+  bindModalShowHandler(handler) {
+    this.$buttonPaymentModal.addEventListener('click', handler)
+  }
 }

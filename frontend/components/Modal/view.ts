@@ -1,13 +1,12 @@
 import { PaymentMethod } from '../../../types'
-import { CLASS, MODAL_ID } from '../../utils/constants'
+import { CLASS, MODAL_CLASS } from '../../utils/constants'
 import { templateToElement } from '../../utils/ElementGenerator'
 import { View } from '../view'
 import './style.scss'
 import { paymentTemplate, template } from './template'
 
 export default class ModalView extends View {
-  $buttonPaymentModal: HTMLButtonElement
-  $paymentModal: HTMLDivElement
+  $closeBtn: HTMLElement
   $inputPayment: HTMLInputElement
   $buttonAddPayment: HTMLButtonElement
   $paymentList: HTMLDivElement
@@ -17,20 +16,26 @@ export default class ModalView extends View {
     this.hide()
   }
   mount(): void {
-    this.$buttonPaymentModal = <HTMLButtonElement>(
-      document.querySelector('.button-payment-modal')
-    )
+    this.$closeBtn = <HTMLElement>this.query(`.${MODAL_CLASS.CLOSE_BTN}`)
     this.$paymentList = <HTMLDivElement>this.query('.payment-list')
-    this.$paymentModal = <HTMLDivElement>(
-      this.query(`.${MODAL_ID.PAYMENT_MODAL}`)
-    )
+
+    this.$element.addEventListener('click', this.onClickHandler.bind(this))
   }
-  bindButtonPaymentModalHandler(handler) {
-    // this.$buttonPaymentModal.addEventListener('click', handler)
+
+  onClickHandler(e) {
+    const $closeBtn = e.target.closest(`.${MODAL_CLASS.CLOSE_BTN}`)
+    if ($closeBtn) {
+      this.closeModal()
+      return
+    }
   }
 
   showModal() {
-    this.$paymentModal.classList.remove(CLASS.HIDDEN)
+    this.$element.classList.remove(CLASS.HIDDEN)
+  }
+
+  closeModal() {
+    this.$element.classList.add(CLASS.HIDDEN)
   }
 
   setPayments(payments: PaymentMethod[]) {

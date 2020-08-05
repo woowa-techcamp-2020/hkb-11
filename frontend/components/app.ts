@@ -32,6 +32,10 @@ export class AppView extends View {
 
     this.modalView.appendToView(this)
     this.containerView.appendToView(this)
+
+    this.headerView.bindModalShowHandler(() => {
+      this.modalView.showModal()
+    })
   }
 }
 
