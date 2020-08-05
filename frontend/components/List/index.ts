@@ -19,10 +19,6 @@ export class List extends Component<ListView, Container> {
     this.categoryModel = this.parent.categoryModel
     this.paymentModel = this.parent.paymentModel
 
-    this.view.bindInvoiceEditHandler((id) => {
-      // TODO: Communcate with API
-      // this.invoiceModel.removeInvoice(id)
-    })
     this.view.bindInvoiceClickledHandler((id) => {
       this.invoiceModel.highlight(id)
     })

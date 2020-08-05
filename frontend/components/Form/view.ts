@@ -297,6 +297,14 @@ export default class FormView extends View {
     })
   }
 
+  removePayment(paymentId: number) {
+    const $paymentOption = this.$payment.querySelector(
+      `option[value='${paymentId}']`
+    )
+
+    this.$payment.removeChild($paymentOption)
+  }
+
   removePaymentOptions() {
     const $paymentOptions = Array.from(
       this.$payment.querySelectorAll(`option:not([disabled])`)

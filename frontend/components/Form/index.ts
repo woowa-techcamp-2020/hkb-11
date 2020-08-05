@@ -60,6 +60,10 @@ export class Form extends Component<FormView, Container> {
     this.paymentModel.on(EVENT.ADD_PAYMENT, (payment: PaymentMethod) => {
       this.view.addPayment(payment)
     })
+
+    this.paymentModel.on(EVENT.REMOVE_PAYMENT, (paymentId: number) => {
+      this.view.removePayment(paymentId)
+    })
   }
 
   unbind() {
