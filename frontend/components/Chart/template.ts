@@ -23,5 +23,23 @@ export const piChartTemplate = /*html*/ `
   <div id="pi-chart">
     <small>pi-chart</small>
     <svg viewBox="0 0 800 400"></svg>
+    <h3>항목별 합계</h3>
+    <div id="pi-table" class="rows">
+    </div>
+  </div>
+`
+
+export const piItemTemplate = /*html*/ `
+  <div class="row">
+    <div class="item left item-title">
+    </div>
+    <div class="item right item-bar">
+      <div class="row">
+        <div class="item-color-bar">
+        </div>
+        <div class="item-amount">
+        </div>
+      </div>
+    </div>
   </div>
 `

@@ -8,7 +8,37 @@ svg {
   width: 800px;
 }
 
-.grid {
+.grid-line {
+  stroke: lightgrey;
   stroke-width: 1;
-  color: grey;
+}
+.grid-number {
+  vertical-align: center;
+  text-anchor: end;
+  font-size: 14;
+}
+.connection-line {
+  stroke: lightblue;
+  stroke-width: 2;
+}
+.date-circle {
+  stroke: black;
+  r: 3;
+}
+.date-number {
+  font-size: 0.8rem;
+}
+h3 {
+  font-size: 1.2rem;
+}
+.item-bar {
+  margin: 5px;
+}
+.item-color-bar {
+  background-color: grey;
+  margin-right: 10px;
+}
+
+.item-amount {
+  width: 100px;
 }

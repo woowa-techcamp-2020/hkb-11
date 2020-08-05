@@ -1,18 +1,77 @@
 import router from '../../router'
 import { templateToElement } from '../../utils/ElementGenerator'
-import { View } from '../view'
+import { setText, View } from '../view'
 import config from './config'
 import './style.scss'
-import { barChartTemplate, piChartTemplate, template } from './template'
+import {
+  barChartTemplate,
+  piChartTemplate,
+  piItemTemplate,
+  template,
+} from './template'
 function dx(r, ang) {
   return r * Math.cos(((ang - 90) / 180) * Math.PI)
 }
 function dy(r, ang) {
   return r * Math.sin(((ang - 90) / 180) * Math.PI)
 }
+function createGridLine({ x1, x2, y }) {
+  return `<line class="grid-line" x1="${x1}" y1="${y}" x2="${x2}" y2="${y}"></line>`
+}
+function createGridNumber({ id, x, y }) {
+  return `<text class="grid-number" id="${id}" x="${x}" y="${y}"></text>`
+}
+
+function createDateCircle({ id, cx, cy }) {
+  return `<circle class="date-circle" id="${id}" cx="${cx}" cy="${cy}"></circle>`
+}
+function createDateNumber({ id, x, y, date }) {
+  return `<text class="date-number" id="${id}" x=${x} y="${y}">${date}</text>`
+}
+function createConnectionLine({ id, x1, x2, y }) {
+  return `<line class="connection-line" id="${id}" x1="${x1}" x2="${x2}" y1="${y}" y2="${y}"></line>`
+}
+function createPiTableItemElement({ title, ratio, amount, idx }) {
+  const { circleColors, width } = config
+  const $piTableItem = templateToElement(piItemTemplate)
+  setText($piTableItem, '.item-title', title)
+  const $itemColorBar = $piTableItem.querySelector('.item-color-bar')
+  $itemColorBar.setAttribute(
+    'style',
+    `width: ${ratio * width}px; background-color: ${circleColors[idx]}`
+  )
+  setText($piTableItem, '.item-amount', amount)
+  return $piTableItem
+}
+
+function signed(ang) {
+  return ang >= 180 ? -1 : 1
+}
+function createPiIndicatorLine({ ang, title }) {
+  const { cx, cy, piLineRatio: ratio, radius: r } = config
+
+  const ix = cx + dx(r * ratio, ang),
+    iy = cy + dy(r * ratio, ang)
+  const jx = ix + signed(ang) * (ratio - 1) * r
+
+  return `<line x1="${cx}" y1="${cy}" x2="${ix}" y2="${iy}" stroke="black"></line>
+  <line x1="${ix}" y1="${iy}" x2="${jx}" y2="${iy}" stroke="black"></line>
+  <text x="${jx + signed(ang) * 6}" y="${iy + 4}" text-anchor="${
+    signed(ang) == 1 ? 'start' : 'end'
+  }">${title}</text>`
+}
+function createPiArc({ ang, theta, idx }) {
+  const { cx, cy, circleColors, radius: r } = config
+  return `<path d="M ${cx + dx(r, ang)} ${cy + dy(r, ang)} A ${r} ${r} 0 ${
+    theta >= 180 ? 1 : 0
+  } 1 ${cx + dx(r, ang + theta)} ${
+    cy + dy(r, ang + theta)
+  } L ${cx} ${cy} Z" stroke="2" fill="${circleColors[idx]}"></path>`
+}
 export default class ChartView extends View {
   $bar: HTMLInputElement
   $pi: HTMLInputElement
+  $piTable: HTMLDivElement
   $barFragment: HTMLDivElement
   $piFragment: HTMLDivElement
   $barChart: SVGElement
@@ -25,6 +84,7 @@ export default class ChartView extends View {
     this.$piFragment = <HTMLDivElement>this.query('#pi-chart')
     this.$barChart = <SVGElement>this.query('#bar-chart svg')
     this.$piChart = <SVGElement>this.query('#pi-chart svg')
+    this.$piTable = <HTMLDivElement>this.query('#pi-table')
     this.initBarChart()
     this.$element.addEventListener('click', ({ target }) => {
       if (!(target instanceof HTMLInputElement)) return
@@ -34,6 +94,16 @@ export default class ChartView extends View {
       if (target === this.$bar) {
         this.showBarChart()
       }
+    })
+  }
+  insertBarChartTemplate(...templates: string[]) {
+    templates.forEach((template) => {
+      this.$barChart.insertAdjacentHTML('beforeend', template)
+    })
+  }
+  insertPiChartTemplate(...templates: string[]) {
+    templates.forEach((template) => {
+      this.$piChart.insertAdjacentHTML('beforeend', template)
     })
   }
   renderBarChart(arr) {
@@ -48,66 +118,85 @@ export default class ChartView extends View {
   }
   initBarChart() {
     this.$barChart.innerHTML = ''
-    const { height, width, paddingX, paddingX2, paddingY, lines } = config
+    const {
+      height,
+      width,
+      paddingX,
+      paddingX2,
+      paddingY,
+      lines,
+      lineHeight,
+    } = config
     const dayN = new Date(router.year, router.month, 0).getDate()
     for (let i = 1; i <= lines; i++) {
-      const y = paddingY + ((height - 2 * paddingY) / lines) * i
-      this.$barChart.insertAdjacentHTML(
-        'beforeend',
-        `<line x1="${paddingX}" y1="${y}" x2="${
-          width - paddingX
-        }" y2="${y}" class="grid" stroke="lightgrey" stroke-width="1"></line>`
-      )
-      this.$barChart.insertAdjacentHTML(
-        'beforeend',
-        `<text id="h${
-          lines - i
-        }" vertical-align="center" text-anchor="end" x="${
-          paddingX - paddingX2
-        }" y="${y + 6}" font-size="14">${lines - i}</text>`
+      const y = paddingY + lineHeight * i
+      this.insertBarChartTemplate(
+        createGridLine({
+          x1: paddingX,
+          x2: width - paddingX,
+          y,
+        }),
+        createGridNumber({
+          id: `h${lines - i}`,
+          x: paddingX - paddingX2,
+          y: y + 6,
+        })
       )
     }
+    const padding = paddingX + paddingX2
+    const offsetX = (width - padding * 2) / dayN
     for (let i = 1; i <= dayN; i++) {
-      const padding = paddingX + paddingX2
-      const x = padding + ((width - padding * 2) / dayN) * i
+      const x = padding + offsetX * i
       const y = height - paddingY
-      if (i !== 1) {
-        const beforeX = padding + ((width - padding * 2) / dayN) * (i - 1)
-        this.$barChart.insertAdjacentHTML(
-          'beforeend',
-          `<line id="l${
-            i - 1
-          }" x1="${beforeX}" x2="${x}" y1="${y}" y2="${y}" stroke="blue">s</line>`
-        )
-      }
-      this.$barChart.insertAdjacentHTML(
-        'beforeend',
-        `<circle id="c${i}" cx="${x}" cy="${y}" r="${3}" stroke-width="1"></circle>`
-      )
-      this.$barChart.insertAdjacentHTML(
-        'beforeend',
-        `<text text-anchor="middle" x="${x}" y="${
-          height - paddingY + paddingX2
-        }" font-size="${10}" stroke-width="1">${i}</text>`
+      this.insertBarChartTemplate(
+        createDateCircle({
+          id: `c${i}`,
+          cx: x,
+          cy: y,
+        }),
+        createDateNumber({
+          id: `d${i}`,
+          x,
+          y: height - paddingY + paddingX2,
+          date: i,
+        }),
+        i !== 1
+          ? createConnectionLine({
+              id: `l${i - 1}`,
+              x1: x - offsetX,
+              x2: x,
+              y,
+            })
+          : ''
       )
     }
   }
   renderPiChart(arr) {
     this.$piChart.innerHTML = ''
-    const { height, width, circles, radius: r, circleColors } = config
-    const cx = width / 2,
-      cy = height / 2
+    const { circles } = config
     let ang = 0
-    arr.splice(0, circles).forEach(({ title, ang: theta }, idx) => {
-      this.$piChart.insertAdjacentHTML(
-        'beforeend',
-        `<path d="M ${cx + dx(r, ang)} ${cy + dy(r, ang)} A ${r} ${r} 0 ${
-          theta >= 180 ? 1 : 0
-        } 1 ${cx + dx(r, ang + theta)} ${
-          cy + dy(r, ang + theta)
-        } L ${cx} ${cy} Z" stroke="2" fill="${circleColors[idx]}"></path>`
+    arr.slice(0, circles).forEach(({ title, ang: theta }, idx) => {
+      this.insertPiChartTemplate(
+        createPiIndicatorLine({ ang: ang + theta / 2, title }),
+        createPiArc({ ang, theta, idx })
       )
       ang += theta
+    })
+    this.renderPiTable(arr)
+  }
+  renderPiTable(arr) {
+    const { circles } = config
+    this.$piTable.innerHTML = ''
+    const totalAmount = arr.reduce((a, b) => a + b.amount, 0)
+    arr.slice(0, circles).forEach(({ title, amount }, idx) => {
+      this.$piTable.appendChild(
+        createPiTableItemElement({
+          title,
+          ratio: amount / totalAmount,
+          idx,
+          amount,
+        })
+      )
     })
   }
   setBarMaxHeight(height) {
