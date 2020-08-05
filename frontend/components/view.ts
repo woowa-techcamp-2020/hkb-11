@@ -1,5 +1,42 @@
 import { templateToElement } from '../utils/ElementGenerator'
 
+function $if(name, value = undefined) {
+  if (value === undefined) return ''
+  else return `${name}="${value}"`
+}
+function createSVGLine({
+  id = undefined,
+  className = undefined,
+  x1,
+  x2,
+  y1,
+  y2,
+}) {
+  return `<line ${$if('id', id)} ${$if(
+    'class',
+    className
+  )} x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>`
+}
+function createSVGText({
+  id = undefined,
+  className = undefined,
+  x,
+  y,
+  text = undefined,
+}) {
+  return `<text ${$if(
+    'class',
+    className
+  )} id="${id}" x="${x}" y="${y}">${text}</text>`
+}
+
+function createSVGCircle({ id = undefined, className = undefined, cx, cy }) {
+  return `<circle ${$if('class', className)} ${$if(
+    'id',
+    id
+  )} cx="${cx}" cy="${cy}"></circle>`
+}
+
 function setText(element: HTMLElement, query: string, text: string | number) {
   const target = <HTMLDivElement>element.querySelector(query)
   target.innerText = String(text)
@@ -49,4 +86,14 @@ abstract class View {
   abstract mount(): void
 }
 
-export { setText, getText, removeElement, getSibling, View }
+export {
+  setText,
+  getText,
+  removeElement,
+  getSibling,
+  $if,
+  createSVGLine,
+  createSVGText,
+  createSVGCircle,
+  View,
+}

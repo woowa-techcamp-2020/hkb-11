@@ -26,7 +26,7 @@ function pickCategory(invoice: Invoice) {
 }
 function sortByValue(obj) {
   return Object.entries(obj).sort(
-    (a: [string, number], b: [string, number]) => a[1] - b[1]
+    (a: [string, number], b: [string, number]) => b[1] - a[1]
   )
 }
 export class Chart extends Component<ChartView, Container> {
@@ -40,19 +40,20 @@ export class Chart extends Component<ChartView, Container> {
     return invoices.filter(isSpending).reduce(invoiceReducer(pickDate), {})
   }
   aggregateByCategory(invoices: Invoice[]) {
-    const totalAmount = invoices.reduce((a, b) => a + b.amount, 0)
+    const spendingInvoices = invoices.filter(isSpending)
+    const totalAmount = spendingInvoices.reduce((a, b) => a + b.amount, 0)
     return sortByValue(
-      invoices.filter(isSpending).reduce(invoiceReducer(pickCategory), {})
-    ).map(([key, value]: [string, number]) => ({
-      title: key,
-      ang: (value / totalAmount) * 360,
-      value,
+      spendingInvoices.reduce(invoiceReducer(pickCategory), {})
+    ).map(([title, amount]: [string, number]) => ({
+      title,
+      amount,
+      ang: (amount / totalAmount) * 360,
     }))
   }
   bind() {
     this.invoiceModel.on(EVENT.SET_INVOICES, (invoices: Invoice[]) => {
-      this.view.renderBarChart(this.aggregateByDate(invoices))
-      this.view.renderPiChart(this.aggregateByCategory(invoices))
+      this.view.barChartView.renderBarChart(this.aggregateByDate(invoices))
+      this.view.piChartView.renderPiChart(this.aggregateByCategory(invoices))
     })
   }
   unbind() {
