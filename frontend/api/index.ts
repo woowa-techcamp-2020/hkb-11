@@ -52,10 +52,6 @@ const METHOD = {
   },
 }
 const api = {
-  request: async (url, config) => {
-    const response = await fetch(url, config)
-    return response
-  },
   requestForData: async (url, config) => {
     const response = await fetch(url, config)
     if (response.ok) {

@@ -1,8 +1,8 @@
+import { Component } from '..'
 import { PaymentMethod } from '../../../types'
 import { PaymentModel } from '../../model/PaymentModel'
 import { EVENT } from '../../utils/constants'
 import { App } from '../app'
-import { Component } from '../component'
 import { default as ModalView } from './view'
 
 export class Modal extends Component<ModalView, App> {

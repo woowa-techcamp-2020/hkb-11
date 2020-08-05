@@ -1,8 +1,8 @@
-import { Component } from './components/component'
+import { Component } from './components'
 import { View } from './components/view'
 import { Observable } from './model'
 import store from './model/store'
-import { ROUTER } from './utils/constants'
+import { GLOBAL, ROUTER } from './utils/constants'
 
 class Router extends Observable {
   url: URL
@@ -15,10 +15,16 @@ class Router extends Observable {
     this.components = new Map<string, Component<View>[]>()
     this.year = new Date().getFullYear()
     this.month = new Date().getMonth() + 1
+
+    store.on(GLOBAL.LOGIN, () => {
+      this.go('list')
+    })
+    store.on(GLOBAL.LOGOUT, () => {
+      this.go('login')
+    })
+
     document.body.addEventListener('click', ({ target }) => {
-      if (target instanceof HTMLElement) {
-        const { nodeName } = target
-        if (!(nodeName === 'A')) return
+      if (target instanceof HTMLAnchorElement) {
         const to = target.getAttribute('to')
         if (!to) return
         this.go(to)
@@ -33,7 +39,7 @@ class Router extends Observable {
         this.month = month
         this.commitDateChange()
       }
-      this.go(path, false)
+      this.go(path, true)
     }
   }
   add(path: string, components: Component<View>[]) {
@@ -66,7 +72,7 @@ class Router extends Observable {
   commitDateChange() {
     this.emit(ROUTER.CHANGE_DATE, { year: this.year, month: this.month })
   }
-  renderURL() {
+  pushURL() {
     const { currentPath, year, month } = this
     if (currentPath === 'login') {
       history.pushState({ path: 'login' }, '', 'login')
@@ -96,20 +102,23 @@ class Router extends Observable {
   isInvalidPath(path) {
     return !Object.keys(this.components).includes(path)
   }
-  go(path, renderFlag = true) {
-    console.log(`${this.currentPath} >> ${path}`)
+  go(path, fromPopState = false) {
     if (path === 'previous-month') {
       this.movePreviousMonth()
     } else if (path === 'next-month') {
       this.moveNextMonth()
     } else if (this.currentPath !== path) {
       if (this.isInvalidPath(path)) return
-      if (this.currentPath)
+      if (this.currentPath) {
         this.emit(ROUTER.MUTATE_VIEW, {
           path: this.currentPath,
           flag: false,
           components: this.components[this.currentPath],
         })
+        if (this.currentPath === 'login') {
+          this.commitDateChange()
+        }
+      }
       this.emit(ROUTER.MUTATE_VIEW, {
         path,
         flag: true,
@@ -117,7 +126,7 @@ class Router extends Observable {
       })
       this.currentPath = path
     }
-    if (renderFlag) this.renderURL()
+    if (fromPopState) this.pushURL()
     return this.components[path]
   }
 
