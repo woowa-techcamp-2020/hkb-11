@@ -8,8 +8,8 @@
 }
 
 @mixin calendar-cell() {
-  $L-border: 1px solid $color-light-beige;
-  $L-border-radius: 6px;
+  $L-border: 1px solid $color-beige;
+  $L-border-radius: 5px;
 
   border: {
     bottom: $L-border;

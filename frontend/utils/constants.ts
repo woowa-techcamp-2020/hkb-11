@@ -6,6 +6,8 @@ export const CONSTANT = {
 export const CLASS = {
   HIDDEN: 'hidden',
   ACTIVE: 'active',
+  ITEM: 'item',
+  CENTER: 'center',
 }
 
 export enum EVENT {
@@ -52,4 +54,8 @@ export const CALENDAR_CLASS = {
   OTHER_MONTH: 'other-month',
   EARNING_SUM: 'earning-sum',
   SPENDING_SUM: 'spending-sum',
+}
+
+export enum MODAL_ID {
+  PAYMENT_MODAL = 'payment-modal',
 }
