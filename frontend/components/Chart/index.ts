@@ -52,8 +52,8 @@ export class Chart extends Component<ChartView, Container> {
   }
   bind() {
     this.invoiceModel.on(EVENT.SET_INVOICES, (invoices: Invoice[]) => {
-      this.view.renderBarChart(this.aggregateByDate(invoices))
-      this.view.renderPiChart(this.aggregateByCategory(invoices))
+      this.view.barChartView.renderBarChart(this.aggregateByDate(invoices))
+      this.view.piChartView.renderPiChart(this.aggregateByCategory(invoices))
     })
   }
   unbind() {
