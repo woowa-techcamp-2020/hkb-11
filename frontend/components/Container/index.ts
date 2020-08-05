@@ -1,28 +1,19 @@
-import { Component } from '..'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { PaymentModel } from '../../model/PaymentModel'
 import router from '../../router'
 import { ROUTER } from '../../utils/constants'
+import { App } from '../app'
 import { Calendar } from '../Calendar'
-import CalendarView from '../Calendar/view'
 import { Chart } from '../Chart'
-import ChartView from '../Chart/view'
+import { Component } from '../component'
 import { Filter } from '../Filter'
-import FilterView from '../Filter/view'
 import { Form } from '../Form'
-import FormVIew from '../Form/view'
 import { List } from '../List'
-import ListView from '../List/view'
 import mockup, { mockupCategory, mockupPayment } from '../mockup'
-import RouterView from './view'
+import ContainerView from './view'
 
-export class Container extends Component<RouterView> {
-  formView: FormVIew
-  filterView: FilterView
-  listView: ListView
-  calendarView: CalendarView
-  chartView: ChartView
+export class Container extends Component<ContainerView, App> {
   invoiceModel: InvoiceModel
   categoryModel: CategoryModel
   paymentModel: PaymentModel
@@ -32,23 +23,18 @@ export class Container extends Component<RouterView> {
   calendar: Calendar
   chart: Chart
 
-  constructor(view: RouterView) {
-    super(null, view)
+  constructor(parent, view: ContainerView) {
+    super(parent, view)
 
     this.invoiceModel = new InvoiceModel()
     this.categoryModel = new CategoryModel()
-    this.paymentModel = new PaymentModel()
+    this.paymentModel = this.parent.paymentModel
 
-    this.listView = this.view.listView
-    this.filterView = this.view.filterView
-    this.formView = this.view.formView
-    this.calendarView = this.view.calendarView
-    this.chartView = this.view.chartView
-    this.list = new List(this, this.listView)
-    this.filter = new Filter(this, this.filterView)
-    this.form = new Form(this, this.formView)
-    this.calendar = new Calendar(this, this.calendarView)
-    this.chart = new Chart(this, this.chartView)
+    this.list = new List(this, this.view.listView)
+    this.filter = new Filter(this, this.view.filterView)
+    this.form = new Form(this, this.view.formView)
+    this.calendar = new Calendar(this, this.view.calendarView)
+    this.chart = new Chart(this, this.view.chartView)
 
     // TEMP : fetching data
     this.categoryModel.setCategories(mockupCategory)

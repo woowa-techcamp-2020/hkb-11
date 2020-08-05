@@ -7,7 +7,7 @@ import { View } from '../view'
 import './style.scss'
 import { template } from './template'
 
-export default class RouterView extends View {
+export default class ContainerView extends View {
   formView: FormView
   filterView: FilterView
   listView: ListView
@@ -16,12 +16,13 @@ export default class RouterView extends View {
 
   constructor() {
     super(template)
+  }
 
+  mount(): void {
     this.formView = new FormView()
     this.filterView = new FilterView()
     this.listView = new ListView()
     this.calendarView = new CalendarView()
     this.chartView = new ChartView()
   }
-  mount(): void {}
 }

@@ -1,4 +1,4 @@
-import { Component } from './components'
+import { Component } from './components/component'
 import { View } from './components/view'
 import { Observable } from './model'
 import { ROUTER } from './utils/constants'

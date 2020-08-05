@@ -1,9 +1,9 @@
-import { Component } from '..'
 import { Invoice } from '../../../types'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { PaymentModel } from '../../model/PaymentModel'
 import { EVENT } from '../../utils/constants'
+import { Component } from '../component'
 import { Container } from '../Container/index'
 import ListView from './view'
 

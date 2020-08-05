@@ -20,7 +20,7 @@ export const template: string = /*html*/ `
   </div>
 `
 
-export const paymentItemTemplate: string = /*html*/ `
+export const paymentTemplate: string = /*html*/ `
   <div class='row'>
     <div class="item center">현대카드</div>
     <div class="item right">
