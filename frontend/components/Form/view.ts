@@ -165,7 +165,7 @@ export default class FormView extends View {
     this.$amount.value = invoice.amount.toString()
     formatInputAmount(this.$amount)
 
-    this.setRemoveBtn(true)
+    this.changeFloatBtn(FORM_CLASS.REMOVE_BTN)
     this.checkInvoiceValidation()
   }
 
@@ -326,12 +326,14 @@ export default class FormView extends View {
     })
   }
 
-  setRemoveBtn(isShow: boolean): void {
-    if (isShow) {
+  changeFloatBtn(showClass: string): void {
+    if (showClass === FORM_CLASS.REMOVE_BTN) {
       this.$remove.classList.remove(CLASS.HIDDEN)
-      return
+      this.$clear.classList.add(CLASS.HIDDEN)
+    } else if (showClass === FORM_CLASS.CLEAR_BTN) {
+      this.$remove.classList.add(CLASS.HIDDEN)
+      this.$clear.classList.remove(CLASS.HIDDEN)
     }
-    this.$remove.classList.add(CLASS.HIDDEN)
   }
 
   clear() {
@@ -341,8 +343,10 @@ export default class FormView extends View {
     this.$category.value = ''
     this.$payment.value = ''
     this.invoiceId = 0
+    this.setSelectDisabled(this.$category)
+    this.setSelectDisabled(this.$payment)
     this.setCategoryType(CONSTANT.SPENDING)
-    this.setRemoveBtn(false)
+    this.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
     this.checkInvoiceValidation()
   }
 }
