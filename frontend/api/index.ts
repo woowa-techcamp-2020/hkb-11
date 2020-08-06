@@ -124,15 +124,15 @@ export async function fetchPayments() {
 }
 
 export async function postPayment(payment: PaymentMethod) {
-  return await api.requestForData(
-    `${apiUrlBase}/payment_method`,
+  return await API.requestForData(
+    `${APIUrlBase}/payment_method`,
     METHOD.POST(payment)
   )
 }
 
 export async function deletePayment(id: number) {
-  return await api.requestForStatus(
-    `${apiUrlBase}/payment_method`,
+  return await API.requestForStatus(
+    `${APIUrlBase}/payment_method`,
     METHOD.DELETE({ id })
   )
 }

@@ -43,14 +43,14 @@ export class Container extends Component<ContainerView, App> {
     router.on(ROUTER.CHANGE_DATE, async ({ year, month }) => {
       if (this.categoryModel.isEmpty() || this.paymentModel.isEmpty()) {
         const [{ categoryList }, { paymentMethodList }] = await Promise.all([
-          api.fetchCategories(),
-          api.fetchPayments(),
+          API.fetchCategories(),
+          API.fetchPayments(),
         ])
         this.categoryModel.setCategories(categoryList)
         this.paymentModel.setPaymentMethods(paymentMethodList)
       }
 
-      const { invoiceList } = await api.fetchInvoices(year, month)
+      const { invoiceList } = await API.fetchInvoices(year, month)
       if (router.year !== year && router.month !== month) return
       invoiceList.forEach((invoice) => {
         invoice.date = new Date(invoice.date)
