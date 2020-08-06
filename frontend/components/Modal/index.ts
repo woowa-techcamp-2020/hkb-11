@@ -38,8 +38,13 @@ export class Modal extends Component<ModalView, App> {
       this.view.clearModal()
     })
 
-    this.view.bindPaymentRemoveHandler((paymentId: number) => {
-      // delete payment
+    this.view.bindPaymentRemoveHandler(async (paymentId: number) => {
+      const status = await api.deletePayment(paymentId)
+      if (status !== 200) {
+        alert('server error')
+        return
+      }
+
       this.paymentModel.removePaymentMethod(paymentId)
     })
   }
