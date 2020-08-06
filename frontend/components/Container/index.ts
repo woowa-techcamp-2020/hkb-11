@@ -3,15 +3,15 @@ import * as api from '../../api'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { PaymentModel } from '../../model/PaymentModel'
+import store from '../../model/store'
 import router from '../../router'
-import { ROUTER } from '../../utils/constants'
+import { GLOBAL, ROUTER } from '../../utils/constants'
 import { App } from '../app'
 import { Calendar } from '../Calendar'
 import { Chart } from '../Chart'
 import { Filter } from '../Filter'
 import { Form } from '../Form'
 import { List } from '../List'
-import { mockupCategory, mockupPayment } from '../mockup'
 import ContainerView from './view'
 
 export class Container extends Component<ContainerView, App> {
@@ -37,8 +37,15 @@ export class Container extends Component<ContainerView, App> {
     this.calendar = new Calendar(this, this.view.calendarView)
     this.chart = new Chart(this, this.view.chartView)
 
-    this.categoryModel.setCategories(mockupCategory)
-    this.paymentModel.setPaymentMethods(mockupPayment)
+    store.on(GLOBAL.LOGIN, () => {
+      api.fetchCategories().then(({ categoryList }) => {
+        this.categoryModel.setCategories(categoryList)
+      })
+
+      api.fetchPayments().then(({ paymentMethodList }) => {
+        this.paymentModel.setPaymentMethods(paymentMethodList)
+      })
+    })
 
     router.add('list', [this.form, this.filter, this.list])
     router.add('calendar', [this.filter, this.calendar])
@@ -46,6 +53,7 @@ export class Container extends Component<ContainerView, App> {
     router.on(ROUTER.CHANGE_DATE, async ({ year, month }) => {
       // TODO: backend invociecs
       const { invoiceList } = await api.fetchInvoices(year, month)
+      console.log(invoiceList)
       invoiceList.forEach((invoice) => {
         invoice.date = new Date(invoice.date)
         this.categoryModel.fillInvoice(invoice)

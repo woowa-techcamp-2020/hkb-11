@@ -57,6 +57,7 @@ export default class ModalView extends View {
         `.${MODAL_CLASS.PAYMENT_ROW}`
       )
       this.paymentRemoveHandler(+$payment.dataset.id)
+      return
     }
   }
 

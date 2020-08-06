@@ -71,5 +71,6 @@ export class Form extends Component<FormView, Container> {
     this.categoryModel.off(EVENT.SET_CATEGORIES)
     this.paymentModel.off(EVENT.ADD_PAYMENT)
     this.paymentModel.off(EVENT.SET_PAYMENTS)
+    this.paymentModel.off(EVENT.REMOVE_PAYMENT)
   }
 }
