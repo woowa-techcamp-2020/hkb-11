@@ -20,9 +20,7 @@ const getPaymentMethodList = async (req: Request, res: Response) => {
 
 const postPaymentMethod = async (req: Request, res: Response) => {
   try {
-    const {
-      paymentMethod: { title },
-    } = req.body
+    const { title } = req.body
 
     const [row] = await pool.query<OkPacket>(query.INSERT_PAYMENT_METHOD, [
       title,
@@ -41,10 +39,7 @@ const postPaymentMethod = async (req: Request, res: Response) => {
 
 const deletePaymentMethod = async (req: Request, res: Response) => {
   try {
-    // TODO : req.body에 id만 보낼지 paymentMethod로 감싸서 보낼지 논의
-    const {
-      paymentMethod: { id },
-    } = req.body
+    const { id } = req.body
 
     // 삭제할 paymentMethod가 있는지 검사, false: 404
     const [row] = await pool.query<RowDataPacket[]>(
