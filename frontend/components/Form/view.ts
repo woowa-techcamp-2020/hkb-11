@@ -146,6 +146,11 @@ export default class FormView extends View {
       formatInputAmount(e.target)
       return
     }
+
+    if (e.target.tagName === 'SELECT') {
+      this.setSelectDisabled(<HTMLSelectElement>e.target)
+      return
+    }
   }
 
   setInvoiceData(invoice: Invoice) {
@@ -154,7 +159,9 @@ export default class FormView extends View {
     this.$item.value = invoice.item
     this.$category.value = invoice.category.id.toString()
     this.setCategoryType(invoice.category.type)
+    this.setSelectDisabled(this.$category)
     this.$payment.value = invoice.paymentMethod.id.toString()
+    this.setSelectDisabled(this.$payment)
     this.$amount.value = invoice.amount.toString()
     formatInputAmount(this.$amount)
 
@@ -206,6 +213,14 @@ export default class FormView extends View {
     }
 
     return invoice
+  }
+
+  setSelectDisabled($select: HTMLSelectElement) {
+    if ($select.value === '') {
+      $select.classList.add(CLASS.DISABLED)
+      return
+    }
+    $select.classList.remove(CLASS.DISABLED)
   }
 
   addCategory(category: Category) {
@@ -327,7 +342,7 @@ export default class FormView extends View {
     this.$payment.value = ''
     this.invoiceId = 0
     this.setCategoryType(CONSTANT.SPENDING)
-    this.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
+    this.setRemoveBtn(false)
     this.checkInvoiceValidation()
   }
 }

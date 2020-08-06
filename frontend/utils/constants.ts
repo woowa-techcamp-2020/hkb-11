@@ -9,6 +9,7 @@ export const CLASS = {
   ITEM: 'item',
   CENTER: 'center',
   STOP_SCROLL: 'stop-scroll',
+  DISABLED: 'disabled',
 }
 export const GLOBAL = {
   LOGIN: 'LOGIN',
