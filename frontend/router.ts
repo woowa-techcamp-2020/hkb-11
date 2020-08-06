@@ -67,7 +67,8 @@ class Router extends Observable {
       return
     }
     if (path === '') this.go(ROUTE.LIST)
-    if (!this.isInvalidPath(path)) this.go(path)
+if (this.isInvalidPath(path)) return
+ this.go(path)
   }
   commitDateChange() {
     this.emit(ROUTER.CHANGE_DATE, { year: this.year, month: this.month })
