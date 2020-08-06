@@ -6,7 +6,6 @@ export class CategoryModel extends Observable {
   categories: Array<Category> = []
 
   fillInvoice(invoice: Invoice) {
-    console.log(invoice)
     const category = this.findCategoryById(invoice.category.id)
     invoice.category.type = category.type
     invoice.category.title = category.title
