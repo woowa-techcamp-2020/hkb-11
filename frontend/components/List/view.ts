@@ -1,6 +1,6 @@
 import { Invoice } from '../../../types'
 import { formatAmount } from '../../utils'
-import { CONSTANT, LIST_CLASS } from '../../utils/constants'
+import { CLASS, CONSTANT, LIST_CLASS } from '../../utils/constants'
 import { templateToElement } from '../../utils/ElementGenerator'
 import { getSibling, getText, removeElement, setText, View } from '../view'
 import './style.scss'
@@ -151,6 +151,7 @@ export default class ListView extends View {
       return
     }
     removeElement($invoiceRow)
+    this.setWrapperVisible()
   }
   bindInvoiceEditHandler(handler: Function) {
     this.$element.addEventListener('click', ({ target }) => {
@@ -173,12 +174,31 @@ export default class ListView extends View {
       if (flag) $row.classList.remove('hidden')
       else $row.classList.add('hidden')
     })
+    this.setWrapperVisible()
   }
   setSpendingVisible(flag: boolean) {
     this.getInvoiceRowsByType(CONSTANT.SPENDING).forEach(($row) => {
       if (flag) $row.classList.remove('hidden')
       else $row.classList.add('hidden')
     })
+    this.setWrapperVisible()
+  }
+  setWrapperVisible() {
+    const $wrapperRows = <HTMLDivElement[]>(
+      Array.from(this.queryAll(`.${LIST_CLASS.WRAPPER}`))
+    )
+    $wrapperRows.forEach(($wrapperRow) => {
+      if (this.getVisibleInvoiceNum($wrapperRow) === 0) {
+        $wrapperRow.classList.add(CLASS.HIDDEN)
+        return
+      }
+      $wrapperRow.classList.remove(CLASS.HIDDEN)
+    })
+  }
+  getVisibleInvoiceNum($wrapper: HTMLDivElement): number {
+    return $wrapper.querySelectorAll(
+      `.${LIST_CLASS.INVOICE}:not(.${CLASS.HIDDEN})`
+    ).length
   }
   mount(): void {}
 }

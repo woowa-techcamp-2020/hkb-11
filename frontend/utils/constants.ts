@@ -57,6 +57,8 @@ export const ROUTES = {
 export enum LIST_CLASS {
   EARNING = 'earning',
   SPENDING = 'spending',
+  WRAPPER = 'invoice-wrapper',
+  INVOICE = 'invoice',
 }
 
 export enum FILTER_CLASS {

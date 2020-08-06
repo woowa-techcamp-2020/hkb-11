@@ -40,6 +40,7 @@ export class List extends Component<ListView, Container> {
             : !this.invoiceModel.spendingToggle
         this.view.addInvoiceRow(invoice, isHidden)
       })
+      this.view.setWrapperVisible()
     })
     this.invoiceModel.on(EVENT.REMOVE_INVOICE, (id) => {
       this.view.removeInvoice(id)
