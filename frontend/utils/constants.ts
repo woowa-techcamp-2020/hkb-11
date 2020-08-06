@@ -36,6 +36,20 @@ export const ROUTER = {
   CHANGE_DATE: 'CHANGE_DATE',
 }
 
+export const ROUTE = {
+  LOGIN: 'login',
+  LIST: 'list',
+  CALENDAR: 'calendar',
+  CHART: 'chart',
+  PREVIOUS_MONTH: 'previous-month',
+  NEXT_MONTH: 'next-month',
+}
+export const ROUTES = {
+  CONTAINER: [ROUTE.LIST, ROUTE.CALENDAR, ROUTE.CHART],
+  LOGIN: [ROUTE.LOGIN],
+  ALL: [ROUTE.LIST, ROUTE.CALENDAR, ROUTE.CHART, ROUTE.LOGIN],
+}
+
 export const FORM_CLASS = {
   INPUT_AMOUNT: 'input-amount',
   INPUT_DATE: 'input-date',
