@@ -328,7 +328,6 @@ export default class FormView extends View {
     this.invoiceId = 0
     this.setCategoryType(CONSTANT.SPENDING)
     this.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
-    this.removePaymentOptions()
     this.checkInvoiceValidation()
   }
 }
