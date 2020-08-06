@@ -69,7 +69,7 @@ function createInvoiceRow(invoice: Invoice) {
   const { id, date, category, item, paymentMethod, amount } = invoice
 
   const $invoiceRow = templateToElement(invoiceRowTemplate) as HTMLDivElement
-  const type = category.type === '수입' ? 'earning' : 'spending'
+  const type = category.type === CONSTANT.EARNING ? 'earning' : 'spending'
   $invoiceRow.classList.add('invoice', type)
   setText($invoiceRow, '.hidden-id', id)
   setText($invoiceRow, '.hidden-date', +date)
