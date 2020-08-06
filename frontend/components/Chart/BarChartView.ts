@@ -1,8 +1,9 @@
 import router from '../../router'
 import { formatAmount } from '../../utils'
+import { templateToElement } from '../../utils/ElementGenerator'
 import { createSVGCircle, createSVGLine, createSVGText, View } from '../view'
 import config from './config'
-import { barChartTemplate } from './template'
+import { barChartTemplate, barDisplayTemplate } from './template'
 
 function range(idx) {
   return Array.from({ length: idx }, (_, i) => i)
@@ -83,11 +84,43 @@ function createGridNumbers(lines) {
 
 export class BarChartView extends View {
   $barChart: SVGElement
-
+  $barDisplay: HTMLDivElement
+  $selectedDateNumber: SVGTextElement
   constructor() {
     super(barChartTemplate)
     this.$barChart = <SVGElement>this.query('#bar-chart svg')
+    this.$barDisplay = <HTMLDivElement>templateToElement(barDisplayTemplate)
+    this.$element.insertBefore(this.$barDisplay, null)
     this.initBarChart()
+    this.$barChart.addEventListener(
+      'mousemove',
+      this.handleMouseMove.bind(this)
+    )
+  }
+  handleMouseMove(event) {
+    const { target } = event
+    if (!(target instanceof Element)) return
+    const $circle = target.closest('circle')
+    if (!$circle) {
+      this.$barDisplay.classList.add('hidden2')
+      this.$selectedDateNumber?.classList.remove('selected')
+      return
+    }
+    this.$barDisplay.classList.remove('hidden2')
+    const cx = parseInt($circle.getAttribute('cx')),
+      cy = parseInt($circle.getAttribute('cy'))
+    const amount = formatAmount(parseInt($circle.getAttribute('amount')))
+    this.$barDisplay.innerText = `${amount || 0}원`
+    const { width, height } = this.$barDisplay.getBoundingClientRect()
+    this.$barDisplay.setAttribute(
+      'style',
+      `left: ${cx - width / 2}; top: ${cy - height * 1.3};`
+    )
+    this.$selectedDateNumber = <SVGTextElement>(
+      this.query(`#d${$circle.id.slice(1)}`)
+    )
+    this.$selectedDateNumber.classList.add('selected')
+    // debugger
   }
   mount() {}
   insertBarChartTemplate(...templates: string[]) {
@@ -103,7 +136,7 @@ export class BarChartView extends View {
         height == 0 ? '' : formatAmount(Math.floor((height / (lines - 1)) * i))
     }
   }
-  setBarHeight(date, ratio) {
+  setBarHeight(date, ratio, amount) {
     const { paddingY, height, lineHeight } = config
     const circle = <SVGCircleElement>this.$barChart.querySelector(`#c${date}`)
     const line = <SVGLineElement>this.$barChart.querySelector(`#l${date}`)
@@ -118,6 +151,7 @@ export class BarChartView extends View {
       beforeLine.setAttribute('y2', `${y}`)
     }
     circle.setAttribute('cy', `${y}`)
+    circle.setAttribute('amount', `${amount}`)
   }
   renderBarChart(arr) {
     this.initBarChart()
@@ -125,7 +159,7 @@ export class BarChartView extends View {
     const maxHeight = 1.5 * maxAmount - ((1.5 * maxAmount) % 1000)
     this.setBarMaxHeight(maxHeight)
     Object.entries(arr).forEach(([date, amount]: [string, number]) => {
-      this.setBarHeight(date, maxHeight == 0 ? 0 : amount / maxHeight)
+      this.setBarHeight(date, maxHeight == 0 ? 0 : amount / maxHeight, amount)
     })
   }
   initBarChart() {
