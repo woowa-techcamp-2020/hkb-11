@@ -4,7 +4,7 @@ import { postInvoice } from '../../api'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { PaymentModel } from '../../model/PaymentModel'
-import { EVENT, FORM_CLASS } from '../../utils/constants'
+import { EVENT } from '../../utils/constants'
 import { Container } from '../Container'
 import FormView from './view'
 
@@ -31,7 +31,7 @@ export class Form extends Component<FormView, Container> {
             invoice
           )
         )
-        this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
+        this.view.setRemoveBtn(false)
         this.view.clear()
       } catch (error) {
         console.error(error)
@@ -41,14 +41,14 @@ export class Form extends Component<FormView, Container> {
     this.view.bindInvoiceRemoveHandler((id: number) => {
       this.invoiceModel.removeInvoice(id)
 
-      this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
+      this.view.setRemoveBtn(false)
       this.view.clear()
     })
 
     this.view.bindInvoiceUpdateHandler((invoice: Invoice) => {
       this.invoiceModel.updateInvoice(invoice)
 
-      this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
+      this.view.setRemoveBtn(false)
       this.view.clear()
     })
   }

@@ -158,7 +158,7 @@ export default class FormView extends View {
     this.$amount.value = invoice.amount.toString()
     formatInputAmount(this.$amount)
 
-    this.changeFloatBtn(FORM_CLASS.REMOVE_BTN)
+    this.setRemoveBtn(true)
     this.checkInvoiceValidation()
   }
 
@@ -311,12 +311,12 @@ export default class FormView extends View {
     })
   }
 
-  changeFloatBtn(showClass: string): void {
-    if (showClass === FORM_CLASS.REMOVE_BTN) {
+  setRemoveBtn(isShow: boolean): void {
+    if (isShow) {
       this.$remove.classList.remove(CLASS.HIDDEN)
-    } else if (showClass === FORM_CLASS.CLEAR_BTN) {
-      this.$remove.classList.add(CLASS.HIDDEN)
+      return
     }
+    this.$remove.classList.add(CLASS.HIDDEN)
   }
 
   clear() {
