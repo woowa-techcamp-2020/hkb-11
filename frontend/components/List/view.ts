@@ -6,7 +6,7 @@ import { dateRowtemplate, invoiceRowTemplate, template } from './template'
 
 const days = ['월', '화', '수', '목', '금', '토', '일']
 function getPrettyDate(date: Date) {
-  return `${date.getFullYear()} ${date.getMonth() + 1} ${date.getDate()}`
+  return `${date.getMonth() + 1}월 ${date.getDate()}일`
 }
 function getPrettyDay(date: Date) {
   return days[date.getDay()]

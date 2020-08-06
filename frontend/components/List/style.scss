@@ -1,1 +1,124 @@
 @use '@/static/styles/package' as *;
+
+#invoice-list {
+  padding-top: 30px;
+
+  .invoice-wrapper {
+    width: 100%;
+
+    .date-row {
+      border-top: 1px solid $color-gray-600;
+      padding: 11px 0;
+
+      .item {
+        .date {
+          font-size: 16px;
+          font-weight: 600;
+          margin-right: 8px;
+        }
+
+        .day {
+          font-size: 16px;
+          color: $color-gray-800;
+        }
+
+        .earning-sum,
+        .spending-sum {
+          font-size: 16px;
+          font-weight: 600;
+          &::after {
+            content: '원';
+            display: inline-block;
+          }
+        }
+
+        .earning-sum {
+          color: $color-main;
+          margin-right: 12px;
+          &::before {
+            content: '+';
+            margin-right: -4px;
+          }
+          &::after {
+            margin-left: -3px;
+          }
+        }
+
+        .spending-sum {
+          color: $color-complementary;
+          &::before {
+            content: '–';
+            display: inline-block;
+            margin-right: 3px;
+          }
+        }
+      }
+    }
+
+    .invoice {
+      align-items: center;
+      border-top: 1px solid $color-gray-400;
+      padding: 5px 0;
+      position: relative;
+
+      .button-edit {
+        display: none;
+      }
+
+      &:hover {
+        .float {
+          $L-width: 50px;
+
+          left: calc(50% - #{$L-width} / 2);
+
+          .button-edit {
+            display: flex;
+            justify-content: center;
+            width: $L-width;
+            border: none;
+            background-color: transparent;
+            color: $color-main;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .item {
+        align-items: center;
+
+        &.left {
+          .category {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 95px;
+            border-radius: 30px;
+            padding: 8px;
+            margin-right: 20px;
+            background-color: $color-complementary;
+            color: $color-white;
+            font-size: 14px;
+            font-weight: 600;
+          }
+        }
+
+        &.right {
+          width: 40%;
+
+          .payment {
+            display: flex;
+            justify-content: center;
+            width: 50%;
+          }
+
+          .amount {
+            display: flex;
+            justify-content: flex-end;
+            width: 50%;
+            color: $color-complementary;
+          }
+        }
+      }
+    }
+  }
+}

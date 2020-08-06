@@ -26,14 +26,14 @@ export const dateRowtemplate: string = /*html*/ `
 export const invoiceRowTemplate: string = /*html*/ `
   <div class='row invoice'>
     <div class="float">
-      <button class="button-edit">Edit</button>
+      <i class="button-edit f7-icons">pencil_circle</i>
     </div>
     <div class="hidden">
       <div class="hidden-id"></div>
       <div class="hidden-date"></div>
     </div>
     <div class="item left">
-      <div class="type"></div>
+      <div class="type hidden"></div>
       <div class="category"></div>
       <div class="content"></div>
     </div>
