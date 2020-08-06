@@ -87,4 +87,11 @@ export class Container extends Component<ContainerView, App> {
       }
     )
   }
+
+  getFilterValues() {
+    return {
+      earning: this.filter.getEarningChecked(),
+      spending: this.filter.getSpendingChecked(),
+    }
+  }
 }

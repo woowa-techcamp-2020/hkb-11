@@ -1,4 +1,4 @@
-import { CALENDAR_CLASS, CLASS } from '../../utils/constants'
+import { CALENDAR_CLASS, CLASS, CONSTANT } from '../../utils/constants'
 import { templateToElement } from '../../utils/ElementGenerator'
 import { View } from '../view'
 import './style.scss'
@@ -12,7 +12,7 @@ function getDateList(year: number, month: number) {
   const startDate: Date = new Date(firstDate)
   startDate.setDate(firstDate.getDate() - firstDate.getDay())
 
-  for (let i = 0; i < 42; i++) {
+  for (let i = 0; i < CONSTANT.CELL_NUM; i++) {
     const date: Date = new Date(startDate)
     date.setDate(startDate.getDate() + i)
     dateList.push(date)
@@ -43,13 +43,13 @@ export default class CalendarView extends View {
       this.$element.appendChild($headerCell)
     })
 
-    for (let i = 0; i < 42; i++) {
+    for (let i = 0; i < CONSTANT.CELL_NUM; i++) {
       const $dateCell = templateToElement(dateCellTemplate)
       this.$element.appendChild($dateCell)
     }
   }
 
-  setDateCells(year: number = 2020, month: number = 8) {
+  setDateCells(year: number, month: number) {
     const today = new Date()
     getDateList(year, month).forEach((date: Date, index: number) => {
       const $dateCell = this.$dateCells[index]
@@ -75,7 +75,7 @@ export default class CalendarView extends View {
     })
   }
 
-  setDateEarning(dateEarningObj) {
+  setDateEarning(dateEarningObj, isShow: boolean) {
     for (let key in dateEarningObj) {
       const $dateCell = this.query(
         `.${CALENDAR_CLASS.DATE_CELL}:not(.${CALENDAR_CLASS.OTHER_MONTH})[data-date='${key}']`
@@ -86,11 +86,13 @@ export default class CalendarView extends View {
         $dateCell.querySelector(`.${CALENDAR_CLASS.EARNING_SUM}`)
       )
       $earningSum.innerText = `+${dateEarningObj[key]}`
-      $earningSum.classList.remove(CLASS.HIDDEN)
+
+      if (isShow) $earningSum.classList.remove(CLASS.HIDDEN)
+      else $earningSum.classList.add(CLASS.HIDDEN)
     }
   }
 
-  setDateSpending(dateSpendingObj) {
+  setDateSpending(dateSpendingObj, isShow: boolean) {
     for (let key in dateSpendingObj) {
       const $dateCell = this.query(
         `.${CALENDAR_CLASS.DATE_CELL}:not(.${CALENDAR_CLASS.OTHER_MONTH})[data-date='${key}']`
@@ -102,6 +104,9 @@ export default class CalendarView extends View {
       )
       $spendingSum.innerText = `-${dateSpendingObj[key]}`
       $spendingSum.classList.remove(CLASS.HIDDEN)
+
+      if (isShow) $spendingSum.classList.remove(CLASS.HIDDEN)
+      else $spendingSum.classList.add(CLASS.HIDDEN)
     }
   }
 

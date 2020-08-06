@@ -1,6 +1,7 @@
 export const CONSTANT = {
   SPENDING: '지출',
   EARNING: '수입',
+  CELL_NUM: 42,
 }
 
 export const CLASS = {

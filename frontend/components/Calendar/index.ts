@@ -30,8 +30,9 @@ export class Calendar extends Component<CalendarView, Container> {
 
       this.view.setDateCells(router.getYear(), router.getMonth())
       const [dateEarningObj, dateSpendingObj] = this.formatDateSum(invoices)
-      this.view.setDateEarning(dateEarningObj)
-      this.view.setDateSpending(dateSpendingObj)
+      const checkValues = this.parent.getFilterValues()
+      this.view.setDateEarning(dateEarningObj, checkValues.earning)
+      this.view.setDateSpending(dateSpendingObj, checkValues.spending)
     })
 
     this.invoiceModel.on(EVENT.EARNING_TOGGLE, (isClicked: boolean) => {
