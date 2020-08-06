@@ -1,3 +1,4 @@
+import { formatAmount } from '../../utils'
 import { setText, View } from '../view'
 import './style.scss'
 import { template } from './template'
@@ -28,11 +29,11 @@ export default class FilterView extends View {
   }
 
   setEarningTotal(amount) {
-    setText(this.$element, '.earning-total', `${amount}원`)
+    setText(this.$element, '.earning-total', `${formatAmount(amount)}원`)
     return this
   }
   setSpendingTotal(amount) {
-    setText(this.$element, '.spending-total', `${amount}원`)
+    setText(this.$element, '.spending-total', `${formatAmount(amount)}원`)
     return this
   }
   setEarningToggle(value: boolean) {

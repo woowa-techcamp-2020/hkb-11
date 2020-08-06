@@ -1,15 +1,13 @@
 import { Category, Invoice, PaymentMethod } from '../../../types'
+import { formatAmount } from '../../utils'
 import { CLASS, CONSTANT, FORM_CLASS } from '../../utils/constants'
 import { templateToElement } from '../../utils/ElementGenerator'
 import { View } from '../view'
 import './style.scss'
 import { optionTemplate, template } from './template'
 
-function formatAmount($target: HTMLInputElement) {
-  $target.value = $target.value
-    .toString()
-    .replace(/\D/g, '')
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+function formatInputAmount($target: HTMLInputElement) {
+  $target.value = formatAmount($target.value)
 }
 
 function getNumberByAmount(amount: string): number {
@@ -146,7 +144,7 @@ export default class FormView extends View {
     this.checkInvoiceValidation()
 
     if (e.target.classList.contains(FORM_CLASS.INPUT_AMOUNT)) {
-      formatAmount(e.target)
+      formatInputAmount(e.target)
       return
     }
   }

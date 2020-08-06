@@ -2,16 +2,14 @@ import { Component } from '..'
 import { Invoice } from '../../../types'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import router from '../../router'
+import { formatAmount } from '../../utils'
 import { CONSTANT, EVENT } from '../../utils/constants'
 import { Container } from '../Container'
 import CalendarView from './view'
 
 function formatAmountObj(dateAmountObj) {
   for (let key in dateAmountObj) {
-    dateAmountObj[key] = dateAmountObj[key]
-      .toString()
-      .replace(/\D/g, '')
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    dateAmountObj[key] = formatAmount(dateAmountObj[key])
   }
 
   return dateAmountObj
