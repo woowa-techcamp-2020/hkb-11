@@ -86,7 +86,7 @@ export class InvoiceModel extends Observable {
   findInvoiceById(id: number) {
     return this.invoices.find((invoice) => invoice.id === id)
   }
-  render() {
+  emitAll() {
     this.emit(EVENT.SET_INVOICES, this.invoices)
     this.emit(EVENT.EARNING_TOGGLE, this.earningToggle)
     this.emit(EVENT.SPENDING_TOGGLE, this.spendingToggle)

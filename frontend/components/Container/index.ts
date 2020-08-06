@@ -74,9 +74,9 @@ export class Container extends Component<ContainerView, App> {
             view.clear()
             component.bind()
           })
-          this.invoiceModel.render()
-          this.categoryModel.render()
-          this.paymentModel.render()
+          this.invoiceModel.emitAll()
+          this.categoryModel.emitAll()
+          this.paymentModel.emitAll()
           return
         }
         components.forEach((component) => {

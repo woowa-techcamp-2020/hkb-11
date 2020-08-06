@@ -29,7 +29,7 @@ export class CategoryModel extends Observable {
     return this.categories.length === 0
   }
 
-  render() {
+  emitAll() {
     this.emit(EVENT.SET_CATEGORIES, this.categories)
   }
 }

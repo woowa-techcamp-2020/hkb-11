@@ -40,7 +40,7 @@ export class PaymentModel extends Observable {
     return this.paymentMethods.length === 0
   }
 
-  render() {
+  emitAll() {
     this.emit(EVENT.SET_PAYMENTS, this.paymentMethods)
   }
 }
