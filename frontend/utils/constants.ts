@@ -8,6 +8,7 @@ export const CLASS = {
   ACTIVE: 'active',
   ITEM: 'item',
   CENTER: 'center',
+  STOP_SCROLL: 'stop-scroll',
 }
 export const GLOBAL = {
   LOGIN: 'LOGIN',

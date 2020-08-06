@@ -99,10 +99,12 @@ export default class ModalView extends View {
 
   showModal() {
     this.$element.classList.remove(CLASS.HIDDEN)
+    document.body.classList.add(CLASS.STOP_SCROLL)
   }
 
   closeModal() {
     this.$element.classList.add(CLASS.HIDDEN)
+    document.body.classList.remove(CLASS.STOP_SCROLL)
   }
 
   clearModal() {

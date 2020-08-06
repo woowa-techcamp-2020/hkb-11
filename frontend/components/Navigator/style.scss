@@ -4,6 +4,12 @@
   display: flex;
   justify-content: center;
   padding-top: 20px;
+  position: fixed;
+  width: 100vw;
+  top: $height-main;
+  left: 0;
+  z-index: 2000;
+  background-color: $color-white;
 
   .rows {
     .row {

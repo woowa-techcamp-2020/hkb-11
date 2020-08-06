@@ -1,11 +1,16 @@
 @use '@/static/styles/package' as *;
 
 #header {
+  margin-bottom: 180px;
+
   #main-header {
     align-items: center;
     height: $height-main;
     background-color: $color-main;
-    padding: 0 40px;
+    padding: 0 80px;
+    position: fixed;
+    width: 100vw;
+    top: 0;
 
     * {
       color: $color-white;

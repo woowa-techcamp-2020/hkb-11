@@ -194,3 +194,8 @@ a,
 button {
   cursor: pointer;
 }
+
+.stop-scroll {
+  max-height: 100vh;
+  overflow: hidden;
+}

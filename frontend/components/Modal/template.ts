@@ -3,15 +3,14 @@ export const template: string = /*html*/ `
     <div class="modal-background"></div>
     <div class="modal">
       <div class="modal-header">
-        <div>
+        <div class='modal-title'>
           결제 수단 관리
         </div>
         <i class="float close-btn f7-icons">xmark</i>
       </div>
       <div class="modal-body">
         <form class="payment-form">
-          <label>결제 수단 이름</label>
-          <input class="input-payment" />
+          <input class="input-payment" placeholder='결제 수단 이름' />
           <button type="button" class="button button-add-payment">등록</button>
         </form>
         <div class="rows payment-list"></div>
