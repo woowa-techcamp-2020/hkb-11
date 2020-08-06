@@ -20,7 +20,8 @@ export const barChartTemplate = /*html*/ `
 `
 export const piChartTemplate = /*html*/ `
   <div id="pi-chart">
-    <svg viewBox="0 0 800 400"></svg>
+    <svg viewBox="0 0 800 400">
+    </svg>
     <div class="header-3">
       항목별 합계
     </div>
@@ -28,7 +29,11 @@ export const piChartTemplate = /*html*/ `
     </div>
   </div>
 `
+export const noDataAlertTemplate = `
+  <circle cx="400" cy="200" r="132" fill="lightgrey"></circle>
+  <text id="no-data-alert" x="400" y="200" text-anchor="middle">표시할 정보가 없습니다.</text>
 
+`
 export const piItemTemplate = /*html*/ `
   <div class="row">
     <div class="item left item-title">
