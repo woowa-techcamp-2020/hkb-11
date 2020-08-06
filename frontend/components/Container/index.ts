@@ -53,7 +53,6 @@ export class Container extends Component<ContainerView, App> {
     router.on(ROUTER.CHANGE_DATE, async ({ year, month }) => {
       // TODO: backend invociecs
       const { invoiceList } = await api.fetchInvoices(year, month)
-      console.log(invoiceList)
       invoiceList.forEach((invoice) => {
         invoice.date = new Date(invoice.date)
         this.categoryModel.fillInvoice(invoice)

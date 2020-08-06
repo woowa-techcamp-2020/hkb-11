@@ -152,7 +152,6 @@ export default class FormView extends View {
   }
 
   setInvoiceData(invoice: Invoice) {
-    console.log(invoice)
     this.invoiceId = invoice.id
     this.$date.value = formatDate(invoice.date)
     this.$item.value = invoice.item
