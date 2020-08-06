@@ -36,6 +36,10 @@ export class PaymentModel extends Observable {
     this.emit(EVENT.CLEAR_PAYMENTS)
   }
 
+  isEmpty() {
+    return this.paymentMethods.length === 0
+  }
+
   render() {
     this.emit(EVENT.SET_PAYMENTS, this.paymentMethods)
   }

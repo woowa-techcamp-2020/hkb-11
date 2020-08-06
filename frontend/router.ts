@@ -67,8 +67,8 @@ class Router extends Observable {
       return
     }
     if (path === '') this.go(ROUTE.LIST)
-if (this.isInvalidPath(path)) return
- this.go(path)
+    if (this.isInvalidPath(path)) return
+    this.go(path)
   }
   commitDateChange() {
     this.emit(ROUTER.CHANGE_DATE, { year: this.year, month: this.month })
@@ -105,29 +105,29 @@ if (this.isInvalidPath(path)) return
   }
   go(path, fromPopState = false) {
     const isFirstNavigation = this.beforePath === undefined
+    const isFromLogin = this.beforePath === ROUTE.LOGIN
     if (path === null) return
-    if (this.beforePath !== path) {
-      if (this.isInvalidPath(path)) return
-      if (!isFirstNavigation) {
-        this.emit(ROUTER.MUTATE_VIEW, {
-          path: this.beforePath,
-          flag: false,
-        })
-      }
-
-      if (
-        this.beforePath === ROUTE.LOGIN ||
-        (isFirstNavigation && path !== ROUTE.LOGIN)
-      ) {
-        this.commitDateChange()
-      }
+    if (this.beforePath == path) return
+    if (this.isInvalidPath(path)) return
+    if (!isFirstNavigation) {
       this.emit(ROUTER.MUTATE_VIEW, {
-        path,
-        flag: true,
+        path: this.beforePath,
+        flag: false,
       })
-      this.beforePath = path
     }
+    this.emit(ROUTER.MUTATE_VIEW, {
+      path,
+      flag: true,
+    })
+    this.beforePath = path
+
     if (!fromPopState) this.pushURL()
+    if (path === ROUTE.LOGIN) {
+      return
+    }
+    if (isFirstNavigation || isFromLogin) {
+      this.commitDateChange()
+    }
   }
 
   getYear() {
