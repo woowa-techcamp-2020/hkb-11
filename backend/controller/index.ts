@@ -27,7 +27,6 @@ function login(req: Request, res: Response, next: NextFunction) {
   })(req, res, next)
 }
 async function signup(req: Request, res: Response, next: NextFunction) {
-  console.log(req.body)
   const { id, password } = req.body
   const [row] = await pool.query<OkPacket>(
     'INSERT INTO Users (id, password) VALUES (?, ?)',

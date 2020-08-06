@@ -25,6 +25,10 @@ export class CategoryModel extends Observable {
     this.emit(EVENT.CLEAR_CATEGORIES)
   }
 
+  isEmpty() {
+    return this.categories.length === 0
+  }
+
   render() {
     this.emit(EVENT.SET_CATEGORIES, this.categories)
   }

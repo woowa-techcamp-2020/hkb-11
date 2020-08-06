@@ -3,9 +3,8 @@ import * as api from '../../api'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { PaymentModel } from '../../model/PaymentModel'
-import store from '../../model/store'
 import router from '../../router'
-import { GLOBAL, ROUTE, ROUTER, ROUTES } from '../../utils/constants'
+import { ROUTE, ROUTER, ROUTES } from '../../utils/constants'
 import { App } from '../app'
 import { Calendar } from '../Calendar'
 import { Chart } from '../Chart'
@@ -37,22 +36,22 @@ export class Container extends Component<ContainerView, App> {
     this.calendar = new Calendar(this, this.view.calendarView)
     this.chart = new Chart(this, this.view.chartView)
 
-    store.on(GLOBAL.LOGIN, () => {
-      api.fetchCategories().then(({ categoryList }) => {
-        this.categoryModel.setCategories(categoryList)
-      })
-
-      api.fetchPayments().then(({ paymentMethodList }) => {
-        this.paymentModel.setPaymentMethods(paymentMethodList)
-      })
-    })
-
     this.routerMap[ROUTE.LIST] = [this.form, this.filter, this.list]
     this.routerMap[ROUTE.CALENDAR] = [this.filter, this.calendar]
     this.routerMap[ROUTE.CHART] = [this.chart]
 
     router.on(ROUTER.CHANGE_DATE, async ({ year, month }) => {
+      if (this.categoryModel.isEmpty() || this.paymentModel.isEmpty()) {
+        const [{ categoryList }, { paymentMethodList }] = await Promise.all([
+          api.fetchCategories(),
+          api.fetchPayments(),
+        ])
+        this.categoryModel.setCategories(categoryList)
+        this.paymentModel.setPaymentMethods(paymentMethodList)
+      }
+
       const { invoiceList } = await api.fetchInvoices(year, month)
+      if (router.year !== year && router.month !== month) return
       invoiceList.forEach((invoice) => {
         invoice.date = new Date(invoice.date)
         this.categoryModel.fillInvoice(invoice)

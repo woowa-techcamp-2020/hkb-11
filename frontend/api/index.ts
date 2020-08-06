@@ -1,3 +1,4 @@
+import { PaymentMethod } from '../../types'
 import store from '../model/store'
 
 const apiUrlBase = '/api'
@@ -42,6 +43,7 @@ const METHOD = {
       body: JSON.stringify(data),
       headers: {
         ...setContentType(),
+        ...addToken(),
       },
     }
   },
@@ -51,12 +53,17 @@ const METHOD = {
       body: JSON.stringify(data),
       headers: {
         ...setContentType(),
+        ...addToken(),
       },
     }
   },
 }
 
 const api = {
+  requestForStatus: async (url, config) => {
+    const response = await fetch(url, config)
+    return response.status
+  },
   requestForData: async (url, config) => {
     const response = await fetch(url, config)
     if (response.ok) {
@@ -108,4 +115,18 @@ export async function fetchCategories() {
 
 export async function fetchPayments() {
   return await api.requestForData(`${apiUrlBase}/payment_method`, METHOD.GET())
+}
+
+export async function postPayment(payment: PaymentMethod) {
+  return await api.requestForData(
+    `${apiUrlBase}/payment_method`,
+    METHOD.POST(payment)
+  )
+}
+
+export async function deletePayment(id: number) {
+  return await api.requestForStatus(
+    `${apiUrlBase}/payment_method`,
+    METHOD.DELETE({ id })
+  )
 }
