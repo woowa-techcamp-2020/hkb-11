@@ -51,6 +51,11 @@ export const ROUTES = {
   ALL: [ROUTE.LIST, ROUTE.CALENDAR, ROUTE.CHART, ROUTE.LOGIN],
 }
 
+export enum LIST_CLASS {
+  EARNING = 'earning',
+  SPENDING = 'spending',
+}
+
 export const FORM_CLASS = {
   INPUT_AMOUNT: 'input-amount',
   INPUT_DATE: 'input-date',

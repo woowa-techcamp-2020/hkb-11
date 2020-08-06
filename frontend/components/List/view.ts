@@ -1,4 +1,5 @@
 import { Invoice } from '../../../types'
+import { CONSTANT, LIST_CLASS } from '../../utils/constants'
 import { templateToElement } from '../../utils/ElementGenerator'
 import { getSibling, getText, removeElement, setText, View } from '../view'
 import './style.scss'
@@ -29,6 +30,12 @@ function appendRowInDateRow(invoice, $dateRow) {
   const $rows = <HTMLInputElement>$dateRow.querySelector('.rows')
   if ($rows === null) return
   const $invoiceRow = createInvoiceRow(invoice)
+  if (invoice.category.type === CONSTANT.EARNING) {
+    $invoiceRow.classList.add(LIST_CLASS.EARNING)
+  } else {
+    $invoiceRow.classList.add(LIST_CLASS.SPENDING)
+  }
+
   const targetRow = Array.from($rows.children).find(($row: HTMLDivElement) => {
     if (parseInt(getText($row, '.hidden-date')) > +date) {
       return true

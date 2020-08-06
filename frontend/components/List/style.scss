@@ -26,31 +26,15 @@
         .spending-sum {
           font-size: 16px;
           font-weight: 600;
-          &::after {
-            content: '원';
-            display: inline-block;
-          }
         }
 
         .earning-sum {
           color: $color-main;
           margin-right: 12px;
-          &::before {
-            content: '+';
-            margin-right: -4px;
-          }
-          &::after {
-            margin-left: -3px;
-          }
         }
 
         .spending-sum {
           color: $color-complementary;
-          &::before {
-            content: '–';
-            display: inline-block;
-            margin-right: 3px;
-          }
         }
       }
     }
@@ -83,6 +67,24 @@
         }
       }
 
+      &.earning {
+        .category {
+          background-color: $color-main;
+        }
+        .amount {
+          color: $color-main;
+        }
+      }
+
+      &.spending {
+        .category {
+          background-color: $color-complementary;
+        }
+        .amount {
+          color: $color-complementary;
+        }
+      }
+
       .item {
         align-items: center;
 
@@ -95,7 +97,6 @@
             border-radius: 30px;
             padding: 8px;
             margin-right: 20px;
-            background-color: $color-complementary;
             color: $color-white;
             font-size: 14px;
             font-weight: 600;
@@ -115,7 +116,6 @@
             display: flex;
             justify-content: flex-end;
             width: 50%;
-            color: $color-complementary;
           }
         }
       }
