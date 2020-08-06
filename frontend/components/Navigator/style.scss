@@ -37,7 +37,7 @@
       &.page-picker {
         width: $width-container - 20px;
         margin-bottom: 10px;
-        background-color: $color-gray-150;
+        background-color: $color-light-beige;
         border-radius: 20px;
         padding: 4px;
 
@@ -47,9 +47,11 @@
           justify-content: center;
           font-size: 18px;
           padding: 10px;
+          color: $color-gray-600;
           cursor: pointer;
 
           &.active {
+            color: $color-black;
             background-color: $color-white;
             border-radius: 18px;
           }
