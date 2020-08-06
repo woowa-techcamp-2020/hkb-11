@@ -7,8 +7,11 @@
     .date-row {
       border-top: 1px solid $color-gray-600;
       padding: 11px 0;
+      align-items: center;
 
       .item {
+        justify-content: flex-end;
+
         .date {
           font-size: 16px;
           font-weight: 600;
@@ -16,28 +19,23 @@
         }
 
         .day {
-          font-size: 16px;
+          font-size: 16;
           color: $color-gray-800;
         }
+      }
+      .sum-box {
+        font-size: 14px;
+        font-weight: 200;
+        display: flex;
 
-        .earning-sum,
-        .spending-sum {
-          font-size: 16px;
-          font-weight: 600;
+        .earning-sum-box {
+          margin-right: 5px;
+          * {
+            color: $color-main;
+          }
         }
 
-        .earning-sum,
-        .earning-sum-pre,
-        .earning-sum-post {
-          color: $color-main;
-        }
-        .earning-sum-post {
-          margin-right: 8px;
-        }
-
-        .spending-sum,
-        .spending-sum-pre,
-        .spending-sum-post {
+        .spending-sum-box * {
           color: $color-complementary;
         }
       }

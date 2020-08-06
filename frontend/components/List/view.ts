@@ -17,7 +17,6 @@ function getPrettyDay(date: Date) {
 function removeComma(str: string) {
   return str.replace(/,/g, '')
 }
-
 function addAmountInWrapperRowSum(
   invoice: Invoice,
   $wrapperRow: HTMLDivElement
@@ -127,6 +126,9 @@ export default class ListView extends View {
       $row.classList.add('hidden')
     }
   }
+  getWrapperRows() {
+    return Array.from(this.queryAll('.invoice-wrapper'))
+  }
   getInvoiceRows() {
     return Array.from(this.queryAll('.invoice'))
   }
@@ -168,17 +170,39 @@ export default class ListView extends View {
     if (flag) $invoiceRow.classList.add('highlight')
     else $invoiceRow.classList.remove('highlight')
   }
-  setEarningVisible(flag: boolean) {
-    this.getInvoiceRowsByType(CONSTANT.EARNING).forEach(($row) => {
-      if (flag) $row.classList.remove('hidden')
-      else $row.classList.add('hidden')
+  setVisibilityCheck() {
+    this.getWrapperRows().forEach(($wrapperRow) => {
+      console.log('wrapperRow', $wrapperRow)
+      const isVisible = Array.from(
+        $wrapperRow.querySelector('.rows').children
+      ).some(($row) => !$row.classList.contains('hidden'))
+      if (isVisible) {
+        $wrapperRow.classList.remove('hidden')
+        return
+      }
+      $wrapperRow.classList.add('hidden')
     })
   }
-  setSpendingVisible(flag: boolean) {
-    this.getInvoiceRowsByType(CONSTANT.SPENDING).forEach(($row) => {
+  setVisibleByType(type, className, flag) {
+    this.getInvoiceRowsByType(type).forEach(($row) => {
       if (flag) $row.classList.remove('hidden')
       else $row.classList.add('hidden')
     })
+    this.getWrapperRows().forEach(($wrapperRow) => {
+      const $earningSumBox = $wrapperRow.querySelector(className)
+      if (flag) {
+        $earningSumBox.classList.remove('hidden')
+        return
+      }
+      $earningSumBox.classList.add('hidden')
+    })
+    this.setVisibilityCheck()
+  }
+  setEarningVisible(flag: boolean) {
+    this.setVisibleByType(CONSTANT.EARNING, '.earning-sum-box', flag)
+  }
+  setSpendingVisible(flag: boolean) {
+    this.setVisibleByType(CONSTANT.SPENDING, '.spending-sum-box', flag)
   }
   mount(): void {}
 }
