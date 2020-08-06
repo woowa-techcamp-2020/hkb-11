@@ -19,7 +19,11 @@ export class List extends Component<ListView, Container> {
     this.categoryModel = this.parent.categoryModel
     this.paymentModel = this.parent.paymentModel
 
-    this.view.bindInvoiceClickledHandler((id) => {
+    this.view.bindInvoiceEditHandler((id) => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
       this.invoiceModel.highlight(id)
     })
   }

@@ -26,12 +26,18 @@
           font-weight: 600;
         }
 
-        .earning-sum {
+        .earning-sum,
+        .earning-sum-pre,
+        .earning-sum-post {
           color: $color-main;
-          margin-right: 12px;
+        }
+        .earning-sum-post {
+          margin-right: 8px;
         }
 
-        .spending-sum {
+        .spending-sum,
+        .spending-sum-pre,
+        .spending-sum-post {
           color: $color-complementary;
         }
       }
@@ -40,9 +46,12 @@
     .invoice {
       align-items: center;
       border-top: 1px solid $color-gray-400;
-      padding: 5px 0;
+      padding: 5px 0px;
       position: relative;
-
+      &.highlight {
+        background-color: $color-sub-main;
+        opacity: 0.6;
+      }
       .button-edit {
         display: none;
       }
@@ -69,7 +78,9 @@
         .category {
           background-color: $color-main;
         }
-        .amount {
+        .amount,
+        .amount-pre,
+        .amount-post {
           color: $color-main;
         }
       }
@@ -78,7 +89,9 @@
         .category {
           background-color: $color-complementary;
         }
-        .amount {
+        .amount,
+        .amount-pre,
+        .amount-post {
           color: $color-complementary;
         }
       }
@@ -110,7 +123,7 @@
             width: 50%;
           }
 
-          .amount {
+          .amount-pre {
             display: flex;
             justify-content: flex-end;
             width: 50%;

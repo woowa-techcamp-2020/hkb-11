@@ -1,4 +1,5 @@
 import { Invoice } from '../../../types'
+import { formatAmount } from '../../utils'
 import { CONSTANT, LIST_CLASS } from '../../utils/constants'
 import { templateToElement } from '../../utils/ElementGenerator'
 import { getSibling, getText, removeElement, setText, View } from '../view'
@@ -13,23 +14,27 @@ function getPrettyDay(date: Date) {
   return days[date.getDay()]
 }
 
+function removeComma(str: string) {
+  return str.replace(/,/g, '')
+}
+
 function addAmountInWrapperRowSum(
   invoice: Invoice,
   $wrapperRow: HTMLDivElement
 ) {
   const { category, amount } = invoice
-  if (category.type === '수입') {
+  if (category.type === CONSTANT.EARNING) {
     const earningSum = <HTMLInputElement>(
       $wrapperRow.querySelector('.earning-sum')
     )
-    const sum = parseInt(earningSum.innerText)
-    earningSum.innerText = String(sum + amount)
+    const sum = parseInt(removeComma(earningSum.innerText))
+    earningSum.innerText = formatAmount(sum + amount)
   } else {
     const spendingSum = <HTMLInputElement>(
       $wrapperRow.querySelector('.spending-sum')
     )
-    const sum = parseInt(spendingSum.innerText)
-    spendingSum.innerText = String(sum + amount)
+    const sum = parseInt(removeComma(spendingSum.innerText))
+    spendingSum.innerText = formatAmount(sum + amount)
   }
 }
 function appendRowInWrapperRow(invoice, $wrapperRow) {
@@ -56,6 +61,7 @@ function createWrapperRow(date: Date) {
   const $wrapperRow = templateToElement(wrapperRowTemplate) as HTMLDivElement
   setText($wrapperRow, '.date', getPrettyDate(date))
   setText($wrapperRow, '.day', getPrettyDay(date))
+  setText($wrapperRow, '.hidden-date', +date)
 
   return $wrapperRow
 }
@@ -71,7 +77,12 @@ function createInvoiceRow(invoice: Invoice) {
   setText($invoiceRow, '.type', category.type)
   setText($invoiceRow, '.content', item)
   setText($invoiceRow, '.payment', paymentMethod.title)
-  setText($invoiceRow, '.amount', amount)
+  setText($invoiceRow, '.amount', formatAmount(amount))
+  setText(
+    $invoiceRow,
+    '.amount-pre',
+    category.type === CONSTANT.EARNING ? '+' : '–'
+  )
   return $invoiceRow
 }
 
@@ -97,7 +108,14 @@ export default class ListView extends View {
   }
   addWrapperRow(date: Date) {
     const $wrapperRow = createWrapperRow(date)
-    this.$element.appendChild($wrapperRow)
+    const $targetRow = Array.from(this.$element.children).find(
+      ($row: HTMLDivElement) => {
+        if (parseInt(getText($row, '.hidden-date')) > +date) {
+          return true
+        }
+      }
+    )
+    this.$element.insertBefore($wrapperRow, $targetRow)
     return $wrapperRow
   }
   addInvoiceRow(invoice: Invoice, hidden = false) {
@@ -144,15 +162,6 @@ export default class ListView extends View {
       }
     })
   }
-  bindInvoiceClickledHandler(handler: Function) {
-    this.$element.addEventListener('click', ({ target }) => {
-      if (target instanceof HTMLElement) {
-        const $invoiceRow = <HTMLDivElement>target.closest('.invoice')
-        if (!$invoiceRow) return
-        handler(parseInt(getText($invoiceRow, '.hidden-id')))
-      }
-    })
-  }
   highlightInvoice(id: number, flag: boolean): void {
     const $invoiceRow = this.findInvoiceRow(id)
     if (!$invoiceRow) return
@@ -160,13 +169,13 @@ export default class ListView extends View {
     else $invoiceRow.classList.remove('highlight')
   }
   setEarningVisible(flag: boolean) {
-    this.getInvoiceRowsByType('수입').forEach(($row) => {
+    this.getInvoiceRowsByType(CONSTANT.EARNING).forEach(($row) => {
       if (flag) $row.classList.remove('hidden')
       else $row.classList.add('hidden')
     })
   }
   setSpendingVisible(flag: boolean) {
-    this.getInvoiceRowsByType('지출').forEach(($row) => {
+    this.getInvoiceRowsByType(CONSTANT.SPENDING).forEach(($row) => {
       if (flag) $row.classList.remove('hidden')
       else $row.classList.add('hidden')
     })

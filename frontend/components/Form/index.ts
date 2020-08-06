@@ -32,7 +32,7 @@ export class Form extends Component<FormView, Container> {
           )
         )
         this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
-        this.view.clearForm()
+        this.view.clear()
       } catch (error) {
         console.error(error)
       }
@@ -42,14 +42,14 @@ export class Form extends Component<FormView, Container> {
       this.invoiceModel.removeInvoice(id)
 
       this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
-      this.view.clearForm()
+      this.view.clear()
     })
 
     this.view.bindInvoiceUpdateHandler((invoice: Invoice) => {
       this.invoiceModel.updateInvoice(invoice)
 
       this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
-      this.view.clearForm()
+      this.view.clear()
     })
   }
 

@@ -66,8 +66,8 @@ export default class FormView extends View {
     this.$remove = <HTMLButtonElement>this.query(`.${FORM_CLASS.REMOVE_BTN}`)
     this.$clear = <HTMLButtonElement>this.query(`.${FORM_CLASS.CLEAR_BTN}`)
     this.$submit = <HTMLButtonElement>this.query(`.${FORM_CLASS.SUBMIT_BTN}`)
-    this.$date.value = formatDate(new Date())
     this.setCategoryType(CONSTANT.SPENDING)
+    this.clear()
   }
 
   bindInvoiceAddHandler(handler) {
@@ -81,13 +81,12 @@ export default class FormView extends View {
   bindInvoiceUpdateHandler(handler) {
     this.invoiceUpdateHandler = handler
   }
-
   onClickHandler(e) {
     if (!(e.target instanceof HTMLElement)) return
 
     const $clearBtn = e.target.closest(`.${FORM_CLASS.CLEAR_BTN}`)
     if ($clearBtn) {
-      this.clearForm()
+      this.clear()
       return
     }
 
@@ -157,7 +156,7 @@ export default class FormView extends View {
     this.setCategoryType(invoice.category.type)
     this.$payment.value = invoice.paymentMethod.id.toString()
     this.$amount.value = invoice.amount.toString()
-    formatAmount(this.$amount)
+    formatInputAmount(this.$amount)
 
     this.changeFloatBtn(FORM_CLASS.REMOVE_BTN)
     this.checkInvoiceValidation()
@@ -315,20 +314,20 @@ export default class FormView extends View {
   changeFloatBtn(showClass: string): void {
     if (showClass === FORM_CLASS.REMOVE_BTN) {
       this.$remove.classList.remove(CLASS.HIDDEN)
-      this.$clear.classList.add(CLASS.HIDDEN)
     } else if (showClass === FORM_CLASS.CLEAR_BTN) {
       this.$remove.classList.add(CLASS.HIDDEN)
-      this.$clear.classList.remove(CLASS.HIDDEN)
     }
   }
 
-  clearForm() {
+  clear() {
     this.$amount.value = ''
-    this.$date.value = ''
+    this.$date.value = formatDate(new Date())
     this.$item.value = ''
     this.$category.value = ''
     this.$payment.value = ''
     this.invoiceId = 0
+    this.setCategoryType(CONSTANT.EARNING)
+    this.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
     this.removePaymentOptions()
     this.checkInvoiceValidation()
   }

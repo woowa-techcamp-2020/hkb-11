@@ -41,6 +41,8 @@ export class Container extends Component<ContainerView, App> {
     this.routerMap[ROUTE.CHART] = [this.chart]
 
     router.on(ROUTER.CHANGE_DATE, async ({ year, month }) => {
+      this.list.view.clear()
+      this.form.view.clear()
       if (this.categoryModel.isEmpty() || this.paymentModel.isEmpty()) {
         const [{ categoryList }, { paymentMethodList }] = await Promise.all([
           API.fetchCategories(),
