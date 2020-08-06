@@ -1,1 +1,39 @@
 @use '@/static/styles/package' as *;
+
+#header {
+  #main-header {
+    align-items: center;
+    height: $height-main;
+    background-color: $color-main;
+    padding: 0 40px;
+
+    * {
+      color: $color-white;
+    }
+
+    .item {
+      &.left {
+        align-items: center;
+
+        .main-title {
+          font-size: 18px;
+          font-weight: 600;
+        }
+      }
+
+      &.right {
+        align-items: center;
+
+        * {
+          font-size: 14px;
+        }
+
+        .button-payment-modal {
+          background-color: transparent;
+          border: none;
+          margin-left: 12px;
+        }
+      }
+    }
+  }
+}
