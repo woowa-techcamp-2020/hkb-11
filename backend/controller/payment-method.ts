@@ -5,9 +5,11 @@ import query from '../query'
 
 const getPaymentMethodList = async (req: Request, res: Response) => {
   try {
-    // jwt token 검사, false: 401
+    if (!req.auth) return res.status(401)
 
-    const [rows] = await pool.query(query.SELECT_PAYMENT_METHOD_LIST)
+    const [rows] = await pool.query(query.SELECT_PAYMENT_METHOD_LIST, [
+      req.auth.id,
+    ])
     res.json({
       paymentMethodList: rows,
     })
@@ -20,15 +22,15 @@ const getPaymentMethodList = async (req: Request, res: Response) => {
 
 const postPaymentMethod = async (req: Request, res: Response) => {
   try {
-    // jwt token 검사
-    const userId = 'agrajak2' //temp userId
+    if (!req.auth) return res.status(401)
+
     const {
       paymentMethod: { title },
     } = req.body
 
     const [row] = await pool.query<OkPacket>(query.INSERT_PAYMENT_METHOD, [
       title,
-      userId,
+      req.auth.id,
     ])
 
     res.json({
