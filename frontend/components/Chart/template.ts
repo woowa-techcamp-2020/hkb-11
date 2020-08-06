@@ -15,15 +15,15 @@ export const template: string = /*html*/ `
 
 export const barChartTemplate = /*html*/ `
   <div id="bar-chart">
-    <small>bar-chart</small>
     <svg viewBox="0 0 800 400"></svg>
   </div>
 `
 export const piChartTemplate = /*html*/ `
   <div id="pi-chart">
-    <small>pi-chart</small>
     <svg viewBox="0 0 800 400"></svg>
-    <h3>항목별 합계</h3>
+    <div class="header-3">
+      항목별 합계
+    </div>
     <div id="pi-table" class="rows">
     </div>
   </div>
@@ -41,5 +41,10 @@ export const piItemTemplate = /*html*/ `
         </div>
       </div>
     </div>
+  </div>
+`
+
+export const barDisplayTemplate = `
+  <div id="bar-display">
   </div>
 `

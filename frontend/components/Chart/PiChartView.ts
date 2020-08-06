@@ -1,3 +1,4 @@
+import { formatAmount } from '../../utils'
 import { templateToElement } from '../../utils/ElementGenerator'
 import { setText, View } from '../view'
 import config from './config'
@@ -15,9 +16,9 @@ function createPiTableItemElement({ title, ratio, amount, idx }) {
   const $itemColorBar = $piTableItem.querySelector('.item-color-bar')
   $itemColorBar.setAttribute(
     'style',
-    `width: ${ratio * width}px; background-color: ${circleColors[idx]}`
+    `width: ${ratio * width * 0.8}px; background-color: ${circleColors[idx]}`
   )
-  setText($piTableItem, '.item-amount', amount)
+  setText($piTableItem, '.item-amount', `${formatAmount(amount)}원`)
   return $piTableItem
 }
 

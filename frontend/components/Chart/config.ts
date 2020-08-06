@@ -16,4 +16,5 @@ export default {
   radius: config.height / 3,
   cx: config.width / 2,
   cy: config.height / 2,
+  padding: config.paddingX + config.paddingX2,
 }
