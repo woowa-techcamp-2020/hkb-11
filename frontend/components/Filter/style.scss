@@ -27,17 +27,20 @@
     .item {
       &.left {
         align-items: center;
-
-        input[type='checkbox'] {
-          width: 16px;
-          height: 16px;
-          margin-right: 8px;
-        }
+        margin-right: 5px;
       }
 
       label {
         font-weight: 600;
         font-size: 16px;
+
+        &.check-label {
+          i {
+            font-size: 21px;
+            margin-right: 8px;
+            cursor: pointer;
+          }
+        }
       }
     }
   }
