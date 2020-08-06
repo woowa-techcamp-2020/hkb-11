@@ -3,9 +3,9 @@ import { CONSTANT, LIST_CLASS } from '../../utils/constants'
 import { templateToElement } from '../../utils/ElementGenerator'
 import { getSibling, getText, removeElement, setText, View } from '../view'
 import './style.scss'
-import { dateRowtemplate, invoiceRowTemplate, template } from './template'
+import { invoiceRowTemplate, template, wrapperRowTemplate } from './template'
 
-const days = ['월', '화', '수', '목', '금', '토', '일']
+const days = ['일', '월', '화', '수', '목', '금', '토']
 function getPrettyDate(date: Date) {
   return `${date.getMonth() + 1}월 ${date.getDate()}일`
 }
@@ -13,21 +13,28 @@ function getPrettyDay(date: Date) {
   return days[date.getDay()]
 }
 
-function addAmountInDateRowSum(invoice: Invoice, dateRow: HTMLDivElement) {
+function addAmountInWrapperRowSum(
+  invoice: Invoice,
+  $wrapperRow: HTMLDivElement
+) {
   const { category, amount } = invoice
   if (category.type === '수입') {
-    const earningSum = <HTMLInputElement>dateRow.querySelector('.earning-sum')
+    const earningSum = <HTMLInputElement>(
+      $wrapperRow.querySelector('.earning-sum')
+    )
     const sum = parseInt(earningSum.innerText)
     earningSum.innerText = String(sum + amount)
   } else {
-    const spendingSum = <HTMLInputElement>dateRow.querySelector('.spending-sum')
+    const spendingSum = <HTMLInputElement>(
+      $wrapperRow.querySelector('.spending-sum')
+    )
     const sum = parseInt(spendingSum.innerText)
     spendingSum.innerText = String(sum + amount)
   }
 }
-function appendRowInDateRow(invoice, $dateRow) {
+function appendRowInWrapperRow(invoice, $wrapperRow) {
   const { date } = invoice
-  const $rows = <HTMLInputElement>$dateRow.querySelector('.rows')
+  const $rows = <HTMLInputElement>$wrapperRow.querySelector('.rows')
   if ($rows === null) return
   const $invoiceRow = createInvoiceRow(invoice)
   if (invoice.category.type === CONSTANT.EARNING) {
@@ -45,12 +52,12 @@ function appendRowInDateRow(invoice, $dateRow) {
   return $invoiceRow
 }
 
-function createDateRow(date: Date) {
-  const $dateRow = templateToElement(dateRowtemplate) as HTMLDivElement
-  setText($dateRow, '.date', getPrettyDate(date))
-  setText($dateRow, '.day', getPrettyDay(date))
+function createWrapperRow(date: Date) {
+  const $wrapperRow = templateToElement(wrapperRowTemplate) as HTMLDivElement
+  setText($wrapperRow, '.date', getPrettyDate(date))
+  setText($wrapperRow, '.day', getPrettyDay(date))
 
-  return $dateRow
+  return $wrapperRow
 }
 function createInvoiceRow(invoice: Invoice) {
   const { id, date, category, item, paymentMethod, amount } = invoice
@@ -78,26 +85,26 @@ export default class ListView extends View {
       removeElement($wrapperRow)
     })
   }
-  findDateRow(date: Date): HTMLDivElement {
-    const dateRows = this.queryAll('.invoice-wrapper')
-    if (dateRows === null) return null
+  findWrapperRow(date: Date): HTMLDivElement {
+    const wrapperRows = this.queryAll('.invoice-wrapper')
+    if (wrapperRows === null) return null
     return <HTMLDivElement>(
-      Array.from(dateRows).find(
-        ($dateRow: HTMLDivElement) =>
-          getText($dateRow, '.date') === getPrettyDate(date)
+      Array.from(wrapperRows).find(
+        ($wrapperRow: HTMLDivElement) =>
+          getText($wrapperRow, '.date') === getPrettyDate(date)
       )
     )
   }
-  addDateRow(date: Date) {
-    const $dateRow = createDateRow(date)
-    this.$element.appendChild($dateRow)
-    return $dateRow
+  addWrapperRow(date: Date) {
+    const $wrapperRow = createWrapperRow(date)
+    this.$element.appendChild($wrapperRow)
+    return $wrapperRow
   }
-  addInvoice(invoice: Invoice, hidden = false) {
+  addInvoiceRow(invoice: Invoice, hidden = false) {
     const { date } = invoice
-    const $dateRow = this.findDateRow(date) || this.addDateRow(date)
-    addAmountInDateRowSum(invoice, $dateRow)
-    const $row = appendRowInDateRow(invoice, $dateRow)
+    const $wrapperRow = this.findWrapperRow(date) || this.addWrapperRow(date)
+    addAmountInWrapperRowSum(invoice, $wrapperRow)
+    const $row = appendRowInWrapperRow(invoice, $wrapperRow)
     if (hidden) {
       $row.classList.add('hidden')
     }

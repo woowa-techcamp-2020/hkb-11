@@ -3,7 +3,7 @@ export const template: string = /*html*/ `
   </section>
 `
 
-export const dateRowtemplate: string = /*html*/ `
+export const wrapperRowTemplate: string = /*html*/ `
   <div class='invoice-wrapper'>
     <div class="date-row row">
       <div class="item left">
