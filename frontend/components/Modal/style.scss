@@ -5,7 +5,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 3000;
     width: 100vw;
     height: 100vh;
     background-color: $color-black;
@@ -20,7 +20,7 @@
     position: absolute;
     top: calc(50vh - #{$height-modal} / 2);
     left: calc(50vw - #{$width-modal} / 2);
-    z-index: 2000;
+    z-index: 4000;
     width: $width-modal;
     // height: $height-modal;
     background-color: $color-white;
