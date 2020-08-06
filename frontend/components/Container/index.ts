@@ -4,7 +4,7 @@ import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { PaymentModel } from '../../model/PaymentModel'
 import router from '../../router'
-import { ROUTER } from '../../utils/constants'
+import { ROUTE, ROUTER, ROUTES } from '../../utils/constants'
 import { App } from '../app'
 import { Calendar } from '../Calendar'
 import { Chart } from '../Chart'
@@ -12,23 +12,23 @@ import { Filter } from '../Filter'
 import { Form } from '../Form'
 import { List } from '../List'
 import { mockupCategory, mockupPayment } from '../mockup'
+import { View } from '../view'
 import ContainerView from './view'
 
 export class Container extends Component<ContainerView, App> {
-  invoiceModel: InvoiceModel
-  categoryModel: CategoryModel
+  invoiceModel: InvoiceModel = new InvoiceModel()
+  categoryModel: CategoryModel = new CategoryModel()
   paymentModel: PaymentModel
   list: List
   filter: Filter
   form: Form
   calendar: Calendar
   chart: Chart
+  routerMap: Map<string, Component<View>> = new Map<string, Component<View>>()
 
   constructor(parent, view: ContainerView) {
     super(parent, view)
 
-    this.invoiceModel = new InvoiceModel()
-    this.categoryModel = new CategoryModel()
     this.paymentModel = this.parent.paymentModel
 
     this.list = new List(this, this.view.listView)
@@ -40,11 +40,11 @@ export class Container extends Component<ContainerView, App> {
     this.categoryModel.setCategories(mockupCategory)
     this.paymentModel.setPaymentMethods(mockupPayment)
 
-    router.add('list', [this.form, this.filter, this.list])
-    router.add('calendar', [this.filter, this.calendar])
-    router.add('chart', [this.chart])
+    this.routerMap[ROUTE.LIST] = [this.form, this.filter, this.list]
+    this.routerMap[ROUTE.CALENDAR] = [this.filter, this.calendar]
+    this.routerMap[ROUTE.CHART] = [this.chart]
+
     router.on(ROUTER.CHANGE_DATE, async ({ year, month }) => {
-      // TODO: backend invociecs
       const { invoiceList } = await api.fetchInvoices(year, month)
       invoiceList.forEach((invoice) => {
         invoice.date = new Date(invoice.date)
@@ -55,16 +55,10 @@ export class Container extends Component<ContainerView, App> {
     })
     router.on(
       ROUTER.MUTATE_VIEW,
-      ({
-        path,
-        flag,
-        components,
-      }: {
-        path: string
-        flag: boolean
-        components: Component<any>[]
-      }) => {
-        if (path !== 'list' && path !== 'calendar' && path !== 'chart') return
+      ({ path, flag }: { path: string; flag: boolean }) => {
+        if (!ROUTES.CONTAINER.includes(path)) return
+        if (router.isInvalidPath(path)) return
+        const components = this.routerMap[path]
         if (flag) {
           components.forEach((component) => {
             const view = component.view

@@ -1,49 +1,53 @@
-import { Component } from './components'
-import { View } from './components/view'
 import { Observable } from './model'
 import store from './model/store'
-import { GLOBAL, ROUTER } from './utils/constants'
+import { GLOBAL, ROUTE, ROUTER, ROUTES } from './utils/constants'
 
 class Router extends Observable {
   url: URL
-  year: number
-  month: number
-  currentPath: string
-  components: Map<string, Component<View>[]>
+  year: number = new Date().getFullYear()
+  month: number = new Date().getMonth() + 1
+  beforePath: string
+  routes: Set<string> = new Set(ROUTES.ALL)
   constructor() {
     super()
-    this.components = new Map<string, Component<View>[]>()
-    this.year = new Date().getFullYear()
-    this.month = new Date().getMonth() + 1
-
     store.on(GLOBAL.LOGIN, () => {
-      this.go('list')
+      this.go(ROUTE.LIST)
     })
     store.on(GLOBAL.LOGOUT, () => {
-      this.go('login')
+      this.go(ROUTE.LOGIN)
     })
 
-    document.body.addEventListener('click', ({ target }) => {
-      if (target instanceof HTMLAnchorElement) {
-        const to = target.getAttribute('to')
-        if (!to) return
-        this.go(to)
-      }
-    })
-    window.onpopstate = (event) => {
-      const { state } = event
-      console.log(state)
-      const { path, year, month } = state
-      if (path !== 'login') {
-        this.year = year
-        this.month = month
-        this.commitDateChange()
-      }
-      this.go(path, true)
-    }
+    document.body.addEventListener(
+      'click',
+      this.bindAnchorNavigateHandler.bind(this)
+    )
+    window.onpopstate = this.onPopState.bind(this)
   }
-  add(path: string, components: Component<View>[]) {
-    this.components[path] = components
+  bindAnchorNavigateHandler({ target: $target }) {
+    if (!($target instanceof HTMLAnchorElement)) return
+    const path = $target.getAttribute('to')
+    if (path === ROUTE.PREVIOUS_MONTH) {
+      this.movePreviousMonth()
+      this.pushURL()
+      return
+    }
+    if (path === ROUTE.NEXT_MONTH) {
+      this.moveNextMonth()
+      this.pushURL()
+      return
+    }
+    this.go(path)
+  }
+
+  onPopState(event) {
+    const { state } = event
+    const { path, year, month } = state
+    if (path !== ROUTE.LOGIN) {
+      this.year = year
+      this.month = month
+      this.commitDateChange()
+    }
+    this.go(path, true)
   }
   getURL() {
     this.url = new URL(window.location.href)
@@ -58,31 +62,27 @@ class Router extends Observable {
       this.year = year
       this.month = month
     }
-    this.commitDateChange()
-    if (path === '') {
-      if (store.id) {
-        this.go('list')
-        return
-      }
-      this.go('login')
+    if (!store.token) {
+      this.go(ROUTE.LOGIN)
       return
     }
+    if (path === '') this.go(ROUTE.LIST)
     if (!this.isInvalidPath(path)) this.go(path)
   }
   commitDateChange() {
     this.emit(ROUTER.CHANGE_DATE, { year: this.year, month: this.month })
   }
   pushURL() {
-    const { currentPath, year, month } = this
-    if (currentPath === 'login') {
-      history.pushState({ path: 'login' }, '', 'login')
+    const { beforePath, year, month } = this
+    if (beforePath === ROUTE.LOGIN) {
+      history.pushState({ path: ROUTE.LOGIN }, '', ROUTE.LOGIN)
       return
     }
     const params = `year=${year}&month=${month}`
     history.pushState(
-      { path: currentPath, year, month },
+      { path: beforePath, year, month },
       '',
-      `${currentPath}?${params}`
+      `${beforePath}?${params}`
     )
   }
   movePreviousMonth() {
@@ -100,34 +100,33 @@ class Router extends Observable {
     this.commitDateChange()
   }
   isInvalidPath(path) {
-    return !Object.keys(this.components).includes(path)
+    return !this.routes.has(path)
   }
   go(path, fromPopState = false) {
-    if (path === 'previous-month') {
-      this.movePreviousMonth()
-    } else if (path === 'next-month') {
-      this.moveNextMonth()
-    } else if (this.currentPath !== path) {
+    const isFirstNavigation = this.beforePath === undefined
+    if (path === null) return
+    if (this.beforePath !== path) {
       if (this.isInvalidPath(path)) return
-      if (this.currentPath) {
+      if (!isFirstNavigation) {
         this.emit(ROUTER.MUTATE_VIEW, {
-          path: this.currentPath,
+          path: this.beforePath,
           flag: false,
-          components: this.components[this.currentPath],
         })
-        if (this.currentPath === 'login') {
-          this.commitDateChange()
-        }
+      }
+
+      if (
+        this.beforePath === ROUTE.LOGIN ||
+        (isFirstNavigation && path !== ROUTE.LOGIN)
+      ) {
+        this.commitDateChange()
       }
       this.emit(ROUTER.MUTATE_VIEW, {
         path,
         flag: true,
-        components: this.components[path],
       })
-      this.currentPath = path
+      this.beforePath = path
     }
     if (!fromPopState) this.pushURL()
-    return this.components[path]
   }
 
   getYear() {

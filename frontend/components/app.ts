@@ -1,7 +1,7 @@
 import { Component } from '.'
 import { PaymentModel } from '../model/PaymentModel'
 import router from '../router'
-import { ROUTER } from '../utils/constants'
+import { ROUTE, ROUTER } from '../utils/constants'
 import { Container } from './Container'
 import ContainerView from './Container/view'
 import { Header } from './Header'
@@ -52,9 +52,8 @@ export class App extends Component<AppView> {
     this.container = new Container(this, this.view.containerView)
     this.login = new Login(this, this.view.loginView)
 
-    router.add('login', [this.login])
     router.on(ROUTER.MUTATE_VIEW, ({ path, flag }) => {
-      if (path === 'login' && flag) {
+      if (path === ROUTE.LOGIN && flag) {
         this.header.view.remove()
         this.login.view.appendToView(this.view)
         return
