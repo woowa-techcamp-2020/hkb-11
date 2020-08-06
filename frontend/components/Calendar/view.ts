@@ -76,7 +76,6 @@ export default class CalendarView extends View {
   }
 
   setDateEarning(dateEarningObj) {
-    console.log(dateEarningObj)
     for (let key in dateEarningObj) {
       const $dateCell = this.query(
         `.${CALENDAR_CLASS.DATE_CELL}:not(.${CALENDAR_CLASS.OTHER_MONTH})[data-date='${key}']`

@@ -29,6 +29,10 @@ export class AppView extends View {
     this.loginView.appendToView(this)
     this.headerView.appendToView(this)
     this.containerView.appendToView(this)
+
+    this.headerView.bindModalShowHandler(() => {
+      this.modalView.showModal()
+    })
   }
   mount(): void {}
 }

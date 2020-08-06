@@ -13,12 +13,6 @@ export class Modal extends Component<ModalView, App> {
 
     this.paymentModel = this.parent.paymentModel
 
-    this.view.bindButtonPaymentModalHandler(() => {
-      this.view.showModal()
-    })
-  }
-
-  bind() {
     this.paymentModel.on(EVENT.SET_PAYMENTS, (payments: PaymentMethod[]) => {
       this.view.setPayments(payments)
     })
@@ -26,10 +20,18 @@ export class Modal extends Component<ModalView, App> {
     this.paymentModel.on(EVENT.ADD_PAYMENT, (payment: PaymentMethod) => {
       this.view.addPayment(payment)
     })
-  }
 
-  unbind() {
-    this.paymentModel.off(EVENT.ADD_PAYMENT)
-    this.paymentModel.off(EVENT.SET_PAYMENTS)
+    this.paymentModel.on(EVENT.REMOVE_PAYMENT, (id: number) => {
+      this.view.removePayment(id)
+    })
+
+    this.view.bindPaymentAddHandler((payment: PaymentMethod) => {
+      this.paymentModel.addPaymentMethod(payment)
+      this.view.clearModal()
+    })
+
+    this.view.bindPaymentRemoveHandler((paymentId: number) => {
+      this.paymentModel.removePaymentMethod(paymentId)
+    })
   }
 }

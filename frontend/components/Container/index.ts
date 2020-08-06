@@ -3,6 +3,7 @@ import * as api from '../../api'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { PaymentModel } from '../../model/PaymentModel'
+import store from '../../model/store'
 import router from '../../router'
 import { ROUTE, ROUTER, ROUTES } from '../../utils/constants'
 import { App } from '../app'
@@ -11,7 +12,6 @@ import { Chart } from '../Chart'
 import { Filter } from '../Filter'
 import { Form } from '../Form'
 import { List } from '../List'
-import { mockupCategory, mockupPayment } from '../mockup'
 import { View } from '../view'
 import ContainerView from './view'
 
@@ -37,8 +37,15 @@ export class Container extends Component<ContainerView, App> {
     this.calendar = new Calendar(this, this.view.calendarView)
     this.chart = new Chart(this, this.view.chartView)
 
-    this.categoryModel.setCategories(mockupCategory)
-    this.paymentModel.setPaymentMethods(mockupPayment)
+    store.on(GLOBAL.LOGIN, () => {
+      api.fetchCategories().then(({ categoryList }) => {
+        this.categoryModel.setCategories(categoryList)
+      })
+
+      api.fetchPayments().then(({ paymentMethodList }) => {
+        this.paymentModel.setPaymentMethods(paymentMethodList)
+      })
+    })
 
     this.routerMap[ROUTE.LIST] = [this.form, this.filter, this.list]
     this.routerMap[ROUTE.CALENDAR] = [this.filter, this.calendar]

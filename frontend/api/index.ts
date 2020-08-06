@@ -1,4 +1,7 @@
 import store from '../model/store'
+
+const apiUrlBase = '/api'
+
 function addToken() {
   if (store.id) {
     return {
@@ -7,12 +10,13 @@ function addToken() {
   }
   return {}
 }
+
 function setContentType() {
   return {
     'content-type': 'application/json',
   }
 }
-const apiUrlBase = '/api'
+
 const METHOD = {
   GET() {
     return {
@@ -51,6 +55,7 @@ const METHOD = {
     }
   },
 }
+
 const api = {
   requestForData: async (url, config) => {
     const response = await fetch(url, config)
@@ -95,4 +100,12 @@ export async function fetchInvoices(year, month) {
     `${apiUrlBase}/invoice?year=${year}&month=${month}`,
     METHOD.GET()
   )
+}
+
+export async function fetchCategories() {
+  return await api.requestForData(`${apiUrlBase}/category`, METHOD.GET())
+}
+
+export async function fetchPayments() {
+  return await api.requestForData(`${apiUrlBase}/payment_method`, METHOD.GET())
 }

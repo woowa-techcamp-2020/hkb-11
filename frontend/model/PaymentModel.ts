@@ -20,6 +20,13 @@ export class PaymentModel extends Observable {
     this.emit(EVENT.SET_PAYMENTS, this.paymentMethods)
   }
 
+  removePaymentMethod(id: number) {
+    this.paymentMethods = this.paymentMethods.filter(
+      (paymentMethod) => paymentMethod.id !== id
+    )
+    this.emit(EVENT.REMOVE_PAYMENT, id)
+  }
+
   findPaymentMethodsById(id: number) {
     return this.paymentMethods.find((paymentMethod) => paymentMethod.id === id)
   }

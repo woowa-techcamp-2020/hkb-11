@@ -152,7 +152,6 @@ export default class FormView extends View {
   }
 
   setInvoiceData(invoice: Invoice) {
-    console.log(invoice)
     this.invoiceId = invoice.id
     this.$date.value = formatDate(invoice.date)
     this.$item.value = invoice.item
@@ -212,18 +211,34 @@ export default class FormView extends View {
     return invoice
   }
 
+  addCategory(category: Category) {
+    const $option = <HTMLOptionElement>templateToElement(optionTemplate)
+    $option.value = category.id.toString()
+    $option.innerText = category.title
+    $option.dataset.type = category.type
+
+    if (this.categoryType !== category.type) {
+      $option.classList.add(CLASS.HIDDEN)
+    }
+
+    this.$category.appendChild($option)
+  }
+
   setCategories(categories: Category[]) {
+    this.removeCategoryOptions()
+
     categories.forEach((category) => {
-      const $option = <HTMLOptionElement>templateToElement(optionTemplate)
-      $option.value = category.id.toString()
-      $option.innerText = category.title
-      $option.dataset.type = category.type
+      this.addCategory(category)
+    })
+  }
 
-      if (this.categoryType !== category.type) {
-        $option.classList.add(CLASS.HIDDEN)
-      }
+  removeCategoryOptions() {
+    const $categoryOptions = Array.from(
+      this.$category.querySelectorAll(`option:not([disabled])`)
+    )
 
-      this.$category.appendChild($option)
+    $categoryOptions.forEach(($categoryOption) => {
+      this.$category.removeChild($categoryOption)
     })
   }
 
@@ -274,8 +289,28 @@ export default class FormView extends View {
   }
 
   setPayments(payments: PaymentMethod[]) {
+    this.removePaymentOptions()
+
     payments.forEach((payment) => {
       this.addPayment(payment)
+    })
+  }
+
+  removePayment(paymentId: number) {
+    const $paymentOption = this.$payment.querySelector(
+      `option[value='${paymentId}']`
+    )
+
+    this.$payment.removeChild($paymentOption)
+  }
+
+  removePaymentOptions() {
+    const $paymentOptions = Array.from(
+      this.$payment.querySelectorAll(`option:not([disabled])`)
+    )
+
+    $paymentOptions.forEach(($paymentOption) => {
+      this.$payment.removeChild($paymentOption)
     })
   }
 
@@ -296,6 +331,7 @@ export default class FormView extends View {
     this.$category.value = ''
     this.$payment.value = ''
     this.invoiceId = 0
+    this.removePaymentOptions()
     this.checkInvoiceValidation()
   }
 }
