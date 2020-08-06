@@ -14,11 +14,6 @@ export default class NavigatorView extends View {
   }
 
   setDate(year, month) {
-    let str = ``
-    if (year != new Date().getFullYear()) {
-      str += `${year}년 `
-    }
-    str += `${month}월`
-    this.$month.innerText = str
+    this.$month.innerText = `${year}년 ${month}월`
   }
 }
