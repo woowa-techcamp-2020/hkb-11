@@ -19,18 +19,22 @@ export class List extends Component<ListView, Container> {
     this.categoryModel = this.parent.categoryModel
     this.paymentModel = this.parent.paymentModel
 
-    this.view.bindInvoiceClickledHandler((id) => {
+    this.view.bindInvoiceEditHandler((id) => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
       this.invoiceModel.highlight(id)
     })
   }
   bind() {
     this.invoiceModel.on(EVENT.ADD_INVOICE, ({ invoice, hidden }) => {
-      this.view.addInvoice(invoice, hidden)
+      this.view.addInvoiceRow(invoice, hidden)
     })
     this.invoiceModel.on(EVENT.SET_INVOICES, (invoices) => {
       this.view.clear()
       invoices.forEach((invoice: Invoice) => {
-        this.view.addInvoice(invoice, false)
+        this.view.addInvoiceRow(invoice, false)
       })
     })
     this.invoiceModel.on(EVENT.REMOVE_INVOICE, (id) => {

@@ -1,6 +1,6 @@
 import { Observable } from '.'
 import { Invoice } from '../../types'
-import { EVENT } from '../utils/constants'
+import { CONSTANT, EVENT } from '../utils/constants'
 
 export class InvoiceModel extends Observable {
   invoices: Array<Invoice> = []
@@ -28,7 +28,7 @@ export class InvoiceModel extends Observable {
   addInvoice(invoice: Invoice) {
     this.invoices = [...this.invoices, invoice]
     const { category, amount } = invoice
-    if (category.type === '수입') {
+    if (category.type === CONSTANT.EARNING) {
       this.emit(EVENT.ADD_INVOICE, { invoice, hidden: !this.earningToggle })
       this.addSumEarning(amount)
       return
@@ -49,7 +49,7 @@ export class InvoiceModel extends Observable {
     if (!invoice) return
     if (this.highlightId === id) this.highlightId = undefined
     const { category, amount } = invoice
-    if (category.type === '수입') this.addSumEarning(-amount)
+    if (category.type === CONSTANT.EARNING) this.addSumEarning(-amount)
     else this.addSumSpending(-amount)
     this.invoices = this.invoices.filter((x) => x !== invoice)
     this.emit(EVENT.REMOVE_INVOICE, id)
@@ -86,7 +86,7 @@ export class InvoiceModel extends Observable {
   findInvoiceById(id: number) {
     return this.invoices.find((invoice) => invoice.id === id)
   }
-  render() {
+  emitAll() {
     this.emit(EVENT.SET_INVOICES, this.invoices)
     this.emit(EVENT.EARNING_TOGGLE, this.earningToggle)
     this.emit(EVENT.SPENDING_TOGGLE, this.spendingToggle)
