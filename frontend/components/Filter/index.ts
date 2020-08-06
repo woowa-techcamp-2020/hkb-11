@@ -38,12 +38,4 @@ export class Filter extends Component<FilterView, Container> {
     this.invoiceModel.off(EVENT.SET_SUM_EARNING)
     this.invoiceModel.off(EVENT.SET_SUM_SPENDING)
   }
-
-  getEarningChecked() {
-    return this.view.$earningCheckBox.checked
-  }
-
-  getSpendingChecked() {
-    return this.view.$spendingCheckBox.checked
-  }
 }
