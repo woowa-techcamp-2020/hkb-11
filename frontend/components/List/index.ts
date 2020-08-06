@@ -3,7 +3,7 @@ import { Invoice } from '../../../types'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { PaymentModel } from '../../model/PaymentModel'
-import { EVENT } from '../../utils/constants'
+import { CONSTANT, EVENT } from '../../utils/constants'
 import { Container } from '../Container/index'
 import ListView from './view'
 
@@ -34,7 +34,11 @@ export class List extends Component<ListView, Container> {
     this.invoiceModel.on(EVENT.SET_INVOICES, (invoices) => {
       this.view.clear()
       invoices.forEach((invoice: Invoice) => {
-        this.view.addInvoiceRow(invoice, false)
+        const isHidden =
+          invoice.category.type === CONSTANT.EARNING
+            ? !this.invoiceModel.earningToggle
+            : !this.invoiceModel.spendingToggle
+        this.view.addInvoiceRow(invoice, isHidden)
       })
     })
     this.invoiceModel.on(EVENT.REMOVE_INVOICE, (id) => {
