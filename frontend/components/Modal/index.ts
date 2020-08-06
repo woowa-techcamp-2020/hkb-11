@@ -1,5 +1,6 @@
 import { Component } from '..'
 import { PaymentMethod } from '../../../types'
+import * as api from '../../api'
 import { PaymentModel } from '../../model/PaymentModel'
 import { EVENT } from '../../utils/constants'
 import { App } from '../app'
@@ -25,12 +26,20 @@ export class Modal extends Component<ModalView, App> {
       this.view.removePayment(id)
     })
 
-    this.view.bindPaymentAddHandler((payment: PaymentMethod) => {
+    this.view.bindPaymentAddHandler(async (payment: PaymentMethod) => {
+      const { paymentMethodId } = await api.postPayment(payment)
+      if (!paymentMethodId) {
+        alert('server error')
+        return
+      }
+      payment.id = paymentMethodId
+
       this.paymentModel.addPaymentMethod(payment)
       this.view.clearModal()
     })
 
     this.view.bindPaymentRemoveHandler((paymentId: number) => {
+      // delete payment
       this.paymentModel.removePaymentMethod(paymentId)
     })
   }

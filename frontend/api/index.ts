@@ -1,3 +1,4 @@
+import { PaymentMethod } from '../../types'
 import store from '../model/store'
 
 const apiUrlBase = '/api'
@@ -108,4 +109,11 @@ export async function fetchCategories() {
 
 export async function fetchPayments() {
   return await api.requestForData(`${apiUrlBase}/payment_method`, METHOD.GET())
+}
+
+export async function postPayment(payment: PaymentMethod) {
+  return await api.requestForData(
+    `${apiUrlBase}/payment_method`,
+    METHOD.POST(payment)
+  )
 }
