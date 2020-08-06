@@ -68,10 +68,6 @@ abstract class View {
   appendToView(view: View) {
     this.appendToElement(view.$element)
   }
-  isAttached(): boolean {
-    console.log(this.$element.closest('body'))
-    return this.$element.closest('#app') !== null
-  }
   remove() {
     const $parentElement = this.$element.parentElement
     if (!$parentElement) return
