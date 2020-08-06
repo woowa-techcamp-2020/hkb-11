@@ -1,5 +1,5 @@
 import { Component } from '..'
-import * as api from '../../api'
+import * as API from '../../api'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { PaymentModel } from '../../model/PaymentModel'

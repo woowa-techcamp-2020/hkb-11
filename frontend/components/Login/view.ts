@@ -1,4 +1,4 @@
-import * as api from '../../api'
+import * as API from '../../api'
 import { View } from '../view'
 import './style.scss'
 import { template } from './template'
@@ -12,13 +12,13 @@ export default class LoginView extends View {
     this.$element.addEventListener('click', async ({ target }) => {
       if (!(target instanceof HTMLButtonElement)) return
       if (target === this.$login) {
-        await api.login({
+        await API.login({
           id: this.$id.value,
           password: this.$password.value,
         })
       }
       if (target === this.$signup) {
-        await api.signup({
+        await API.signup({
           id: this.$id.value,
           password: this.$password.value,
         })
