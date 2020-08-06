@@ -1,12 +1,13 @@
 import { Observable } from './model'
 import store from './model/store'
-import { GLOBAL, ROUTE, ROUTER, ROUTES } from './utils/constants'
+import { CLASS, GLOBAL, ROUTE, ROUTER, ROUTES } from './utils/constants'
 
 class Router extends Observable {
   url: URL
   year: number = new Date().getFullYear()
   month: number = new Date().getMonth() + 1
   beforePath: string
+  anchors: HTMLAnchorElement[] = []
   routes: Set<string> = new Set(ROUTES.ALL)
   constructor() {
     super()
@@ -22,10 +23,20 @@ class Router extends Observable {
       this.bindAnchorNavigateHandler.bind(this)
     )
     window.onpopstate = this.onPopState.bind(this)
+    window.addEventListener(
+      'DOMContentLoaded',
+      this.loadAnchorElementFromDOM.bind(this)
+    )
+  }
+  loadAnchorElementFromDOM() {
+    this.anchors = Array.from(document.querySelectorAll('a')).filter(($node) =>
+      ROUTES.CONTAINER.includes($node.getAttribute('to'))
+    )
   }
   bindAnchorNavigateHandler({ target: $target }) {
-    if (!($target instanceof HTMLAnchorElement)) return
-    const path = $target.getAttribute('to')
+    const $anchorElement = $target.closest('a')
+    if (!$anchorElement) return
+    const path = $anchorElement.getAttribute('to')
     if (path === ROUTE.PREVIOUS_MONTH) {
       this.movePreviousMonth()
       this.pushURL()
@@ -85,6 +96,14 @@ class Router extends Observable {
       '',
       `${beforePath}?${params}`
     )
+    this.anchors.forEach(($node) => {
+      const path = $node.getAttribute('to')
+      if (path === this.beforePath) {
+        $node.classList.add(CLASS.ACTIVE)
+        return
+      }
+      $node.classList.remove(CLASS.ACTIVE)
+    })
   }
   movePreviousMonth() {
     if (this.month == 1) {

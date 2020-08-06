@@ -1,6 +1,53 @@
 @use '@/static/styles/package' as *;
 
 #navigator {
-  width: $width-container;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+
+  .rows {
+    .row {
+      align-items: center;
+      justify-content: center;
+
+      &.month-picker {
+        margin-bottom: 20px;
+
+        .month-link {
+          color: $color-sub-main;
+
+          &:hover {
+            color: $color-main;
+          }
+        }
+
+        .month {
+          font-size: 22px;
+          font-weight: 600;
+          margin: 0 20px;
+        }
+      }
+
+      &.page-picker {
+        width: $width-container - 20px;
+        margin-bottom: 10px;
+        background-color: $color-gray-150;
+        border-radius: 20px;
+        padding: 4px;
+
+        a {
+          flex: 1 1 0px;
+          display: flex;
+          justify-content: center;
+          font-size: 18px;
+          padding: 10px;
+          cursor: pointer;
+
+          &.active {
+            background-color: $color-white;
+            border-radius: 18px;
+          }
+        }
+      }
+    }
+  }
 }
