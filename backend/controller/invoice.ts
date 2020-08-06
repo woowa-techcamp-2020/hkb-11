@@ -4,6 +4,12 @@ import { Invoice } from '../../types'
 import pool from '../pool'
 import query from '../query'
 
+function formatMYSQLDate(date: Date) {
+  return `${new Date(date).toISOString().slice(0, 10)} ${new Date(
+    date
+  ).toLocaleTimeString('en-GB')}`
+}
+
 const formatInvoice = (invoice): Invoice => {
   const {
     id,
@@ -31,7 +37,6 @@ const formatInvoice = (invoice): Invoice => {
 
 const getInvoiceList = async (req: Request, res: Response) => {
   try {
-    if (!req.auth) return res.status(401)
     const { year, month } = req.query
     const [rows] = await pool.query<RowDataPacket[]>(
       query.SELECT_INVOICE_LIST,
@@ -46,17 +51,15 @@ const getInvoiceList = async (req: Request, res: Response) => {
     })
   }
 }
-
 const postInvoice = async (req: Request, res: Response) => {
   try {
-    if (!req.auth) return res.status(401)
-    const { invoice } = req.body
-    const { date, categoryId, paymentMethodId, item, amount } = invoice
+    const { invoice }: { invoice: Invoice } = req.body
+    const { date, item, amount, category, paymentMethod } = invoice
     const [row] = await pool.query<OkPacket>(query.INSERT_INVOICE, [
       req.auth.id,
-      date,
-      categoryId,
-      paymentMethodId,
+      formatMYSQLDate(date),
+      category.id,
+      paymentMethod.id,
       item,
       amount,
     ])
@@ -72,10 +75,9 @@ const postInvoice = async (req: Request, res: Response) => {
 
 const putInvoice = async (req: Request, res: Response) => {
   try {
-    const { invoice } = req.body
-    const { id, date, categoryId, paymentMethodId, item, amount } = invoice
+    const { invoice }: { invoice: Invoice } = req.body
+    const { id, date, category, paymentMethod, item, amount } = invoice
 
-    // 수정할 Invoice가 있는지 검사, false: 404
     const [row] = await pool.query<RowDataPacket[]>(query.SELECT_INVOICE, [id])
     if (row.length === 0) {
       res.status(404).json()
@@ -83,9 +85,9 @@ const putInvoice = async (req: Request, res: Response) => {
     }
 
     const [result] = await pool.query<ResultSetHeader>(query.UPDATE_INVOICE, [
-      date,
-      categoryId,
-      paymentMethodId,
+      formatMYSQLDate(date),
+      category.id,
+      paymentMethod.id,
       item,
       amount,
       id,
@@ -106,8 +108,6 @@ const putInvoice = async (req: Request, res: Response) => {
 
 const deleteInvoice = async (req: Request, res: Response) => {
   try {
-    // jwt token 검사, false: 401
-
     const {
       invoice: { id },
     } = req.body

@@ -1,6 +1,7 @@
+import { Invoice } from '../../types'
 import store from '../model/store'
 
-const apiUrlBase = '/api'
+const APIUrlBase = '/api'
 
 function addToken() {
   if (store.id) {
@@ -56,7 +57,7 @@ const METHOD = {
   },
 }
 
-const api = {
+const API = {
   requestForData: async (url, config) => {
     const response = await fetch(url, config)
     if (response.ok) {
@@ -82,30 +83,36 @@ const api = {
 }
 
 export async function signup({ id, password }) {
-  return await api.requestForToken(
-    `${apiUrlBase}/signup`,
+  return await API.requestForToken(
+    `${APIUrlBase}/signup`,
     METHOD.POST({ id, password })
   )
 }
 
 export async function login({ id, password }) {
-  return await api.requestForToken(
-    `${apiUrlBase}/login`,
+  return await API.requestForToken(
+    `${APIUrlBase}/login`,
     METHOD.POST({ id, password })
   )
 }
 
 export async function fetchInvoices(year, month) {
-  return await api.requestForData(
-    `${apiUrlBase}/invoice?year=${year}&month=${month}`,
+  return await API.requestForData(
+    `${APIUrlBase}/invoice?year=${year}&month=${month}`,
     METHOD.GET()
   )
 }
 
+export async function postInvoice(invoice: Invoice) {
+  return await API.requestForData(
+    `${APIUrlBase}/invoice`,
+    METHOD.POST({ invoice })
+  )
+}
 export async function fetchCategories() {
-  return await api.requestForData(`${apiUrlBase}/category`, METHOD.GET())
+  return await API.requestForData(`${APIUrlBase}/category`, METHOD.GET())
 }
 
 export async function fetchPayments() {
-  return await api.requestForData(`${apiUrlBase}/payment_method`, METHOD.GET())
+  return await API.requestForData(`${APIUrlBase}/payment_method`, METHOD.GET())
 }

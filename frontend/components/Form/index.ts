@@ -1,5 +1,6 @@
 import { Component } from '..'
 import { Category, Invoice, PaymentMethod } from '../../../types'
+import { postInvoice } from '../../api'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { PaymentModel } from '../../model/PaymentModel'
@@ -19,11 +20,22 @@ export class Form extends Component<FormView, Container> {
     this.categoryModel = this.parent.categoryModel
     this.paymentModel = this.parent.paymentModel
 
-    this.view.bindInvoiceAddHandler((invoice: Invoice) => {
-      this.invoiceModel.addInvoice(invoice)
-
-      this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
-      this.view.clearForm()
+    this.view.bindInvoiceAddHandler(async (invoice: Invoice) => {
+      try {
+        const { invoiceId } = await postInvoice(invoice)
+        this.invoiceModel.addInvoice(
+          Object.assign(
+            {
+              id: invoiceId,
+            },
+            invoice
+          )
+        )
+        this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
+        this.view.clearForm()
+      } catch (error) {
+        console.error(error)
+      }
     })
 
     this.view.bindInvoiceRemoveHandler((id: number) => {

@@ -1,5 +1,5 @@
 import { Component } from '..'
-import * as api from '../../api'
+import * as API from '../../api'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { PaymentModel } from '../../model/PaymentModel'
@@ -38,11 +38,11 @@ export class Container extends Component<ContainerView, App> {
     this.chart = new Chart(this, this.view.chartView)
 
     store.on(GLOBAL.LOGIN, () => {
-      api.fetchCategories().then(({ categoryList }) => {
+      API.fetchCategories().then(({ categoryList }) => {
         this.categoryModel.setCategories(categoryList)
       })
 
-      api.fetchPayments().then(({ paymentMethodList }) => {
+      API.fetchPayments().then(({ paymentMethodList }) => {
         this.paymentModel.setPaymentMethods(paymentMethodList)
       })
     })
@@ -52,7 +52,7 @@ export class Container extends Component<ContainerView, App> {
     this.routerMap[ROUTE.CHART] = [this.chart]
 
     router.on(ROUTER.CHANGE_DATE, async ({ year, month }) => {
-      const { invoiceList } = await api.fetchInvoices(year, month)
+      const { invoiceList } = await API.fetchInvoices(year, month)
       invoiceList.forEach((invoice) => {
         invoice.date = new Date(invoice.date)
         this.categoryModel.fillInvoice(invoice)
