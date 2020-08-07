@@ -87,6 +87,10 @@
       select {
         cursor: pointer;
 
+        &.disabled {
+          color: $color-gray-400;
+        }
+
         option {
           color: $color-black;
 

@@ -21,13 +21,13 @@ export const template: string = /*html*/ `
       <div class="row">
         <div class="item">
             <label class="form-label">카테고리</label>
-            <select class="select-category" value=''>
+            <select class="select-category disabled">
               <option value="" disabled selected>선택하세요</option>
             </select>
           </div>
           <div class="item">
             <label class="form-label">결제수단</label>
-            <select class="select-payment">
+            <select class="select-payment disabled">
               <option value="" disabled selected>선택하세요</option>
             </select>
           </div>

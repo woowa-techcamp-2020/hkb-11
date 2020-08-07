@@ -1,6 +1,7 @@
 export const CONSTANT = {
   SPENDING: '지출',
   EARNING: '수입',
+  CELL_NUM: 42,
 }
 
 export const CLASS = {
@@ -9,6 +10,7 @@ export const CLASS = {
   ITEM: 'item',
   CENTER: 'center',
   STOP_SCROLL: 'stop-scroll',
+  DISABLED: 'disabled',
 }
 export const GLOBAL = {
   LOGIN: 'LOGIN',
@@ -55,6 +57,11 @@ export const ROUTES = {
 export enum LIST_CLASS {
   EARNING = 'earning',
   SPENDING = 'spending',
+}
+
+export enum FILTER_CLASS {
+  CHECKED = 'checked',
+  UNCHECKED = 'unchecked',
 }
 
 export const FORM_CLASS = {
