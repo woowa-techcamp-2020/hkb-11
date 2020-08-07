@@ -6,8 +6,8 @@
 
     .date-row {
       border-top: 1px solid $color-gray-600;
-      padding: 11px 0;
       align-items: center;
+      padding: 11px 4px;
 
       .item {
         justify-content: flex-end;
@@ -44,11 +44,10 @@
     .invoice {
       align-items: center;
       border-top: 1px solid $color-gray-400;
-      padding: 5px 0px;
+      padding: 5px 4px;
       position: relative;
       &.highlight {
-        background-color: $color-sub-main;
-        opacity: 0.6;
+        background-color: unquote($color-sub-main + '30');
       }
       .button-edit {
         display: none;

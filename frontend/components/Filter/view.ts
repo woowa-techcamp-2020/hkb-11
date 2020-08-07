@@ -1,4 +1,5 @@
 import { formatAmount } from '../../utils'
+import { CLASS, FILTER_CLASS } from '../../utils/constants'
 import { setText, View } from '../view'
 import './style.scss'
 import { template } from './template'
@@ -22,10 +23,29 @@ export default class FilterView extends View {
   onInputChanged({ target }) {
     if (target instanceof HTMLInputElement) {
       const { checked } = target
-      if (target === this.$earningCheckBox) this.onEarningToggleHandler(checked)
+      const $label = <HTMLLabelElement>this.query(`label[for='${target.id}']`)
+
+      this.toggleLabel($label, checked)
+
+      if (target === this.$earningCheckBox) {
+        this.onEarningToggleHandler(checked)
+      }
       if (target === this.$spendingCheckBox)
         this.onSpendingToggleHandler(checked)
     }
+  }
+
+  toggleLabel($label: HTMLLabelElement, isChecked: boolean) {
+    const $checkedIcon = $label.querySelector(`.${FILTER_CLASS.CHECKED}`)
+    const $uncheckedIcon = $label.querySelector(`.${FILTER_CLASS.UNCHECKED}`)
+
+    if (isChecked) {
+      $checkedIcon.classList.remove(CLASS.HIDDEN)
+      $uncheckedIcon.classList.add(CLASS.HIDDEN)
+      return
+    }
+    $checkedIcon.classList.add(CLASS.HIDDEN)
+    $uncheckedIcon.classList.remove(CLASS.HIDDEN)
   }
 
   setEarningTotal(amount) {
