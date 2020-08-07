@@ -118,6 +118,13 @@
             display: flex;
             justify-content: center;
             width: 50%;
+            flex: 1 1 0;
+          }
+
+          .amount-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            flex: 1 1 0;
           }
 
           .amount-pre {

@@ -43,10 +43,12 @@ export const invoiceRowTemplate: string = /*html*/ `
     </div>
     <div class="item right">
       <div class="payment"></div>
-      <div class="amount-pre"></div>
-      <div class="amount"></div>
-      <div class="amount-post">
-        원
+      <div class='amount-wrapper'>
+        <div class="amount-pre"></div>
+        <div class="amount"></div>
+        <div class="amount-post">
+          원
+        </div>
       </div>
     </div>
   </div>
