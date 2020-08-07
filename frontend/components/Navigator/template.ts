@@ -1,5 +1,5 @@
 export const template: string = /*html*/ `
-  <section id='navigator'>
+<section id='navigator'>
     <div class="rows">
       <nav class="row month-picker">
         <a to="previous-month" class='month-link'>

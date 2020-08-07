@@ -19,11 +19,11 @@ export default class HeaderView extends View {
     })
   }
   login() {
-    this.$login.classList.add('hidden')
+    // this.$login.classList.add('hidden')
     this.$logout.classList.remove('hidden')
   }
   logout() {
-    this.$logout.classList.add('hidden')
+    // this.$logout.classList.add('hidden')
     this.$login.classList.remove('hidden')
   }
   mount(): void {
