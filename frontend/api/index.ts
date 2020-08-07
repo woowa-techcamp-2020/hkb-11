@@ -130,6 +130,19 @@ export async function postPayment(payment: PaymentMethod) {
   )
 }
 
+export async function updateInvoice(invoice: Invoice) {
+  return await API.requestForStatus(
+    `${APIUrlBase}/invoice`,
+    METHOD.PUT({ invoice })
+  )
+}
+
+export async function deleteInvoice(id: number) {
+  return await API.requestForStatus(
+    `${APIUrlBase}/invoice`,
+    METHOD.DELETE({ id })
+  )
+}
 export async function deletePayment(id: number) {
   return await API.requestForStatus(
     `${APIUrlBase}/payment_method`,
