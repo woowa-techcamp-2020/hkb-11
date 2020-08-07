@@ -46,7 +46,7 @@ export default class ModalView extends View {
     }
 
     const $buttonAddPayment = e.target.closest(`.${MODAL_CLASS.ADD_BTN}`)
-    if ($buttonAddPayment) {
+    if ($buttonAddPayment && this.$inputPayment.value !== '') {
       this.paymentAddHandler(this.getPaymentData())
       return
     }
