@@ -1,3 +1,4 @@
+import { CHART_CLASS, CLASS } from '../../utils/constants'
 import { View } from '../view'
 import { BarChartView } from './BarChartView'
 import { PiChartView } from './PiChartView'
@@ -26,11 +27,29 @@ export default class ChartView extends View {
     this.$bar.checked = true
     this.piChartView.hide()
     this.barChartView.show()
+    this.setCheckboxLabel(this.$bar.id, true)
+    this.setCheckboxLabel(this.$pi.id, false)
   }
   showPiChart() {
     this.$pi.checked = true
     this.piChartView.show()
     this.barChartView.hide()
+    this.setCheckboxLabel(this.$pi.id, true)
+    this.setCheckboxLabel(this.$bar.id, false)
+  }
+  setCheckboxLabel(checkBoxId: string, isShow: boolean) {
+    const $label = this.query(`[for='${checkBoxId}']`)
+    console.log($label)
+    const $showIcon = $label.querySelector(`.${CHART_CLASS.SHOW_ICON}`)
+    const $hideIcon = $label.querySelector(`.${CHART_CLASS.HIDE_ICON}`)
+
+    if (isShow) {
+      $showIcon.classList.remove(CLASS.HIDDEN)
+      $hideIcon.classList.add(CLASS.HIDDEN)
+      return
+    }
+    $showIcon.classList.add(CLASS.HIDDEN)
+    $hideIcon.classList.remove(CLASS.HIDDEN)
   }
   clear() {
     this.showBarChart()

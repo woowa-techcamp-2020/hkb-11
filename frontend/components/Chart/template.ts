@@ -1,13 +1,21 @@
 export const template: string = /*html*/ `
   <section id='invoice-chart'>
     <div id="chart-selector" class="row">
-      <div class="item left">
-        <label> 날짜별 분류 </label>
-        <input type="radio" name="chart" id="bar" checked/>
+      <div class="item">
+        <label for='bar'>
+          <span>날짜별 분류</span>
+          <i class='f7-icons hide-icon hidden'>circle</i>
+          <i class='f7-icons show-icon'>largecircle_fill_circle</i>
+        </label>
+        <input type="radio" name="chart" class='hidden' id="bar" checked/>
       </div>
-      <div class="item right">
-        <label> 항목별 분류 </label>
-        <input type="radio" name="chart" id="pi"/>
+      <div class="item">
+        <label for='pi'>
+          <span>항목별 분류</span>
+          <i class='f7-icons hide-icon'>circle</i>
+          <i class='f7-icons show-icon hidden'>largecircle_fill_circle</i>
+        </label>
+        <input type="radio" name="chart" class='hidden' id="pi"/>
       </div>
     </div>
   </section>

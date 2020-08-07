@@ -11,6 +11,7 @@ export const CLASS = {
   CENTER: 'center',
   STOP_SCROLL: 'stop-scroll',
   DISABLED: 'disabled',
+  F7_ICONS: 'f7-icons',
 }
 export const GLOBAL = {
   LOGIN: 'LOGIN',
@@ -97,4 +98,9 @@ export enum MODAL_CLASS {
   ADD_BTN = 'button-add-payment',
   REMOVE_BTN = 'remove-btn',
   INPUT_PAYMENT = 'input-payment',
+}
+
+export enum CHART_CLASS {
+  SHOW_ICON = 'show-icon',
+  HIDE_ICON = 'hide-icon',
 }
