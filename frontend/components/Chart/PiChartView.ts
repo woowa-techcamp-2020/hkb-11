@@ -1,7 +1,12 @@
+import { formatAmount } from '../../utils'
 import { templateToElement } from '../../utils/ElementGenerator'
 import { setText, View } from '../view'
 import config from './config'
-import { piChartTemplate, piItemTemplate } from './template'
+import {
+  noDataAlertTemplate,
+  piChartTemplate,
+  piItemTemplate,
+} from './template'
 function dx(r, ang) {
   return r * Math.cos(((ang - 90) / 180) * Math.PI)
 }
@@ -15,9 +20,9 @@ function createPiTableItemElement({ title, ratio, amount, idx }) {
   const $itemColorBar = $piTableItem.querySelector('.item-color-bar')
   $itemColorBar.setAttribute(
     'style',
-    `width: ${ratio * width}px; background-color: ${circleColors[idx]}`
+    `width: ${ratio * width * 0.8}px; background-color: ${circleColors[idx]}`
   )
-  setText($piTableItem, '.item-amount', amount)
+  setText($piTableItem, '.item-amount', `${formatAmount(amount)}원`)
   return $piTableItem
 }
 
@@ -63,22 +68,19 @@ export class PiChartView extends View {
 
   renderPiChart(arr) {
     this.$piChart.innerHTML = ''
+    this.$piTable.innerHTML = ''
+    const totalAmount = arr.reduce((a, b) => a + b.amount, 0)
     const { circles } = config
     let ang = 0
-    arr.slice(0, circles).forEach(({ title, ang: theta }, idx) => {
+    if (arr.length === 0) {
+      this.insertPiChartTemplate(noDataAlertTemplate)
+    }
+    arr.slice(0, circles).forEach(({ title, ang: theta, amount }, idx) => {
       this.insertPiChartTemplate(
         createPiIndicatorLine({ ang: ang + theta / 2, title }),
         createPiArc({ ang, theta, idx })
       )
       ang += theta
-    })
-    this.renderPiTable(arr)
-  }
-  renderPiTable(arr) {
-    const { circles } = config
-    this.$piTable.innerHTML = ''
-    const totalAmount = arr.reduce((a, b) => a + b.amount, 0)
-    arr.slice(0, circles).forEach(({ title, amount }, idx) => {
       this.$piTable.appendChild(
         createPiTableItemElement({
           title,

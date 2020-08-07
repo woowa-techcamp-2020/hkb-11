@@ -15,20 +15,25 @@ export const template: string = /*html*/ `
 
 export const barChartTemplate = /*html*/ `
   <div id="bar-chart">
-    <small>bar-chart</small>
     <svg viewBox="0 0 800 400"></svg>
   </div>
 `
 export const piChartTemplate = /*html*/ `
   <div id="pi-chart">
-    <small>pi-chart</small>
-    <svg viewBox="0 0 800 400"></svg>
-    <h3>항목별 합계</h3>
+    <svg viewBox="0 0 800 400">
+    </svg>
+    <div class="header-3">
+      항목별 합계
+    </div>
     <div id="pi-table" class="rows">
     </div>
   </div>
 `
+export const noDataAlertTemplate = `
+  <circle cx="400" cy="200" r="132" fill="lightgrey"></circle>
+  <text id="no-data-alert" x="400" y="200" text-anchor="middle">표시할 정보가 없습니다.</text>
 
+`
 export const piItemTemplate = /*html*/ `
   <div class="row">
     <div class="item left item-title">
@@ -41,5 +46,10 @@ export const piItemTemplate = /*html*/ `
         </div>
       </div>
     </div>
+  </div>
+`
+
+export const barDisplayTemplate = `
+  <div id="bar-display">
   </div>
 `

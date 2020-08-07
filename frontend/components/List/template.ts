@@ -9,13 +9,17 @@ export const wrapperRowTemplate: string = /*html*/ `
       <div class="item left">
         <span class="date"></span><span class="day"></span><span class="hidden-date hidden"></span>
       </div>
-      <div class="item right">
-        <div class="earning-sum-pre">+</div>
-        <div class="earning-sum">0</div>
-        <div class="earning-sum-post">원</div>
-        <div class="spending-sum-pre">–</div>
-        <div class="spending-sum">0</div>
-        <div class="spending-sum-post">원</div>
+      <div class="item right sum-box row">
+        <span class="item left earning-sum-box">
+          <span>+</span>
+          <span class="earning-sum">0</span>
+          <span>원</span>
+        </span>
+        <span class="item right spending-sum-box">
+          <span>–</span>
+          <span class="spending-sum">0</span>
+          <span>원</span>
+        </span>
       </div>
     </div>
     <div class="rows">
