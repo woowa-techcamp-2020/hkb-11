@@ -72,6 +72,7 @@ function createInvoiceRow(invoice: Invoice) {
   $invoiceRow.classList.add('invoice', type)
   setText($invoiceRow, '.hidden-id', id)
   setText($invoiceRow, '.hidden-date', +date)
+  setText($invoiceRow, '.date', `${date.getHours()}시 ${date.getMinutes()}분`)
   setText($invoiceRow, '.category', category.title)
   setText($invoiceRow, '.type', category.type)
   setText($invoiceRow, '.content', item)
@@ -172,7 +173,6 @@ export default class ListView extends View {
   }
   setVisibilityCheck() {
     this.getWrapperRows().forEach(($wrapperRow) => {
-      console.log('wrapperRow', $wrapperRow)
       const isVisible = Array.from(
         $wrapperRow.querySelector('.rows').children
       ).some(($row) => !$row.classList.contains('hidden'))

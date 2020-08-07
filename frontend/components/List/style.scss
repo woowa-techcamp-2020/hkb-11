@@ -49,24 +49,34 @@
       &.highlight {
         background-color: unquote($color-sub-main + '30');
       }
-      .button-edit {
+      .button-edit,
+      .date {
         display: none;
       }
 
       &:hover {
         .float {
           $L-width: 50px;
-
-          left: calc(50% - #{$L-width} / 2);
+          display: flex;
+          left: calc(40% - #{$L-width} / 2);
+          flex-direction: row;
+          align-items: center;
 
           .button-edit {
             display: flex;
-            justify-content: center;
+            justify-content: left;
             width: $L-width;
             border: none;
             background-color: transparent;
             color: $color-main;
             cursor: pointer;
+          }
+          .date {
+            opacity: 0.4;
+            font-size: 13px;
+            display: flex;
+            margin-right: 40px;
+            justify-content: right;
           }
         }
       }
