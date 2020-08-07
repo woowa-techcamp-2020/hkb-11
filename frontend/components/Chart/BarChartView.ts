@@ -102,11 +102,11 @@ export class BarChartView extends View {
     if (!(target instanceof Element)) return
     const $circle = target.closest('circle')
     if (!$circle) {
-      this.$barDisplay.classList.add('hidden2')
+      this.$barDisplay.classList.add('transparent')
       this.$selectedDateNumber?.classList.remove('selected')
       return
     }
-    this.$barDisplay.classList.remove('hidden2')
+    this.$barDisplay.classList.remove('transparent')
     const cx = parseInt($circle.getAttribute('cx')),
       cy = parseInt($circle.getAttribute('cy'))
     const amount = formatAmount(parseInt($circle.getAttribute('amount')))

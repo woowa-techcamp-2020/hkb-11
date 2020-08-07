@@ -1,6 +1,6 @@
 import { Component } from '..'
 import { Category, Invoice, PaymentMethod } from '../../../types'
-import { postInvoice } from '../../api'
+import { deleteInvoice, postInvoice, updateInvoice } from '../../api'
 import { CategoryModel } from '../../model/CategoryModel'
 import { InvoiceModel } from '../../model/InvoiceModel'
 import { PaymentModel } from '../../model/PaymentModel'
@@ -20,37 +20,40 @@ export class Form extends Component<FormView, Container> {
     this.categoryModel = this.parent.categoryModel
     this.paymentModel = this.parent.paymentModel
 
-    this.view.bindInvoiceAddHandler(async (invoice: Invoice) => {
-      try {
-        const { invoiceId } = await postInvoice(invoice)
-        this.invoiceModel.addInvoice(
-          Object.assign(
-            {
-              id: invoiceId,
-            },
-            invoice
-          )
+    this.view.bindInvoiceAddHandler(this.handleInvoiceAdd.bind(this))
+    this.view.bindInvoiceRemoveHandler(this.handleInvoiceRemove.bind(this))
+    this.view.bindInvoiceUpdateHandler(this.handleInvoiceUpdate.bind(this))
+  }
+  async handleInvoiceAdd(invoice: Invoice) {
+    try {
+      const { invoiceId } = await postInvoice(invoice)
+      this.invoiceModel.addInvoice(
+        Object.assign(
+          {
+            id: invoiceId,
+          },
+          invoice
         )
-        this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
-        this.view.clear()
-      } catch (error) {
-        console.error(error)
-      }
-    })
-
-    this.view.bindInvoiceRemoveHandler((id: number) => {
-      this.invoiceModel.removeInvoice(id)
-
+      )
       this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
       this.view.clear()
-    })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  async handleInvoiceRemove(id: number) {
+    await deleteInvoice(id)
+    this.invoiceModel.removeInvoice(id)
 
-    this.view.bindInvoiceUpdateHandler((invoice: Invoice) => {
-      this.invoiceModel.updateInvoice(invoice)
+    this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
+    this.view.clear()
+  }
+  async handleInvoiceUpdate(invoice: Invoice) {
+    await updateInvoice(invoice)
+    this.invoiceModel.updateInvoice(invoice)
 
-      this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
-      this.view.clear()
-    })
+    this.view.changeFloatBtn(FORM_CLASS.CLEAR_BTN)
+    this.view.clear()
   }
 
   bind() {

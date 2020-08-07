@@ -50,6 +50,6 @@ export const piItemTemplate = /*html*/ `
 `
 
 export const barDisplayTemplate = `
-  <div id="bar-display">
+  <div id="bar-display" class="transparent">
   </div>
 `

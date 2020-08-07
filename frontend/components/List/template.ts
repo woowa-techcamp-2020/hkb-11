@@ -30,6 +30,7 @@ export const wrapperRowTemplate: string = /*html*/ `
 export const invoiceRowTemplate: string = /*html*/ `
   <div class='row invoice'>
     <div class="float">
+      <div class="date"></div>
       <i class="button-edit f7-icons">pencil_circle</i>
     </div>
     <div class="hidden">
