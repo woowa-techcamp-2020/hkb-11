@@ -14,6 +14,11 @@ import { List } from '../List'
 import { View } from '../view'
 import ContainerView from './view'
 
+function getTimezoneDate(date: Date) {
+  const timezoneOffset = date.getTimezoneOffset() * 60000
+  return new Date(+date - timezoneOffset)
+}
+
 export class Container extends Component<ContainerView, App> {
   invoiceModel: InvoiceModel = new InvoiceModel()
   categoryModel: CategoryModel = new CategoryModel()
@@ -55,7 +60,7 @@ export class Container extends Component<ContainerView, App> {
       const { invoiceList } = await API.fetchInvoices(year, month)
       if (router.year !== year && router.month !== month) return
       invoiceList.forEach((invoice) => {
-        invoice.date = new Date(invoice.date)
+        invoice.date = getTimezoneDate(invoice.date)
         this.categoryModel.fillInvoice(invoice)
         this.paymentModel.fillInvoice(invoice)
       })

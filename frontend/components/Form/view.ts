@@ -13,12 +13,12 @@ function formatInputAmount($target: HTMLInputElement) {
 function getNumberByAmount(amount: string): number {
   return parseInt(amount.replace(',', ''))
 }
-
-function formatDate(date: Date) {
-  // return datetime format = yyyy-MM-ddThh:mm
+function getTimezoneDate(date: Date) {
   const timezoneOffset = date.getTimezoneOffset() * 60000
-  const timezoneDate = new Date(+date - timezoneOffset)
-  return timezoneDate.toISOString().slice(0, 16)
+  return new Date(+date - timezoneOffset)
+}
+function formatDate(date: Date) {
+  return getTimezoneDate(date).toISOString().slice(0, 16)
 }
 
 export default class FormView extends View {
