@@ -1,9 +1,10 @@
 import cookieParser from 'cookie-parser'
-import express from 'express'
+import express, { Response } from 'express'
 import bearerToken from 'express-bearer-token'
 import logger from 'morgan'
 import path from 'path'
 import { checkAuth } from './middlewares'
+import authRouter from './routes/auth'
 import router from './routes/index'
 const app = express()
 
@@ -23,5 +24,9 @@ app.use(cookieParser())
 app.use(express.static(path.resolve(__dirname, '../frontend/dist')))
 app.use(bearerToken())
 app.use(checkAuth)
+app.use('/auth', authRouter)
 app.use('/api', router)
+app.use('/', (req, res: Response) => {
+  res.render('index.html')
+})
 module.exports = app
