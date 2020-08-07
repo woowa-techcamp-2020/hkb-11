@@ -14,9 +14,11 @@ import { List } from '../List'
 import { View } from '../view'
 import ContainerView from './view'
 
-function getTimezoneDate(date: Date) {
+function getTimezoneDate(dateString: string) {
+  return new Date(dateString)
+  const date = new Date(dateString)
   const timezoneOffset = date.getTimezoneOffset() * 60000
-  return new Date(+date - timezoneOffset)
+  return new Date(+date + timezoneOffset)
 }
 
 export class Container extends Component<ContainerView, App> {

@@ -1,5 +1,5 @@
-import mysql from 'mysql2/promise'
 import dotenv from 'dotenv'
+import mysql from 'mysql2/promise'
 dotenv.config()
 
 const pool = mysql.createPool({
@@ -10,6 +10,7 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+  timezone: 'UTC',
 })
 
 export default pool
