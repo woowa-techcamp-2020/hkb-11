@@ -24,4 +24,7 @@ app.use(express.static(path.resolve(__dirname, '../frontend/dist')))
 app.use(bearerToken())
 app.use(checkAuth)
 app.use('/api', router)
+app.use('/', (req, res) => {
+  res.sendFile(path.resolve('frontend/dist/index.html'))
+})
 module.exports = app
